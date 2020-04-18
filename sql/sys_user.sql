@@ -2,8 +2,8 @@
 CREATE TABLE sys_user
 (
 	user_code varchar(100) NOT NULL COMMENT '用户编码',
-	login_code varchar(100) NOT NULL COMMENT '登录账号',
-	user_name varchar(100) NOT NULL COMMENT '用户昵称',
+	user_name varchar(100) NOT NULL COMMENT '登录账号',
+	nick_name varchar(100) NOT NULL COMMENT '用户昵称',
 	password varchar(100) NOT NULL COMMENT '登录密码',
 	email varchar(300) COMMENT '电子邮箱',
 	mobile varchar(100) COMMENT '手机号码',
