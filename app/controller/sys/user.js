@@ -3,8 +3,7 @@ const Controller = require('../base');
 class ModuleController extends Controller {
   // 新增模块
   async create() {
-    const { user_name, nick_name, password, create_by } = this.ctx.request.body;
-    const currentDate = await this.currentDate();
+    const { user_name, nick_name, password } = this.ctx.request.body;
     if (!user_name) {
       this.result({ success: false, msg: 'user_name不能为空' });
     } else if (!nick_name) {
@@ -17,32 +16,19 @@ class ModuleController extends Controller {
           user_name,
           nick_name,
           password,
-          create_by,
-          update_by: create_by,
-          create_date: currentDate,
-          update_date: currentDate,
         })
       );
     }
   }
   // 修改
   async update() {
-    const update_date = await this.currentDate();
-    const {
-      id,
-      nick_name,
-      password,
-      update_by,
-      remarks,
-    } = this.ctx.request.body;
+    const { id, nick_name, password, remarks } = this.ctx.request.body;
     if (id) {
       this.result(
         await this.service.sys.user.update(
           {
             nick_name,
             password,
-            update_by,
-            update_date,
             remarks,
           },
           id

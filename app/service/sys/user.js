@@ -1,20 +1,22 @@
 'use strict';
 const Service = require('../base');
-const jwt = require('jsonwebtoken');
 class UserService extends Service {
   // 新增
   async create(params) {
-    const user_code = await this.createUuid();
-    const password = await this.md5(params.password);
     const [ result, status ] = await this.ctx.model.SysUser.findOrCreate({
       where: { user_name: params.user_name },
-      defaults: Object.assign({}, params, {
-        user_code,
-        user_type: '1',
-        mgr_type: '0',
-        status: '0',
-        password,
-      }),
+      defaults: Object.assign(
+        params,
+        await this.createByOrDate(),
+        await this.updateByOrDate(),
+        {
+          user_code: await this.createUuid(),
+          user_type: '1',
+          mgr_type: '0',
+          status: '0',
+          password: await this.md5(params.password),
+        }
+      ),
     });
     if (status) {
       return { msg: '新增成功！', success: status };
@@ -23,9 +25,12 @@ class UserService extends Service {
   }
   // 更新
   async update(params, id) {
-    const data = await this.ctx.model.SysUser.update(params, {
-      where: { user_code: id },
-    });
+    const data = await this.ctx.model.SysUser.update(
+      Object.assign(params, await this.updateByOrDate()),
+      {
+        where: { user_code: id },
+      }
+    );
     if (data) {
       return { msg: '更新成功！', success: true };
     }
@@ -47,7 +52,6 @@ class UserService extends Service {
       rows: data,
       count: total,
     } = await this.ctx.model.SysUser.findAndCountAll({
-      attributes: this.attributes,
       where: {
         [Op.and]: [
           nick_name ? { nick_name } : null,
@@ -70,7 +74,9 @@ class UserService extends Service {
   async login(params) {
     const { user_name } = params;
     const Op = this.app.Sequelize.Op;
-    const isUser = await this.ctx.model.SysUser.findOne({ where: { user_name } });
+    const isUser = await this.ctx.model.SysUser.findOne({
+      where: { user_name },
+    });
     if (isUser) {
       const password = await this.md5(params.password);
       const data = await this.ctx.model.SysUser.findOne({
@@ -79,9 +85,7 @@ class UserService extends Service {
         },
       });
       if (data) {
-        const token = jwt.sign({ user_name }, this.config.jwt.secret, {
-          expiresIn: 60 * 60 * 60 * 24,
-        });
+        const token = this.jwtSign(data);
         return {
           msg: '登录成功！',
           success: true,

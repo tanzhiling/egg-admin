@@ -19,10 +19,16 @@ class ModuleService extends Service {
   }
   // 新增
   async create(params) {
-    const module_code = await this.createUuid();
     const [ result, status ] = await this.ctx.model.SysModule.findOrCreate({
       where: { module_name: params.module_name },
-      defaults: Object.assign({}, params, { module_code }),
+      defaults: Object.assign(
+        params,
+        await this.createByOrDate(),
+        await this.updateByOrDate(),
+        {
+          module_code: await this.createUuid(),
+        }
+      ),
     });
     if (status) {
       return { msg: '新增成功！', success: status };
@@ -31,7 +37,12 @@ class ModuleService extends Service {
   }
   // 更新
   async update(params, id) {
-    const data = await this.ctx.model.SysModule.update(params, { where: { module_code: id } });
+    const data = await this.ctx.model.SysModule.update(
+      Object.assign(params, await this.updateByOrDate()),
+      {
+        where: { module_code: id },
+      }
+    );
     if (data) {
       return { msg: '更新成功！', success: true };
     }

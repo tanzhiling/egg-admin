@@ -10,9 +10,5 @@ class BaseController extends Controller {
       this.ctx.body = { success, msg, code: 400 };
     }
   }
-  // 获取当前时间
-  async currentDate() {
-    return new Date().toISOString();
-  }
 }
 module.exports = BaseController;

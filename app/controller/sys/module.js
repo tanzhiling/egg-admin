@@ -4,7 +4,6 @@ class ModuleController extends Controller {
   // 新增模块
   async create() {
     const { module_name, status, create_by } = this.ctx.request.body;
-    const currentDate = await this.currentDate();
     if (!module_name) {
       this.result({ success: false, msg: 'module_name不能为空' });
     } else if (!status) {
@@ -13,20 +12,12 @@ class ModuleController extends Controller {
       this.result({ success: false, msg: 'create_by不能为空' });
     } else {
       this.result(
-        await this.service.sys.module.create({
-          module_name,
-          status,
-          create_by,
-          update_by: create_by,
-          create_date: currentDate,
-          update_date: currentDate,
-        })
+        await this.service.sys.module.create({ module_name, status })
       );
     }
   }
   // 修改
   async update() {
-    const update_date = await this.currentDate();
     const {
       id,
       module_name,
@@ -34,7 +25,6 @@ class ModuleController extends Controller {
       current_version,
       upgrade_info,
       status,
-      update_by,
       remarks,
     } = this.ctx.request.body;
     if (id) {
@@ -46,8 +36,6 @@ class ModuleController extends Controller {
             current_version,
             upgrade_info,
             status,
-            update_by,
-            update_date,
             remarks,
           },
           id
