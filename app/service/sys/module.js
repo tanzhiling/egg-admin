@@ -1,46 +1,30 @@
 'use strict';
 const Service = require('../base');
 class ModuleService extends Service {
-  constructor(ctx) {
-    super(ctx);
-    this.attributes = [
-      [ 'module_code', 'id' ],
-      'module_name',
-      'description',
-      'current_version',
-      'upgrade_info',
-      'status',
-      'create_by',
-      'create_date',
-      'update_by',
-      'update_date',
-      'remarks',
-    ];
-  }
   // 新增
   async create(params) {
     const [ result, status ] = await this.ctx.model.SysModule.findOrCreate({
-      where: { module_name: params.module_name },
+      where: { moduleName: params.moduleName },
       defaults: Object.assign(
         params,
         await this.createByOrDate(),
         await this.updateByOrDate(),
         {
-          module_code: await this.createUuid(),
+          moduleCode: await this.createUuid(),
         }
       ),
     });
     if (status) {
       return { msg: '新增成功！', success: status };
     }
-    return { msg: result.module_name + '已经存在', success: false };
+    return { msg: result.moduleName + '已经存在', success: false };
   }
   // 更新
-  async update(params, id) {
+  async update(params, moduleCode) {
     const data = await this.ctx.model.SysModule.update(
       Object.assign(params, await this.updateByOrDate()),
       {
-        where: { module_code: id },
+        where: { moduleCode },
       }
     );
     if (data) {
@@ -59,15 +43,14 @@ class ModuleService extends Service {
   // 列表 支持page order
   async list(params) {
     const Op = this.app.Sequelize.Op;
-    const { module_name, status, size = 10, current = 1 } = params;
+    const { moduleName, status, size = 10, current = 1 } = params;
     const {
       rows: data,
       count: total,
     } = await this.ctx.model.SysModule.findAndCountAll({
-      attributes: this.attributes,
       where: {
         [Op.and]: [
-          module_name ? { module_name } : null,
+          moduleName ? { moduleName } : null,
           status ? { status } : null,
         ],
       },
@@ -79,7 +62,6 @@ class ModuleService extends Service {
   // 详情
   async detail(params) {
     const data = await this.ctx.model.SysModule.findOne({
-      attributes: this.attributes,
       where: params,
     });
     return { msg: '查询成功！', success: true, data };

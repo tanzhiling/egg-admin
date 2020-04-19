@@ -1,20 +1,20 @@
 'use strict';
 const Controller = require('../base');
-class ModuleController extends Controller {
+class UserController extends Controller {
   // 新增模块
   async create() {
-    const { user_name, nick_name, password } = this.ctx.request.body;
-    if (!user_name) {
-      this.result({ success: false, msg: 'user_name不能为空' });
-    } else if (!nick_name) {
-      this.result({ success: false, msg: 'nick_name不能为空' });
+    const { userName, nickName, password } = this.ctx.request.body;
+    if (!userName) {
+      this.result({ success: false, msg: '用户名不能为空！' });
+    } else if (!nickName) {
+      this.result({ success: false, msg: '昵称不能为空！' });
     } else if (!password) {
-      this.result({ success: false, msg: 'password不能为空' });
+      this.result({ success: false, msg: '密码不能为空！' });
     } else {
       this.result(
         await this.service.sys.user.create({
-          user_name,
-          nick_name,
+          userName,
+          nickName,
           password,
         })
       );
@@ -22,55 +22,54 @@ class ModuleController extends Controller {
   }
   // 修改
   async update() {
-    const { id, nick_name, password, remarks } = this.ctx.request.body;
-    if (id) {
+    const { userCode, nickName, password, remarks } = this.ctx.request.body;
+    if (userCode) {
       this.result(
         await this.service.sys.user.update(
           {
-            nick_name,
+            nickName,
             password,
             remarks,
           },
-          id
+          userCode
         )
       );
     } else {
-      this.result({ success: false, msg: 'id不能为空' });
+      this.result({ success: false, msg: 'userCode不能为空' });
     }
   }
   // 删除
   async delete() {
-    const { id } = this.ctx.request.body;
-    if (id) {
-      this.result(await this.service.sys.user.delete({ user_code: id }));
+    const { userCode } = this.ctx.request.body;
+    if (userCode) {
+      this.result(await this.service.sys.user.delete({ userCode }));
     } else {
-      this.result({ success: false, msg: 'id不能为空' });
+      this.result({ success: false, msg: 'userCode不能为空' });
     }
   }
   // 列表
   async list() {
-    const { module_name, status } = this.ctx.query;
-    this.result(await this.service.sys.user.list({ module_name, status }));
+    this.result(await this.service.sys.user.list({}));
   }
   // 详情
   async detail() {
-    const { id } = this.ctx.query;
-    if (id) {
-      this.result(await this.service.sys.user.detail({ user_code: id }));
+    const { userCode } = this.ctx.query;
+    if (userCode) {
+      this.result(await this.service.sys.user.detail({ userCode }));
     } else {
-      this.result({ success: false, msg: 'id不能为空' });
+      this.result({ success: false, msg: 'userCode不能为空' });
     }
   }
   // 登录
   async login() {
-    const { user_name, password } = this.ctx.request.body;
-    if (!user_name) {
-      this.result({ success: false, msg: 'user_name不能为空' });
+    const { userName, password } = this.ctx.request.body;
+    if (!userName) {
+      this.result({ success: false, msg: 'userName不能为空' });
     } else if (!password) {
       this.result({ success: false, msg: 'password不能为空' });
     } else {
-      this.result(await this.service.sys.user.login({ user_name, password }));
+      this.result(await this.service.sys.user.login({ userName, password }));
     }
   }
 }
-module.exports = ModuleController;
+module.exports = UserController;

@@ -5,18 +5,21 @@ module.exports = app => {
   return app.model.define(
     'sys_user',
     {
-      user_code: {
+      userCode: {
         type: DataTypes.STRING(100),
         allowNull: false,
         primaryKey: true,
+        field: 'user_code',
       },
-      user_name: {
+      userName: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        field: 'user_name',
       },
-      nick_name: {
+      nickName: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        field: 'nick_name',
       },
       password: {
         type: DataTypes.STRING(100),
@@ -46,124 +49,153 @@ module.exports = app => {
         type: DataTypes.STRING(200),
         allowNull: true,
       },
-      wx_openid: {
+      wxOpenid: {
         type: DataTypes.STRING(100),
         allowNull: true,
+        field: 'wx_openid',
       },
-      mobile_imei: {
+      mobileImei: {
         type: DataTypes.STRING(100),
         allowNull: true,
+        field: 'mobile_imei',
       },
-      user_type: {
+      userType: {
         type: DataTypes.STRING(16),
         allowNull: false,
+        field: 'user_type',
       },
-      ref_code: {
+      refCode: {
         type: DataTypes.STRING(64),
         allowNull: true,
+        field: 'ref_code',
       },
-      ref_name: {
+      refName: {
         type: DataTypes.STRING(100),
         allowNull: true,
+        field: 'ref_name',
       },
-      mgr_type: {
+      mgrType: {
         type: DataTypes.CHAR(1),
         allowNull: false,
+        defaultValue: '0',
+        field: 'mgr_type',
       },
-      pwd_security_level: {
+      pwdSecurityLevel: {
         type: DataTypes.DECIMAL,
         allowNull: true,
+        field: 'pwd_security_level',
       },
-      pwd_update_date: {
+      pwdUpdateDate: {
         type: DataTypes.DATE,
         allowNull: true,
+        field: 'pwd_update_date',
       },
-      pwd_update_record: {
+      pwdUpdateRecord: {
         type: DataTypes.STRING(1000),
         allowNull: true,
+        field: 'pwd_update_record',
       },
-      pwd_question: {
+      pwdQuestion: {
         type: DataTypes.STRING(200),
         allowNull: true,
+        field: 'pwd_question',
       },
-      pwd_question_answer: {
+      pwdQuestionAnswer: {
         type: DataTypes.STRING(200),
         allowNull: true,
+        field: 'pwd_question_answer',
       },
-      pwd_question_2: {
+      pwdQuestion2: {
         type: DataTypes.STRING(200),
         allowNull: true,
+        field: 'pwd_question_2',
       },
-      pwd_question_answer_2: {
+      pwdQuestionAnswer2: {
         type: DataTypes.STRING(200),
         allowNull: true,
+        field: 'pwd_question_answer_2',
       },
-      pwd_question_3: {
+      pwdQuestion3: {
         type: DataTypes.STRING(200),
         allowNull: true,
+        field: 'pwd_question_3',
       },
-      pwd_question_answer_3: {
+      pwdQuestionAnswer3: {
         type: DataTypes.STRING(200),
         allowNull: true,
+        field: 'pwd_question_answer_3',
       },
-      pwd_quest_update_date: {
+      pwdQuestUpdateDate: {
         type: DataTypes.DATE,
         allowNull: true,
+        field: 'pwd_quest_update_date',
       },
-      last_login_ip: {
+      lastLoginIp: {
         type: DataTypes.STRING(100),
         allowNull: true,
+        field: 'last_login_ip',
       },
-      last_login_date: {
+      lastLoginDate: {
         type: DataTypes.DATE,
         allowNull: true,
+        field: 'last_login_date',
       },
-      freeze_date: {
+      freezeDate: {
         type: DataTypes.DATE,
         allowNull: true,
+        field: 'freeze_date',
       },
-      freeze_cause: {
+      freezeCause: {
         type: DataTypes.STRING(200),
         allowNull: true,
+        field: 'freeze_cause',
       },
-      user_weight: {
+      userWeight: {
         type: DataTypes.DECIMAL,
         allowNull: true,
         defaultValue: '0',
+        field: 'user_weight',
       },
       status: {
         type: DataTypes.CHAR(1),
         allowNull: false,
+        defaultValue: '0',
       },
-      create_by: {
+      createBy: {
         type: DataTypes.STRING(64),
         allowNull: false,
+        field: 'create_by',
       },
-      create_date: {
+      createDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        field: 'create_date',
       },
-      update_by: {
+      updateBy: {
         type: DataTypes.STRING(64),
         allowNull: false,
+        field: 'update_by',
       },
-      update_date: {
+      updateDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        field: 'update_date',
       },
       remarks: {
         type: DataTypes.STRING(500),
         allowNull: true,
       },
-      corp_code: {
+      corpCode: {
         type: DataTypes.STRING(64),
         allowNull: false,
         defaultValue: '0',
+        field: 'corp_code',
       },
-      corp_name: {
+      corpName: {
         type: DataTypes.STRING(100),
         allowNull: false,
         defaultValue: 'JeeSite',
+        field: 'corp_name',
       },
     },
     {

@@ -5,51 +5,60 @@ module.exports = app => {
   return app.model.define(
     'sys_module',
     {
-      module_code: {
+      moduleCode: {
         type: DataTypes.STRING(64),
         allowNull: false,
         primaryKey: true,
+        field: 'module_code',
       },
-      module_name: {
+      moduleName: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        field: 'module_name',
       },
       description: {
         type: DataTypes.STRING(500),
         allowNull: true,
       },
-      main_class_name: {
+      mainClassName: {
         type: DataTypes.STRING(500),
         allowNull: true,
+        field: 'main_class_name',
       },
-      current_version: {
+      currentVersion: {
         type: DataTypes.STRING(50),
         allowNull: true,
+        field: 'current_version',
       },
-      upgrade_info: {
+      upgradeInfo: {
         type: DataTypes.STRING(300),
         allowNull: true,
+        field: 'upgrade_info',
       },
       status: {
         type: DataTypes.CHAR(1),
         allowNull: false,
         defaultValue: '0',
       },
-      create_by: {
+      createBy: {
         type: DataTypes.STRING(64),
         allowNull: false,
+        field: 'create_by',
       },
-      create_date: {
+      createDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        field: 'create_date',
       },
-      update_by: {
+      updateBy: {
         type: DataTypes.STRING(64),
         allowNull: false,
+        field: 'update_by',
       },
-      update_date: {
+      updateDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        field: 'update_date',
       },
       remarks: {
         type: DataTypes.STRING(500),

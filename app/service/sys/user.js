@@ -4,16 +4,14 @@ class UserService extends Service {
   // 新增
   async create(params) {
     const [ result, status ] = await this.ctx.model.SysUser.findOrCreate({
-      where: { user_name: params.user_name },
+      where: { userName: params.userName },
       defaults: Object.assign(
         params,
         await this.createByOrDate(),
         await this.updateByOrDate(),
         {
-          user_code: await this.createUuid(),
-          user_type: '1',
-          mgr_type: '0',
-          status: '0',
+          userCode: await this.createUuid(),
+          userType: '1',
           password: await this.md5(params.password),
         }
       ),
@@ -21,14 +19,14 @@ class UserService extends Service {
     if (status) {
       return { msg: '新增成功！', success: status };
     }
-    return { msg: result.user_name + '已经存在', success: false };
+    return { msg: result.userName + '已经存在', success: false };
   }
   // 更新
-  async update(params, id) {
+  async update(params, userCode) {
     const data = await this.ctx.model.SysUser.update(
       Object.assign(params, await this.updateByOrDate()),
       {
-        where: { user_code: id },
+        where: { userCode },
       }
     );
     if (data) {
@@ -47,14 +45,14 @@ class UserService extends Service {
   // 列表 支持page order
   async list(params) {
     const Op = this.app.Sequelize.Op;
-    const { nick_name, status, size = 10, current = 1 } = params;
+    const { nickName, status, size = 10, current = 1 } = params;
     const {
       rows: data,
       count: total,
     } = await this.ctx.model.SysUser.findAndCountAll({
       where: {
         [Op.and]: [
-          nick_name ? { nick_name } : null,
+          nickName ? { nickName } : null,
           status ? { status } : null,
         ],
       },
@@ -72,16 +70,16 @@ class UserService extends Service {
   }
   // 登录
   async login(params) {
-    const { user_name } = params;
+    const { userName } = params;
     const Op = this.app.Sequelize.Op;
     const isUser = await this.ctx.model.SysUser.findOne({
-      where: { user_name },
+      where: { userName },
     });
     if (isUser) {
       const password = await this.md5(params.password);
       const data = await this.ctx.model.SysUser.findOne({
         where: {
-          [Op.and]: [{ password }, { user_name }],
+          [Op.and]: [{ password }, { userName }],
         },
       });
       if (data) {

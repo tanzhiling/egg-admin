@@ -1,58 +1,76 @@
 'use strict';
-
 module.exports = app => {
   const DataTypes = app.Sequelize;
   return app.model.define(
     'sys_office',
     {
-      office_code: {
+      officeId: {
+        type: DataTypes.STRING(64),
+        allowNull: true,
+        field: 'office_code',
+      },
+      officeCode: {
         type: DataTypes.STRING(64),
         allowNull: false,
         primaryKey: true,
+        field: 'office_code',
       },
-      parent_code: {
+      parentCode: {
         type: DataTypes.STRING(64),
         allowNull: false,
+        field: 'parent_code',
       },
-      parent_codes: {
+      parentCodes: {
         type: DataTypes.STRING(1000),
         allowNull: false,
+        field: 'parent_codes',
       },
-      tree_sort: {
+      treeSort: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
+        field: 'tree_sort',
+        autoIncrement: true,
+        defaultValue: 10,
       },
-      tree_sorts: {
+      treeSorts: {
         type: DataTypes.STRING(1000),
-        allowNull: false,
+        allowNull: true,
+        field: 'tree_sorts',
       },
-      tree_leaf: {
+      treeLeaf: {
         type: DataTypes.CHAR(1),
-        allowNull: false,
+        allowNull: true,
+        field: 'tree_leaf',
       },
-      tree_level: {
+      treeLevel: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
+        field: 'tree_level',
       },
-      tree_names: {
+      treeNames: {
         type: DataTypes.STRING(1000),
-        allowNull: false,
+        allowNull: true,
+        field: 'tree_names',
       },
-      view_code: {
+      viewCode: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        field: 'view_code',
       },
-      office_name: {
+      officeName: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        field: 'office_name',
       },
-      full_name: {
+      fullName: {
         type: DataTypes.STRING(200),
         allowNull: false,
+        field: 'full_name',
       },
-      office_type: {
+      officeType: {
         type: DataTypes.CHAR(1),
         allowNull: false,
+        field: 'office_type',
       },
       leader: {
         type: DataTypes.STRING(100),
@@ -66,9 +84,10 @@ module.exports = app => {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      zip_code: {
+      zipCode: {
         type: DataTypes.STRING(100),
         allowNull: true,
+        field: 'zip_code',
       },
       email: {
         type: DataTypes.STRING(300),
@@ -79,35 +98,41 @@ module.exports = app => {
         allowNull: false,
         defaultValue: '0',
       },
-      create_by: {
+      createBy: {
         type: DataTypes.STRING(64),
         allowNull: false,
+        field: 'create_by',
       },
-      create_date: {
+      createDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        field: 'create_date',
       },
-      update_by: {
+      updateBy: {
         type: DataTypes.STRING(64),
         allowNull: false,
+        field: 'update_by',
       },
-      update_date: {
+      updateDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        field: 'update_date',
       },
       remarks: {
         type: DataTypes.STRING(500),
         allowNull: true,
       },
-      corp_code: {
+      corpCode: {
         type: DataTypes.STRING(64),
         allowNull: false,
         defaultValue: '0',
+        field: 'corp_code',
       },
-      corp_name: {
+      corpName: {
         type: DataTypes.STRING(100),
         allowNull: false,
         defaultValue: 'JeeSite',
+        field: 'corp_name',
       },
     },
     {

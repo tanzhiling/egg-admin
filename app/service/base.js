@@ -42,8 +42,8 @@ class BaseService extends Service {
     const currentDate = await this.currentDate();
     const userInfo = await this.jwtDecode();
     return {
-      update_date: currentDate,
-      update_by: userInfo.user_name ? userInfo.user_name : '',
+      updateDate: currentDate,
+      updateBy: userInfo.user_name ? userInfo.user_name : '',
     };
   }
   // 获取当前创建时间以及修改人
@@ -51,8 +51,8 @@ class BaseService extends Service {
     const currentDate = await this.currentDate();
     const userInfo = await this.jwtDecode();
     return {
-      create_date: currentDate,
-      create_by: userInfo.user_name ? userInfo.user_name : '',
+      createDate: currentDate,
+      createBy: userInfo.user_name ? userInfo.user_name : '',
     };
   }
 }
