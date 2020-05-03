@@ -6,22 +6,30 @@
 module.exports = app => {
   const { router, controller } = app;
   // 应用模块
-  router.post('/blade-sys/module/create', controller.sys.module.create);
+  router.post('/blade-sys/module/add', controller.sys.module.add);
   router.post('/blade-sys/module/update', controller.sys.module.update);
   router.post('/blade-sys/module/delete', controller.sys.module.delete);
   router.get('/blade-sys/module/list', controller.sys.module.list);
   router.get('/blade-sys/module/detail', controller.sys.module.detail);
   // 用户模块
-  router.post('/blade-sys/user/register', controller.sys.user.create);
+  router.post('/blade-sys/user/register', controller.sys.user.add);
   router.post('/blade-sys/user/update', controller.sys.user.update);
   router.post('/blade-sys/user/delete', controller.sys.user.delete);
   router.get('/blade-sys/user/list', controller.sys.user.list);
   router.get('/blade-sys/user/detail', controller.sys.user.detail);
   router.post('/blade-sys/user/login', controller.sys.user.login);
   // 机构模块
-  router.post('/blade-sys/office/create', controller.sys.office.create);
+  router.post('/blade-sys/office/add', controller.sys.office.add);
   router.post('/blade-sys/office/update', controller.sys.office.update);
   router.post('/blade-sys/office/delete', controller.sys.office.delete);
   router.get('/blade-sys/office/list', controller.sys.office.list);
   router.get('/blade-sys/office/detail', controller.sys.office.detail);
+  // 字典
+  router.post('/blade-sys/dict/typeAdd', controller.sys.dict.typeAdd);
+  router.get('/blade-sys/dict/typeList', controller.sys.dict.typeList);
+  router.get('/blade-sys/dict/typeDetail', controller.sys.dict.typeDetail);
+  router.post('/blade-sys/dict/typeUpdate', controller.sys.dict.typeUpdate);
+  router.post('/blade-sys/dict/typeDelete', controller.sys.dict.typeDelete);
+  router.post('/blade-sys/dict/dataAdd', controller.sys.dict.dataAdd);
+  router.get('/blade-sys/dict/dataList', controller.sys.dict.dataList);
 };

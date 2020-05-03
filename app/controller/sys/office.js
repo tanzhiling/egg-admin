@@ -2,7 +2,7 @@
 const Controller = require('../base');
 class OfficeController extends Controller {
   // 新增模块
-  async create() {
+  async add() {
     const {
       officeCode,
       officeName,
@@ -20,7 +20,7 @@ class OfficeController extends Controller {
       this.result({ success: false, msg: 'fullName不能为空' });
     } else {
       this.result(
-        await this.service.sys.office.create({
+        await this.service.sys.office.add({
           officeCode,
           officeName,
           officeType,

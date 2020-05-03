@@ -2,9 +2,9 @@
 const Service = require('../base');
 class UserService extends Service {
   // 新增
-  async create(params) {
+  async add(params) {
     const [ result, status ] = await this.ctx.model.SysUser.findOrCreate({
-      where: { userName: params.userName },
+      where: { username: params.username },
       defaults: Object.assign(
         params,
         await this.createByOrDate(),
@@ -19,7 +19,7 @@ class UserService extends Service {
     if (status) {
       return { msg: '新增成功！', success: status };
     }
-    return { msg: result.userName + '已经存在', success: false };
+    return { msg: result.username + '已经存在', success: false };
   }
   // 更新
   async update(params, userCode) {
@@ -45,14 +45,14 @@ class UserService extends Service {
   // 列表 支持page order
   async list(params) {
     const Op = this.app.Sequelize.Op;
-    const { nickName, status, size = 10, current = 1 } = params;
+    const { nickname, status, size = 10, current = 1 } = params;
     const {
       rows: data,
       count: total,
     } = await this.ctx.model.SysUser.findAndCountAll({
       where: {
         [Op.and]: [
-          nickName ? { nickName } : null,
+          nickname ? { nickname } : null,
           status ? { status } : null,
         ],
       },
@@ -70,20 +70,21 @@ class UserService extends Service {
   }
   // 登录
   async login(params) {
-    const { userName } = params;
+    const { username } = params;
     const Op = this.app.Sequelize.Op;
     const isUser = await this.ctx.model.SysUser.findOne({
-      where: { userName },
+      where: { username },
     });
     if (isUser) {
       const password = await this.md5(params.password);
       const data = await this.ctx.model.SysUser.findOne({
         where: {
-          [Op.and]: [{ password }, { userName }],
+          [Op.and]: [{ password }, { username }],
         },
+        raw: true,
       });
       if (data) {
-        const token = this.jwtSign(data);
+        const token = await this.jwtSign(data);
         return {
           msg: '登录成功！',
           success: true,

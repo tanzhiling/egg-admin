@@ -10,9 +10,9 @@ module.exports = options => {
       } else {
         if (bladeAuth) {
           const decode = await ctx.service.base.jwtVerify(bladeAuth);
-          if (decode.user_name) {
+          if (decode.username) {
             const isUser = await ctx.model.SysUser.findOne({
-              where: { user_name: decode.user_name },
+              where: { username: decode.username },
             });
             if (isUser) {
               await next();

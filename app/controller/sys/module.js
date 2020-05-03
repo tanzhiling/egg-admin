@@ -2,7 +2,7 @@
 const Controller = require('../base');
 class ModuleController extends Controller {
   // 新增模块
-  async create() {
+  async add() {
     const { moduleName, status } = this.ctx.request.body;
     if (!moduleName) {
       this.result({ success: false, msg: 'moduleName不能为空' });
@@ -10,7 +10,7 @@ class ModuleController extends Controller {
       this.result({ success: false, msg: 'status不能为空' });
     } else {
       this.result(
-        await this.service.sys.module.create({ moduleName, status })
+        await this.service.sys.module.add({ moduleName, status })
       );
     }
   }

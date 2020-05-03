@@ -1,0 +1,107 @@
+'use strict';
+module.exports = app => {
+  const DataTypes = app.Sequelize;
+  const SysDictData = app.model.define('sys_dict_data', {
+    id: {
+      type: DataTypes.STRING(64),
+      allowNull: false,
+      primaryKey: true,
+      field: 'dict_code',
+    },
+    sort: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+    },
+    dictLabel: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      field: 'dict_label',
+    },
+    dictValue: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      field: 'dict_value',
+    },
+    dictType: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      field: 'dict_type',
+    },
+    isSys: {
+      type: DataTypes.CHAR(1),
+      allowNull: false,
+      field: 'is_sys',
+      defaultValue: '0',
+    },
+    description: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+    },
+    status: {
+      type: DataTypes.CHAR(1),
+      allowNull: false,
+      defaultValue: '0',
+    },
+    createBy: {
+      type: DataTypes.STRING(64),
+      allowNull: false,
+      field: 'create_by',
+    },
+    createDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      field: 'create_date',
+      defaultValue: DataTypes.NOW,
+    },
+    updateBy: {
+      type: DataTypes.STRING(64),
+      allowNull: false,
+      field: 'update_by',
+    },
+    updateDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      field: 'update_date',
+      defaultValue: DataTypes.NOW,
+    },
+    remarks: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+    },
+    corpCode: {
+      type: DataTypes.STRING(64),
+      allowNull: false,
+      defaultValue: '0',
+      field: 'corp_code',
+    },
+    corpName: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      defaultValue: 'JeeSite',
+      field: 'corp_name',
+    },
+  }, {
+    tableName: 'sys_dict_data',
+  });
+  SysDictData._add = async function({ dictType, dictLabel, dictValue, sort, id, isSys, description, status, createBy, updateBy, remarks }) {
+    const Op = app.Sequelize.Op;
+    const data = await SysDictData.findOne({ where: { dictType, [Op.or]: [{ dictLabel }, { dictValue }, { sort }] } });
+    if (data) {
+      return [ data, false ];
+    }
+    return [ SysDictData.create({ dictLabel, dictType, dictValue, sort, id, isSys, description, status, createBy, updateBy, remarks }), true ];
+  };
+  SysDictData._findList = async function({ dictType }) {
+    return SysDictData.findAll({ where: { dictType }, order: [[ 'sort', 'ASC' ]] });
+  };
+  SysDictData._findOne = function({ id }) {
+    return SysDictData.findOne({ where: { id } });
+  };
+  SysDictData._update = function({ id, dictLabel, dictValue, sort, isSys, description, status, updateBy, remarks }) {
+    return SysDictData.update({ dictLabel, dictValue, sort, isSys, description, status, updateBy, remarks }, { where: { id } });
+  };
+  SysDictData._delete = function({ id }) {
+    return SysDictData.destroy({ where: { id } });
+  };
+  return SysDictData;
+};

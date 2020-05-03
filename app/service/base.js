@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 class BaseService extends Service {
   // 创建唯一key
   async createUuid() {
-    return Uuid.v1();
+    return Uuid.v1().replace(/-/g, '');
   }
   // md5加密
   async md5(content) {
@@ -36,6 +36,11 @@ class BaseService extends Service {
     if (token) {
       return jwt.decode(token);
     }
+  }
+  // 获取当前人
+  async userBy() {
+    const userInfo = await this.jwtDecode();
+    return userInfo.username ? userInfo.username : '';
   }
   // 获取当前修改时间以及修改人
   async updateByOrDate() {

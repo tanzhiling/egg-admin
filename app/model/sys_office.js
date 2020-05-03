@@ -107,6 +107,7 @@ module.exports = app => {
         type: DataTypes.DATE,
         allowNull: false,
         field: 'create_date',
+        defaultValue: DataTypes.NOW,
       },
       updateBy: {
         type: DataTypes.STRING(64),
@@ -117,6 +118,7 @@ module.exports = app => {
         type: DataTypes.DATE,
         allowNull: false,
         field: 'update_date',
+        defaultValue: DataTypes.NOW,
       },
       remarks: {
         type: DataTypes.STRING(500),

@@ -5,18 +5,18 @@ module.exports = app => {
   return app.model.define(
     'sys_user',
     {
-      userCode: {
+      userId: {
         type: DataTypes.STRING(100),
         allowNull: false,
         primaryKey: true,
         field: 'user_code',
       },
-      userName: {
+      username: {
         type: DataTypes.STRING(100),
         allowNull: false,
         field: 'user_name',
       },
-      nickName: {
+      nickname: {
         type: DataTypes.STRING(100),
         allowNull: false,
         field: 'nick_name',
@@ -170,6 +170,7 @@ module.exports = app => {
         type: DataTypes.DATE,
         allowNull: false,
         field: 'create_date',
+        defaultValue: DataTypes.NOW,
       },
       updateBy: {
         type: DataTypes.STRING(64),
@@ -180,6 +181,7 @@ module.exports = app => {
         type: DataTypes.DATE,
         allowNull: false,
         field: 'update_date',
+        defaultValue: DataTypes.NOW,
       },
       remarks: {
         type: DataTypes.STRING(500),

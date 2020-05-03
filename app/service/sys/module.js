@@ -2,7 +2,7 @@
 const Service = require('../base');
 class ModuleService extends Service {
   // 新增
-  async create(params) {
+  async add(params) {
     const [ result, status ] = await this.ctx.model.SysModule.findOrCreate({
       where: { moduleName: params.moduleName },
       defaults: Object.assign(

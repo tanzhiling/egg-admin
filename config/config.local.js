@@ -8,6 +8,7 @@ module.exports = {
     database: 'admin',
     username: 'root',
     password: '123456',
+    timezone: '+08:00',
     define: {
       timestamps: false,
     },

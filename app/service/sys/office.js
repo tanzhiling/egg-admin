@@ -2,7 +2,7 @@
 const Service = require('../base');
 class OfficeService extends Service {
   // 新增
-  async create(params) {
+  async add(params) {
     const { officeCode, officeName, officeType, fullName, parentCode } = params;
     let parentData,
       defaults;
