@@ -1,0 +1,35 @@
+// 主题变量
+$primary-color: #1890ff;
+$info-color: #2db7f5;
+$success-color: #19be6b;
+$warning-color: #ff9900;
+$error-color: #ed4014;
+$normal-color: #e6ebf1;
+$grey-color: #c5c8ce;
+$link-color: $primary-color;
+// 背景色
+$bg-color-white: #fff;
+$bg-color-grey: #f8f8f9;
+$bg-color-grey-shallow: #f7f7f7;
+// 字体
+$text-color: #666;
+$text-color-black: #645a5a;
+$text-color-inverse: #fff;
+$text-color-shallow: #888;
+$text-color-red: #ed4014;
+// 边框颜色
+$border-color: #dcdee2;
+$border-color-shallow: #eee;
+
+// 菜单颜色
+$menuText:#fff;
+$menuActiveText:#722ed1;
+$menuBg:#282c34;
+$menuHover:#001528;
+
+:export {
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+}

@@ -1,0 +1,51 @@
+@import "~@/styles/theme.scss";
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  .container {
+    width: 1000px;
+    height: 540px;
+    background-color: $bg-color-white;
+    display: flex;
+
+    &-left {
+      position: relative;
+      width: 500px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 700;
+      color: $text-color-inverse;
+      background: linear-gradient(0deg, $primary-color 0%, $info-color 100%);
+    }
+
+    &-left::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: url("../../assets/images/login-left.png") no-repeat 0 0;
+    }
+
+    &-right {
+      padding: 60px;
+      width: 50%;
+      box-sizing: border-box;
+
+      .title {
+        font-size: 30px;
+        font-weight: 700;
+        color: $text-color;
+        margin-bottom: 40px;
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+@import '~@/styles/theme.scss';
+
+@mixin flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card {
+  background-color: $bg-color-white;
+  position: relative;
+  width: 100%;
+
+  &-header {
+    border-bottom: 1px solid $border-color-shallow;
+    height: 50px;
+    padding: 0 15px;
+    @include flex;
+
+    &-title {
+      font-size: 16px;
+      @include flex;
+    }
+  }
+
+  &-header-detail {
+    position: sticky;
+    background-color: $bg-color-white;
+    top: 0;
+    z-index: 10;
+  }
+
+  &-content {
+    position: relative;
+    padding: 15px;
+  }
+}
+
+.card-table {
+  overflow: hidden;
+  height: 100%;
+
+  .card-content {
+    overflow: auto;
+  }
+}

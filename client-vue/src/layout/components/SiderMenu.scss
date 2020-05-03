@@ -1,0 +1,42 @@
+@import "~@/styles/theme.scss";
+
+.layout-sider {
+  flex: 0 0 200px;
+  width: 200px;
+  height: 100%;
+  background-color: $menuBg;
+  box-sizing: content-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 64px;
+
+    .notexpand {
+      width: 80%;
+      height: 40px;
+      background-color: $primary-color;
+      color: $text-color-inverse;
+      line-height: 40px;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    .expand {
+      color: $text-color-inverse;
+      font-size: 30px;
+      font-weight: bold;
+    }
+  }
+
+  &-menu {
+    width: 100%;
+
+    .el-menu-item.is-active {
+      background-color: $primary-color !important;
+      color: $text-color-inverse;
+    }
+  }
+}
