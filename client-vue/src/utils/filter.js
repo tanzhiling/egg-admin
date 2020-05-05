@@ -16,3 +16,14 @@ export const mgrTypeFilter = (value) => {
     return "非管理员";
   }
 };
+export const officeTypeFilter = (value)=>{
+  if (value === "0") {
+    return "省级公司";
+  } else if (value === "1") {
+    return "市级公司";
+  } else if (value === "2") {
+    return "部门";
+  }  else {
+    return "";
+  }
+}

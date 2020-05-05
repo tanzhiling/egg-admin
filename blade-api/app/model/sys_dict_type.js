@@ -69,6 +69,12 @@ module.exports = app => {
       },
     });
   };
+  SysDictType._update = function({ dictType, dictName, id, isSys, remarks, updateBy }) {
+    return SysDictType.update({ dictType, dictName, isSys, remarks, updateBy }, { where: { id } });
+  };
+  SysDictType._delete = function({ id }) {
+    return SysDictType.destroy({ where: { id } });
+  };
   SysDictType._findList = async function({ dictName, dictType, size = 10, current = 1 }) {
     const Op = app.Sequelize.Op;
     const { rows: list, count: total } = await SysDictType.findAndCountAll({
@@ -85,12 +91,6 @@ module.exports = app => {
   };
   SysDictType._findOne = function({ id }) {
     return SysDictType.findOne({ where: { id } });
-  };
-  SysDictType._update = function({ dictType, dictName, id, isSys, remarks, updateBy }) {
-    return SysDictType.update({ dictType, dictName, isSys, remarks, updateBy }, { where: { id } });
-  };
-  SysDictType._delete = function({ id }) {
-    return SysDictType.destroy({ where: { id } });
   };
   return SysDictType;
 };

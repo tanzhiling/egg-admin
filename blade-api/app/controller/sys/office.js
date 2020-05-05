@@ -3,13 +3,7 @@ const Controller = require('../base');
 class OfficeController extends Controller {
   // 新增模块
   async add() {
-    const {
-      officeCode,
-      officeName,
-      officeType,
-      fullName,
-      parentCode,
-    } = this.ctx.request.body;
+    const { officeCode, officeName, officeType, fullName } = this.ctx.request.body;
     if (!officeCode) {
       this.result({ success: false, msg: 'officeCode不能为空' });
     } else if (!officeName) {
@@ -20,13 +14,7 @@ class OfficeController extends Controller {
       this.result({ success: false, msg: 'fullName不能为空' });
     } else {
       this.result(
-        await this.service.sys.office.add({
-          officeCode,
-          officeName,
-          officeType,
-          fullName,
-          parentCode,
-        })
+        await this.service.sys.office.add(this.ctx.request.body)
       );
     }
   }
@@ -67,8 +55,12 @@ class OfficeController extends Controller {
     }
   }
   // 列表
-  async list(params) {
-    this.result(await this.service.sys.office.list(params));
+  async list() {
+    this.result(await this.service.sys.office.list(this.ctx.query));
+  }
+  // 树
+  async tree() {
+    this.result(await this.service.sys.office.tree());
   }
 }
 module.exports = OfficeController;

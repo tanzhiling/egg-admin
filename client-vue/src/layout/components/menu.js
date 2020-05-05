@@ -9,6 +9,11 @@ export default [
         name: 'sysUser',
       },
       {
+        title: '机构管理',
+        id: '20',
+        name: 'sysOffice',
+      },
+      {
         title: '公司管理',
         id: '3',
         name: 'sysCompany',

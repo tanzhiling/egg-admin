@@ -1,37 +1,37 @@
 <template>
   <VCard icon="edit-outline" :title="title">
     <el-form ref="form" :rules="rules" :model="form" inline label-width="100px">
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="登录账号" prop="username">
-          <el-input v-model="form.username" :disabled="form.username" style="width:300px" />
+          <el-input v-model="form.username" :disabled="form.id?true:false" style="width:300px" />
         </el-form-item>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="form.nickname" style="width:300px" />
         </el-form-item>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="头像" prop="avatar">
           <el-input v-model="form.avatar" style="width:300px" />
         </el-form-item>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" style="width:300px" />
         </el-form-item>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="手机号" prop="mobile">
           <el-input v-model="form.mobile" style="width:300px" />
         </el-form-item>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="电话" prop="phone">
           <el-input v-model="form.phone" style="width:300px" />
         </el-form-item>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="性别" prop="sex">
           <el-radio-group v-model="form.sex">
             <el-radio label="1">男</el-radio>
@@ -40,7 +40,7 @@
           </el-radio-group>
         </el-form-item>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="用户类型" prop="userType">
           <el-select v-model="form.userType" style="width:300px">
             <el-option label="一级会员" value="1" />
@@ -48,7 +48,7 @@
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="管理员类型" prop="mgrType">
           <el-radio-group v-model="form.mgrType">
             <el-radio label="2">二级管理员</el-radio>
@@ -57,7 +57,7 @@
           </el-radio-group>
         </el-form-item>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
             <el-radio label="0">启用</el-radio>
@@ -65,7 +65,7 @@
           </el-radio-group>
         </el-form-item>
       </el-col>
-      <el-col span="24">
+      <el-col :span="24">
         <el-form-item label="个性签名" prop="sign">
           <el-input
             v-model="form.sign"
@@ -75,7 +75,7 @@
           />
         </el-form-item>
       </el-col>
-      <el-col span="24">
+      <el-col :span="24">
         <el-form-item label="备注" prop="remarks">
           <el-input
             v-model="form.remarks"

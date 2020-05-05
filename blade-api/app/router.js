@@ -25,6 +25,7 @@ module.exports = app => {
   router.post('/blade-sys/office/delete', controller.sys.office.delete);
   router.get('/blade-sys/office/list', controller.sys.office.list);
   router.get('/blade-sys/office/detail', controller.sys.office.detail);
+  router.get('/blade-sys/office/tree', controller.sys.office.tree);
   // 字典
   router.post('/blade-sys/dict/typeAdd', controller.sys.dict.typeAdd);
   router.post('/blade-sys/dict/typeUpdate', controller.sys.dict.typeUpdate);

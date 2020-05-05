@@ -1,12 +1,12 @@
 'use strict';
 module.exports = app => {
   const DataTypes = app.Sequelize;
-  return app.model.define(
+  const SysOffice = app.model.define(
     'sys_office',
     {
-      officeId: {
+      id: {
         type: DataTypes.STRING(64),
-        allowNull: true,
+        allowNull: false,
         field: 'office_code',
       },
       officeCode: {
@@ -15,17 +15,17 @@ module.exports = app => {
         primaryKey: true,
         field: 'office_code',
       },
-      parentCode: {
+      parentId: {
         type: DataTypes.STRING(64),
         allowNull: false,
         field: 'parent_code',
       },
-      parentCodes: {
+      parentIds: {
         type: DataTypes.STRING(1000),
         allowNull: false,
         field: 'parent_codes',
       },
-      treeSort: {
+      sort: {
         type: DataTypes.DECIMAL,
         allowNull: true,
         field: 'tree_sort',
@@ -139,6 +139,59 @@ module.exports = app => {
     },
     {
       tableName: 'sys_office',
+      moduleName: 'SysOffice',
     }
   );
+
+  SysOffice._add = async function({ officeCode, parentId = '0', officeName, fullName, officeType, leader, phone, address, zipCode, email, status, remarks, createBy, updateBy }) {
+    let data,
+      parentIds = '0,';
+    if (parentId) {
+      data = await SysOffice.findOne({ where: { id: parentId } });
+      parentIds = data.parentIds.concat(parentId, ',');
+    }
+    return SysOffice.findOrCreate({
+      where: { officeCode },
+      defaults: {
+        id: officeCode, viewCode: officeCode, parentId, parentIds, officeName, fullName, officeType, leader, phone, address, zipCode, email, status, remarks, createBy, updateBy,
+      },
+    });
+  };
+  SysOffice._update = function({ dictType, dictName, id, isSys, remarks, updateBy }) {
+    return SysOffice.update({ dictType, dictName, isSys, remarks, updateBy }, { where: { id } });
+  };
+  SysOffice._delete = function({ id }) {
+    return SysOffice.destroy({ where: { id } });
+  };
+  SysOffice._findList = async function({ officeCode, officeName, size = 10, current = 1 }) {
+    const Op = app.Sequelize.Op;
+    const { rows: list, count: total } = await SysOffice.findAndCountAll({
+      attributes: [ 'id', 'parentId', 'parentIds', 'sort', 'officeCode', 'officeName', 'fullName', 'officeType', 'status', 'updateDate' ],
+      where: {
+        [Op.and]: [
+          officeCode ? { officeCode: { [Op.like]: `%${officeCode}%` } } : null,
+          officeName ? { officeName: { [Op.like]: `%${officeName}%` } } : null,
+        ],
+      },
+      limit: size,
+      offset: (current - 1) * size,
+    });
+    return { list, size, current, total };
+  };
+  SysOffice._findOne = function({ id }) {
+    return SysOffice.findOne({ where: { id } });
+  };
+  SysOffice._findTree = function() {
+    return SysOffice.findAll({
+      attributes: [ 'id', 'parentId', 'parentIds', 'officeCode', 'officeName' ],
+      where: { parentId: '0' },
+      include: [{ model: SysOffice, as: 'children', attributes: [ 'id', 'parentId', 'parentIds', 'officeCode', 'officeName' ] }],
+    });
+  };
+  SysOffice.hasMany(SysOffice, {
+    sourceKey: 'id',
+    foreignKey: 'parentId',
+    as: 'children',
+  });
+  return SysOffice;
 };

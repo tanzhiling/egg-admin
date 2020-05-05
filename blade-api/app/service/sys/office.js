@@ -3,46 +3,21 @@ const Service = require('../base');
 class OfficeService extends Service {
   // 新增
   async add(params) {
-    const { officeCode, officeName, officeType, fullName, parentCode } = params;
-    let parentData,
-      defaults;
-    // 查找父级
-    if (parentCode) {
-      parentData = await this.ctx.model.SysOffice.findOne({
-        where: { officeCode: parentCode },
-      });
-    }
-    if (parentData && parentData.officeCode) {
-      defaults = {
-        officeCode,
-        parentCode: parentData.officeCode,
-        parentCodes: parentData.parentCodes + ',' + officeCode,
-      };
-    } else {
-      defaults = {
-        officeCode,
-        parentCode: officeCode,
-        parentCodes: officeCode,
-      };
-    }
-    const [ result, status ] = await this.ctx.model.SysOffice.findOrCreate({
-      where: { officeCode: params.officeCode },
-      defaults: Object.assign(
-        defaults,
-        await this.updateByOrDate(),
-        await this.createByOrDate(),
+    const userBy = await this.userBy();
+    const [ result, status ] = await this.ctx.model.SysOffice._add(
+      Object.assign(
+        params,
         {
-          viewCode: officeCode,
-          officeName,
-          officeType,
-          fullName,
+          id: await this.createUuid(),
+          createBy: userBy,
+          updateBy: userBy,
         }
-      ),
-    });
+      )
+    );
     if (status) {
       return { msg: '新增成功！', success: status };
     }
-    return { msg: result.officeCode + '已经存在', success: false };
+    return { msg: result.id + '已经存在', success: false };
   }
   // 更新
   async update(params, officeId) {
@@ -74,15 +49,13 @@ class OfficeService extends Service {
   }
   // 列表 支持page order
   async list(params) {
-    const { size = 10, current = 1 } = params;
-    const {
-      rows: data,
-      count: total,
-    } = await this.ctx.model.SysOffice.findAndCountAll({
-      limit: size,
-      offset: (current - 1) * size,
-    });
-    return { msg: '查询成功！', success: true, data, size, current, total };
+    const data = await this.ctx.model.SysOffice._findList(params);
+    return { msg: '查询成功！', success: true, data };
+  }
+  // 树查询
+  async tree(params) {
+    const data = await this.ctx.model.SysOffice._findTree(params);
+    return { msg: '查询成功！', success: true, data };
   }
 }
 module.exports = OfficeService;
