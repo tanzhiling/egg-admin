@@ -12,5 +12,14 @@ module.exports = {
     define: {
       timestamps: false,
     },
+    dialectOptions: { // 让读取date类型数据时返回字符串而不是UTC时间
+      dateStrings: true,
+      typeCast(field, next) {
+        if (field.type === 'DATETIME') {
+          return field.string();
+        }
+        return next();
+      },
+    },
   },
 };

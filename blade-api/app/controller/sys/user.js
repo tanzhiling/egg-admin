@@ -3,59 +3,44 @@ const Controller = require('../base');
 class UserController extends Controller {
   // 新增模块
   async add() {
-    const { username, nickname, password } = this.ctx.request.body;
+    const { username, nickname } = this.ctx.request.body;
     if (!username) {
       this.result({ success: false, msg: '用户名不能为空！' });
     } else if (!nickname) {
       this.result({ success: false, msg: '昵称不能为空！' });
-    } else if (!password) {
-      this.result({ success: false, msg: '密码不能为空！' });
     } else {
       this.result(
-        await this.service.sys.user.add({
-          username,
-          nickname,
-          password,
-        })
+        await this.service.sys.user.add(this.ctx.request.body)
       );
     }
   }
   // 修改
   async update() {
-    const { userCode, nickname, password, remarks } = this.ctx.request.body;
-    if (userCode) {
-      this.result(
-        await this.service.sys.user.update(
-          {
-            nickname,
-            password,
-            remarks,
-          },
-          userCode
-        )
-      );
+    const { id } = this.ctx.request.body;
+    if (id) {
+      this.result(await this.service.sys.user.update(this.ctx.request.body));
     } else {
-      this.result({ success: false, msg: 'userCode不能为空' });
+      this.result({ success: false, msg: 'id不能为空' });
     }
   }
   // 删除
   async delete() {
-    const { userCode } = this.ctx.request.body;
-    if (userCode) {
-      this.result(await this.service.sys.user.delete({ userCode }));
+    const { id } = this.ctx.request.body;
+    if (id) {
+      this.result(await this.service.sys.user.delete(this.ctx.request.body));
     } else {
       this.result({ success: false, msg: 'userCode不能为空' });
     }
   }
   // 列表
   async list() {
-    this.result(await this.service.sys.user.list({}));
+    this.result(await this.service.sys.user.list(this.ctx.query));
   }
   // 详情
   async detail() {
-    const { userCode } = this.ctx.query;
-    if (userCode) {
-      this.result(await this.service.sys.user.detail({ userCode }));
+    const { id } = this.ctx.query;
+    if (id) {
+      this.result(await this.service.sys.user.detail(this.ctx.query));
     } else {
       this.result({ success: false, msg: 'userCode不能为空' });
     }

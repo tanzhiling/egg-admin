@@ -2,10 +2,10 @@
 
 module.exports = app => {
   const DataTypes = app.Sequelize;
-  return app.model.define(
+  const SysUser = app.model.define(
     'sys_user',
     {
-      userId: {
+      id: {
         type: DataTypes.STRING(100),
         allowNull: false,
         primaryKey: true,
@@ -63,6 +63,7 @@ module.exports = app => {
         type: DataTypes.STRING(16),
         allowNull: false,
         field: 'user_type',
+        defaultValue: '0',
       },
       refCode: {
         type: DataTypes.STRING(64),
@@ -204,4 +205,37 @@ module.exports = app => {
       tableName: 'sys_user',
     }
   );
+  SysUser._add = function({ id, username, nickname, password, email, mobile, sex, avatar, phone, sign, userType, mgrType, status, remarks, createBy, updateBy }) {
+    return SysUser.findOrCreate({
+      where: { username },
+      defaults: {
+        id, nickname, password, email, mobile, sex, avatar, phone, sign, userType, mgrType, status, remarks, createBy, updateBy,
+      },
+    });
+  };
+  SysUser._update = function({ id, nickname, password, email, mobile, sex, avatar, phone, sign, userType, mgrType, status, remarks, updateBy }) {
+    return SysUser.update({ nickname, password, email, mobile, sex, avatar, phone, sign, userType, mgrType, status, remarks, updateBy }, { where: { id } });
+  };
+  SysUser._delete = function({ id }) {
+    return SysUser.destroy({ where: { id } });
+  };
+  SysUser._findList = async function({ username, status, size = 10, current = 1 }) {
+    const Op = app.Sequelize.Op;
+    const { rows: list, count: total } = await SysUser.findAndCountAll({
+      attributes: { exclude: [ 'password' ] },
+      where: {
+        [Op.and]: [
+          username ? { username: { [Op.like]: `%${username}%` } } : null,
+          status ? { status } : null,
+        ],
+      },
+      limit: size,
+      offset: (current - 1) * size,
+    });
+    return { list, size, current, total };
+  };
+  SysUser._findOne = function({ id }) {
+    return SysUser.findOne({ attributes: { exclude: [ 'password' ] }, where: { id } });
+  };
+  return SysUser;
 };

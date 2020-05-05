@@ -43,7 +43,7 @@ class DictService extends Service {
   }
   async dataAdd(params) {
     const userBy = await this.userBy();
-    const [ result, status ] = await this.ctx.model.SysDictData._add(
+    const { data, success, msg } = await this.ctx.model.SysDictData._add(
       Object.assign(
         params,
         {
@@ -53,16 +53,7 @@ class DictService extends Service {
         }
       )
     );
-    if (status) {
-      return { msg: '新增成功！', success: status };
-    }
-    if (result.dictLabel === params.dictLabel) {
-      return { msg: result.dictLabel + '已经存在', success: false };
-    } if (result.dictValue === params.dictValue) {
-      return { msg: result.dictValue + '已经存在', success: false };
-    } if (result.sort === params.sort) {
-      return { msg: '当前排序号已经存在', success: false };
-    }
+    return { data, success, msg };
   }
   async dataList(params) {
     const data = await this.ctx.model.SysDictData._findList(params);
@@ -86,6 +77,10 @@ class DictService extends Service {
       return { msg: '删除成功！', success: true };
     }
     return { msg: '找不到这条数据', success: false };
+  }
+  async findList(params) {
+    const data = await this.ctx.model.SysDictData._findList(params, true);
+    return { msg: '查询成功！', success: true, data };
   }
 }
 module.exports = DictService;

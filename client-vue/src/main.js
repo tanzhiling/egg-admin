@@ -4,6 +4,7 @@ import router from "@/router";
 import store from "@/store";
 import "normalize.css/normalize.css";
 import Element, { Message } from "element-ui";
+import * as filter from "@/utils/filter"
 import "./permission.js";
 import "@/styles/common.scss";
 import "@/components";
@@ -11,6 +12,9 @@ Vue.use(Element, { size: 'small' });
 let $message = (options) => {
   return Message(Object.assign(options, { duration: 1000 }));
 };
+Object.keys(filter).forEach(item=>{
+  Vue.filter(item,filter[item])
+})
 $message.success = (message, onClose) =>
   $message({ message, type: "success", onClose });
 $message.info = (message, onClose) =>

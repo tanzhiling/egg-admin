@@ -84,9 +84,7 @@ module.exports = app => {
     return { list, size, current, total };
   };
   SysDictType._findOne = function({ id }) {
-    return SysDictType.findOne({
-      where: { id },
-    });
+    return SysDictType.findOne({ where: { id } });
   };
   SysDictType._update = function({ dictType, dictName, id, isSys, remarks, updateBy }) {
     return SysDictType.update({ dictType, dictName, isSys, remarks, updateBy }, { where: { id } });

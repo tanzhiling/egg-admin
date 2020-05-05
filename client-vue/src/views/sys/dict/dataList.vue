@@ -1,5 +1,5 @@
 <template>
-  <VCard icon="s-promotion" mode="table" :title="cardTitle">
+  <VCard icon="s-promotion" :title="cardTitle">
     <template slot="extra">
       <el-button type="success" icon="el-icon-plus" @click="handleVisible(true,'新增')">新增</el-button>
     </template>
@@ -14,8 +14,18 @@
       <el-table-column label="操作" align="center" width="200">
         <template slot-scope="{row}">
           <el-button type="text" icon="el-icon-view" size="small" @click="handleView(row)">查看</el-button>
-          <el-button type="text" icon="el-icon-edit" size="small">编辑</el-button>
-          <el-button type="text" icon="el-icon-delete" size="small">删除</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-edit"
+            size="small"
+            @click="handleVisible(true,'编辑',row.id)"
+          >编辑</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-delete"
+            size="small"
+            @click="dictDataDelete(row.id)"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -55,7 +65,7 @@
   </VCard>
 </template>
 <script>
-import { ApiDictDataAdd, ApiGetDictDataList } from "@/api/sys/dict"
+import { ApiDictDataAdd, ApiGetDictDataList, ApiDictDataUpdate, ApiGetDictDataDetail, ApiDictDataDelete } from "@/api/sys/dict"
 export default {
   data() {
     return {
@@ -65,7 +75,8 @@ export default {
         sort: "",
         isSys: "",
         status: "",
-        remarks: ""
+        remarks: "",
+        id: ""
       },
       rules: {
         dictLabel: [
@@ -99,7 +110,10 @@ export default {
     this.getDictDataList()
   },
   methods: {
-    handleVisible(visible, title) {
+    handleVisible(visible, title, id) {
+      if (id) {
+        this.getDictDataDetail(id)
+      }
       if (title) {
         this.title = title
       }
@@ -111,6 +125,8 @@ export default {
           this.loading = true
           if (this.title === "新增") {
             this.dictDataAdd()
+          } else {
+            this.dictDataUpdate()
           }
         }
       });
@@ -127,6 +143,41 @@ export default {
           this.visible = false
         } else {
           this.$message.error(res.msg)
+        }
+      })
+    },
+    dictDataUpdate() {
+      let payload = Object.assign({}, this.form, { dictType: this.dictType })
+      ApiDictDataUpdate(payload).then(res => {
+        this.loading = false
+        if (res.success) {
+          this.$message.success(res.msg)
+          this.visible = false
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    dictDataDelete(id) {
+      this.$confirm('确定将选择数据删除?', '', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        ApiDictDataDelete({ id }).then(res => {
+          if (res.success) {
+            this.$message.success(res.msg)
+          } else {
+            this.$message.error(res.msg)
+          }
+        })
+      })
+    },
+    getDictDataDetail(id) {
+      ApiGetDictDataDetail({ id }).then(res => {
+        if (res.success) {
+          const { dictValue, dictLabel, isSys, remarks, id, sort, status } = res.data
+          this.form = { dictValue, dictLabel, isSys, remarks, id, sort, status }
         }
       })
     },

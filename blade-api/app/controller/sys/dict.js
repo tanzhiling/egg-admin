@@ -13,12 +13,6 @@ class DictController extends Controller {
       );
     }
   }
-  async typeList() {
-    this.result(await this.service.sys.dict.typeList(this.ctx.query));
-  }
-  async typeDetail() {
-    this.result(await this.service.sys.dict.typeDetail(this.ctx.query));
-  }
   async typeUpdate() {
     const { id } = this.ctx.request.body;
     if (id) {
@@ -34,6 +28,12 @@ class DictController extends Controller {
     } else {
       this.result({ success: false, msg: 'id不能为空' });
     }
+  }
+  async typeList() {
+    this.result(await this.service.sys.dict.typeList(this.ctx.query));
+  }
+  async typeDetail() {
+    this.result(await this.service.sys.dict.typeDetail(this.ctx.query));
   }
   async dataAdd() {
     const { dictType, dictLabel, dictValue, sort } = this.ctx.request.body;
@@ -51,8 +51,30 @@ class DictController extends Controller {
       );
     }
   }
+  async dataDetail() {
+    this.result(await this.service.sys.dict.dataDetail(this.ctx.query));
+  }
   async dataList() {
     this.result(await this.service.sys.dict.dataList(this.ctx.query));
+  }
+  async dataUpdate() {
+    const { id } = this.ctx.request.body;
+    if (id) {
+      this.result(await this.service.sys.dict.dataUpdate(this.ctx.request.body));
+    } else {
+      this.result({ success: false, msg: 'id不能为空' });
+    }
+  }
+  async dataDelete() {
+    const { id } = this.ctx.request.body;
+    if (id) {
+      this.result(await this.service.sys.dict.dataDelete({ id }));
+    } else {
+      this.result({ success: false, msg: 'id不能为空' });
+    }
+  }
+  async findList() {
+    this.result(await this.service.sys.dict.findList(this.ctx.query));
   }
 }
 module.exports = DictController;

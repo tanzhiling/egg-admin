@@ -12,6 +12,22 @@ export default (Layout) => {
         component: () => import('@/views/sys/user/index.vue'),
       },
       {
+        path: 'user/add',
+        meta: {
+          title: '新增用户',
+        },
+        name: 'sysUserAdd',
+        component: () => import('@/views/sys/user/addEdit.vue'),
+      },
+      {
+        path: 'user/edit',
+        meta: {
+          title: '编辑用户',
+        },
+        name: 'sysUserEdit',
+        component: () => import('@/views/sys/user/addEdit.vue'),
+      },
+      {
         path: 'dict',
         meta: {
           title: '字典管理',

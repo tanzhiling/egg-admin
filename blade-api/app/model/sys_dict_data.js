@@ -11,6 +11,11 @@ module.exports = app => {
     sort: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        isDecimal: {
+          msg: 'sort类型不正确，sort必须是数字型',
+        },
+      },
     },
     dictLabel: {
       type: DataTypes.STRING(100),
@@ -87,11 +92,30 @@ module.exports = app => {
     const Op = app.Sequelize.Op;
     const data = await SysDictData.findOne({ where: { dictType, [Op.or]: [{ dictLabel }, { dictValue }, { sort }] } });
     if (data) {
-      return [ data, false ];
+      if (data.dictLabel === dictLabel) {
+        return { success: false, msg: 'dictLabel值已存在' };
+      } else if (data.dictValue === dictValue) {
+        return { success: false, msg: 'dictValue值已存在' };
+      } else if (data.sort === sort) {
+        return { success: false, msg: 'sort值已存在' };
+      }
+    } else {
+      try {
+        const result = await SysDictData.create({ dictLabel, dictType, dictValue, sort, id, isSys, description, status, createBy, updateBy, remarks });
+        return { data: result, msg: '新增成功！', success: true };
+      } catch (err) {
+        let msg = '';
+        for (const i in err.errors) {
+          msg += err.errors[i].message;
+        }
+        return { success: false, msg };
+      }
     }
-    return [ SysDictData.create({ dictLabel, dictType, dictValue, sort, id, isSys, description, status, createBy, updateBy, remarks }), true ];
   };
-  SysDictData._findList = async function({ dictType }) {
+  SysDictData._findList = async function({ dictType, attributes }) {
+    if (attributes) {
+      return SysDictData.findAll({ attributes: [ 'dictLabel', 'dictValue', 'id' ], where: { dictType }, order: [[ 'sort', 'ASC' ]] });
+    }
     return SysDictData.findAll({ where: { dictType }, order: [[ 'sort', 'ASC' ]] });
   };
   SysDictData._findOne = function({ id }) {
