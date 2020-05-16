@@ -3,13 +3,13 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeCode = app.model.define('bladeCode', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',
     },
     datasourceId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'datasource_id',
     },

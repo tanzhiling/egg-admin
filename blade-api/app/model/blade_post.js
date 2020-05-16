@@ -3,7 +3,7 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladePost = app.model.define('bladePost', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',
@@ -40,12 +40,12 @@ module.exports = app => {
       field: 'remark',
     },
     createUser: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'create_user',
     },
     createDept: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'create_dept',
     },
@@ -56,7 +56,7 @@ module.exports = app => {
       defaultValue: DataTypes.NOW,
     },
     updateUser: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'update_user',
     },
@@ -79,5 +79,28 @@ module.exports = app => {
   }, {
     tableName: 'blade_post',
   });
+  bladePost._add = async function({ id, tenantId, category, postCode, postName, sort, remark, createUser, createDept, status }) {
+    return bladePost.findOrCreate({
+      where: { postCode },
+      defaults: {
+        id, tenantId, category, postCode, postName, sort, remark, createUser, createDept, status,
+      },
+    });
+  };
+  bladePost._update = function({ id, tenantId, category, postName, sort, remark, updateUser, status }) {
+    return bladePost.update({ tenantId, category, postName, sort, remark, updateUser, status }, { where: { id } });
+  };
+  bladePost._delete = function({ id }) {
+    return bladePost.destroy({ where: { id } });
+  };
+  bladePost._findList = async function({ postName }) {
+    const Op = app.Sequelize.Op;
+    return bladePost.findAll({
+      where: { [Op.and]: [ postName ? { postName: { [Op.like]: `%${postName}%` } } : null ] },
+    });
+  };
+  bladePost._findOne = params => {
+    return bladePost.findOne({ where: params });
+  };
   return bladePost;
 };

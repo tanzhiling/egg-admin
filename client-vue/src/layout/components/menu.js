@@ -6,12 +6,17 @@ export default [
       {
         title: '机构管理',
         id: '20',
-        name: 'sysOffice',
+        name: 'sysDept',
       },
       {
         title: '用户管理',
         id: '2',
         name: 'sysUser',
+      },
+      {
+        title: '岗位管理',
+        id: '3',
+        name: 'sysPost',
       },
     ],
   },
@@ -22,14 +27,7 @@ export default [
       {
         title: '角色管理',
         id: '6',
-      },
-      {
-        title: '二级管理员',
-        id: '7',
-      },
-      {
-        title: '系统管理员',
-        id: '8',
+        name: 'sysRole',
       },
     ],
   },

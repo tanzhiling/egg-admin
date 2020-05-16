@@ -4,7 +4,7 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeUser = app.model.define('bladeUser', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',
@@ -81,12 +81,12 @@ module.exports = app => {
       field: 'post_id',
     },
     createUser: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'create_user',
     },
     createDept: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'create_dept',
     },
@@ -97,7 +97,7 @@ module.exports = app => {
       defaultValue: DataTypes.NOW,
     },
     updateUser: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'update_user',
     },
@@ -151,7 +151,7 @@ module.exports = app => {
     return { list, size, current, total };
   };
   bladeUser._findOne = params => {
-    return bladeUser.findOne({ attributes: { exclude: [ 'password' ] }, where: params });
+    return bladeUser.findOne({ attributes: { exclude: [ 'password' ] }, where: params, raw: true });
   };
   return bladeUser;
 };

@@ -3,7 +3,7 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeLogError = app.model.define('bladeLogError', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',

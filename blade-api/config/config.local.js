@@ -21,8 +21,5 @@ module.exports = {
         return next();
       },
     },
-    query: {
-      raw: true,
-    },
   },
 };

@@ -3,7 +3,7 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeLogApi = app.model.define('bladeLogApi', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',

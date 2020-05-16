@@ -3,7 +3,7 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeRoleScope = app.model.define('bladeRoleScope', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',
@@ -14,12 +14,12 @@ module.exports = app => {
       field: 'scope_category',
     },
     scopeId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'scope_id',
     },
     roleId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'role_id',
     },

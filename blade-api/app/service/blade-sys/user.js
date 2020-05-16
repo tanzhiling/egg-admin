@@ -15,7 +15,6 @@ class UserService extends Service {
     }
     return { msg: '未登录！', success: false };
   }
-  // 更新
   async update(params) {
     const data = await this.ctx.model.BladeUser._update(params);
     if (data) {
@@ -23,7 +22,6 @@ class UserService extends Service {
     }
     return { msg: '更新失败', success: false };
   }
-  // 删除
   async delete(params) {
     const status = await this.ctx.model.BladeUser._delete(params);
     if (status) {

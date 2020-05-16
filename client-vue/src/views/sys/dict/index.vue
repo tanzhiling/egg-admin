@@ -8,9 +8,9 @@
       <el-table-column type="index" width="50" align="center" />
       <el-table-column prop="dictName" label="字典名称" />
       <el-table-column prop="dictType" label="字典类型" />
+      <el-table-column prop="status" label="状态" width="100" />
       <el-table-column prop="updateTime" label="更新时间" />
       <el-table-column prop="remarks" label="备注信息" />
-      <el-table-column prop="status" label="状态" width="100" />
       <el-table-column label="操作" align="center" width="200">
         <template slot-scope="{row}">
           <el-button type="text" icon="el-icon-view" size="small" @click="handleView(row)">查看</el-button>

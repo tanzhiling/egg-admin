@@ -3,7 +3,7 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeSms = app.model.define('bladeSms', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',
@@ -55,12 +55,12 @@ module.exports = app => {
       field: 'remark',
     },
     createUser: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'create_user',
     },
     createDept: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'create_dept',
     },
@@ -71,7 +71,7 @@ module.exports = app => {
       defaultValue: DataTypes.NOW,
     },
     updateUser: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'update_user',
     },

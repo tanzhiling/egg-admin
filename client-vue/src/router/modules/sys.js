@@ -4,6 +4,30 @@ export default (Layout) => {
     component: Layout,
     children: [
       {
+        path: "dept",
+        meta: {
+          title: "机构管理",
+        },
+        name: "sysDept",
+        component: () => import("@/views/sys/dept/dept.vue"),
+      },
+      {
+        path: "role",
+        meta: {
+          title: "角色管理",
+        },
+        name: "sysRole",
+        component: () => import("@/views/sys/role/index.vue"),
+      },
+      {
+        path: "post",
+        meta: {
+          title: "岗位管理",
+        },
+        name: "sysPost",
+        component: () => import("@/views/sys/post/index.vue"),
+      },
+      {
         path: "user",
         meta: {
           title: "用户管理",
@@ -42,30 +66,6 @@ export default (Layout) => {
         },
         name: "sysDictDataList",
         component: () => import("@/views/sys/dict/dataList.vue"),
-      },
-      {
-        path: "office",
-        meta: {
-          title: "机构管理",
-        },
-        name: "sysOffice",
-        component: () => import("@/views/sys/office/index.vue"),
-      },
-      {
-        path: "office/add",
-        meta: {
-          title: "新增机构",
-        },
-        name: "sysOfficeAdd",
-        component: () => import("@/views/sys/office/addEdit.vue"),
-      },
-      {
-        path: "office/edit",
-        meta: {
-          title: "编辑机构",
-        },
-        name: "sysOfficeEdit",
-        component: () => import("@/views/sys/office/addEdit.vue"),
       },
     ],
   };

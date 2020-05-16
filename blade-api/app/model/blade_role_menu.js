@@ -3,18 +3,18 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeRoleMenu = app.model.define('bladeRoleMenu', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',
     },
     menuId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'menu_id',
     },
     roleId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'role_id',
     },

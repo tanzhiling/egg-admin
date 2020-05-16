@@ -3,13 +3,13 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeMenu = app.model.define('bladeMenu', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',
     },
     parentId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       defaultValue: '0',
       field: 'parent_id',

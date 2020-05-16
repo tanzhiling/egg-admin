@@ -24,4 +24,22 @@ module.exports = app => {
   router.get('/blade-sys/dict/dataList', controller.bladeSys.dict.dataList);
   router.get('/blade-sys/dict/dataDetail', controller.bladeSys.dict.dataDetail);
   router.get('/blade-sys/dict/findList', controller.bladeSys.dict.findList);
+  // 机构
+  router.post('/blade-sys/dept/add', controller.bladeSys.dept.add);
+  router.post('/blade-sys/dept/update', controller.bladeSys.dept.update);
+  router.post('/blade-sys/dept/delete', controller.bladeSys.dept.delete);
+  router.get('/blade-sys/dept/list', controller.bladeSys.dept.list);
+  router.get('/blade-sys/dept/detail', controller.bladeSys.dept.detail);
+  // 角色
+  router.post('/blade-sys/role/add', controller.bladeSys.role.add);
+  router.post('/blade-sys/role/update', controller.bladeSys.role.update);
+  router.post('/blade-sys/role/delete', controller.bladeSys.role.delete);
+  router.get('/blade-sys/role/list', controller.bladeSys.role.list);
+  router.get('/blade-sys/role/detail', controller.bladeSys.role.detail);
+  // 岗位
+  router.post('/blade-sys/post/add', controller.bladeSys.post.add);
+  router.post('/blade-sys/post/update', controller.bladeSys.post.update);
+  router.post('/blade-sys/post/delete', controller.bladeSys.post.delete);
+  router.get('/blade-sys/post/list', controller.bladeSys.post.list);
+  router.get('/blade-sys/post/detail', controller.bladeSys.post.detail);
 };

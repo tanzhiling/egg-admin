@@ -3,13 +3,13 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeScopeApi = app.model.define('bladeScopeApi', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',
     },
     menuId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'menu_id',
     },
@@ -39,12 +39,12 @@ module.exports = app => {
       field: 'remark',
     },
     createUser: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'create_user',
     },
     createDept: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'create_dept',
     },
@@ -55,7 +55,7 @@ module.exports = app => {
       defaultValue: DataTypes.NOW,
     },
     updateUser: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       field: 'update_user',
     },

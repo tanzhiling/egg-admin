@@ -3,7 +3,7 @@ module.exports = app => {
   const DataTypes = app.Sequelize;
   const bladeRole = app.model.define('bladeRole', {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true,
       field: 'id',
@@ -15,7 +15,7 @@ module.exports = app => {
       field: 'tenant_id',
     },
     parentId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(64),
       allowNull: true,
       defaultValue: '0',
       field: 'parent_id',
@@ -44,5 +44,28 @@ module.exports = app => {
   }, {
     tableName: 'blade_role',
   });
+  bladeRole._add = async function({ id, tenantId, parentId, roleName, sort, roleAlias }) {
+    return bladeRole.findOrCreate({
+      where: { roleName },
+      defaults: {
+        id, tenantId, parentId, roleName, sort, roleAlias,
+      },
+    });
+  };
+  bladeRole._update = function({ id, tenantId, parentId, roleName, sort, roleAlias }) {
+    return bladeRole.update({ tenantId, parentId, roleName, sort, roleAlias }, { where: { id } });
+  };
+  bladeRole._delete = function({ id }) {
+    return bladeRole.destroy({ where: { id } });
+  };
+  bladeRole._findList = async function({ roleName }) {
+    const Op = app.Sequelize.Op;
+    return bladeRole.findAll({
+      where: { [Op.and]: [ roleName ? { roleName: { [Op.like]: `%${roleName}%` } } : null ] },
+    });
+  };
+  bladeRole._findOne = params => {
+    return bladeRole.findOne({ where: params });
+  };
   return bladeRole;
 };

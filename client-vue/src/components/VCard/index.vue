@@ -66,7 +66,7 @@ export default {
   },
   data() {
     return {
-      expand: false, // 展开搜索
+      expand: true, // 展开搜索
     }
   },
   computed: {
