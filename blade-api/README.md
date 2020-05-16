@@ -24,7 +24,7 @@ $ npm stop
 #### model dymaic create
 
 ```bash
- $ sequelize-auto -o "./" -h localhost -d admin -u root -x 123456 -p 3306 -t sys_user
+ $ sequelize-auto -o "./" -h localhost -d blade -u root -x 123456 -p 3306 -t sys_user -C
 ```
 
 #### 功能

@@ -75,3 +75,11 @@ export const ApiGetDictDataDetail = (params)=>{
     params
   })
 }
+
+// 获取字典
+export const ApiDictFindList = (params) =>{
+  return request("/blade-sys/dict/findList",{
+    method:"get",
+    params
+  })
+}

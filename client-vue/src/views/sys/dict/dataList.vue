@@ -7,8 +7,7 @@
       <el-table-column prop="dictLabel" label="字典标签" />
       <el-table-column prop="dictValue" label="字典键值" />
       <el-table-column prop="sort" label="排序号" />
-      <el-table-column prop="isSys" label="系统内置" />
-      <el-table-column prop="updateDate" label="更新时间" />
+      <el-table-column prop="updateTime" label="更新时间" />
       <el-table-column prop="remarks" label="备注信息" />
       <el-table-column prop="status" label="状态" width="100" />
       <el-table-column label="操作" align="center" width="200">
@@ -40,12 +39,6 @@
         </el-form-item>
         <el-form-item label="排序" prop="sort">
           <el-input v-model="form.sort" />
-        </el-form-item>
-        <el-form-item label="系统字典" prop="isSys">
-          <el-radio-group v-model="form.isSys">
-            <el-radio label="1">是</el-radio>
-            <el-radio label="0">否</el-radio>
-          </el-radio-group>
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">

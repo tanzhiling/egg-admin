@@ -7,6 +7,14 @@ export const ApiOfficeAdd = (data) => {
     requestType: "form",
   });
 };
+// 修改机构
+export const ApiOfficeUpdate= (data) => {
+  return request("/blade-sys/office/update", {
+    method: "post",
+    data,
+    requestType: "form",
+  });
+};
 // 删除机构
 export const ApiOfficeDelete = (data) => {
   return request("/blade-sys/office/delete", {

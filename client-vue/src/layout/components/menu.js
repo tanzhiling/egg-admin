@@ -4,19 +4,14 @@ export default [
     id: '1',
     children: [
       {
-        title: '用户管理',
-        id: '2',
-        name: 'sysUser',
-      },
-      {
         title: '机构管理',
         id: '20',
         name: 'sysOffice',
       },
       {
-        title: '公司管理',
-        id: '3',
-        name: 'sysCompany',
+        title: '用户管理',
+        id: '2',
+        name: 'sysUser',
       },
     ],
   },

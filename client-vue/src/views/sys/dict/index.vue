@@ -8,8 +8,7 @@
       <el-table-column type="index" width="50" align="center" />
       <el-table-column prop="dictName" label="字典名称" />
       <el-table-column prop="dictType" label="字典类型" />
-      <el-table-column prop="isSys" label="系统字典" width="100" />
-      <el-table-column prop="updateDate" label="更新时间" />
+      <el-table-column prop="updateTime" label="更新时间" />
       <el-table-column prop="remarks" label="备注信息" />
       <el-table-column prop="status" label="状态" width="100" />
       <el-table-column label="操作" align="center" width="200">
@@ -39,12 +38,6 @@
         </el-form-item>
         <el-form-item label="字典类型" prop="dictType">
           <el-input v-model="form.dictType" />
-        </el-form-item>
-        <el-form-item label="系统字典" prop="isSys">
-          <el-radio-group v-model="form.isSys">
-            <el-radio label="1">是</el-radio>
-            <el-radio label="0">否</el-radio>
-          </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input v-model="form.remarks" :autosize="{ minRows: 3, maxRows: 6}" type="textarea" />
@@ -90,7 +83,6 @@ export default {
       form: {
         dictName: "",
         dictType: "",
-        isSys: '',
         remarks: '',
         id: ""
       },
@@ -189,8 +181,8 @@ export default {
     getDictTypeDetail(id) {
       ApiGetDictTypeDetail({ id }).then(res => {
         if (res.success) {
-          const { dictName, dictType, isSys, remarks } = res.data
-          this.form = { dictName, dictType, isSys, remarks, id }
+          const { dictName, dictType, remarks } = res.data
+          this.form = { dictName, dictType, remarks, id }
         }
       })
     },

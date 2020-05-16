@@ -9,16 +9,10 @@
       <el-table-column prop="nickname" label="用户昵称" />
       <el-table-column prop="phone" label="手机号" />
       <el-table-column prop="email" label="电子邮箱" />
-      <el-table-column prop="userType" label="用户类型" width="100">
-        <template slot-scope="{row}">{{ row.userType|userTypeFilter }}</template>
-      </el-table-column>
-      <el-table-column prop="mgrType" label="管理员类型" width="100">
-        <template slot-scope="{row}">{{ row.mgrType|mgrTypeFilter }}</template>
-      </el-table-column>
-      <el-table-column prop="updateDate" label="更新时间" width="140" />
+      <el-table-column prop="updateTime" label="更新时间" width="140" />
       <el-table-column prop="status" label="状态" width="100" align="center">
         <template slot-scope="{row}">
-          <el-tag v-if="row.status==='0'" type="success" effect="dark">启用</el-tag>
+          <el-tag v-if="row.status==='1'" type="success" effect="dark">启用</el-tag>
           <el-tag v-else type="danger" effect="dark">停用</el-tag>
         </template>
       </el-table-column>

@@ -1,15 +1,22 @@
+<style lang="scss">
+.select-tree {
+  font-weight: normal !important;
+  padding: 0;
+}
+</style>
 <template>
-  <VCard icon="edit-outline" :title="title">
+  <VCard class="office-add-edit" icon="edit-outline" :title="title">
     <el-form ref="form" :rules="rules" :model="form" inline label-width="100px">
       <el-col :span="12">
         <el-form-item label="机构名称" prop="officeName">
-          <el-input v-model="form.officeName" :disabled="form.id?true:false" style="width:300px" />
+          <el-input v-model="form.officeName" style="width:300px" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item label="上级机构" prop="parentId">
           <el-select v-model="form.parentId" style="width:300px">
             <el-option
+              class="select-tree"
               :value="last.officeCode"
               :label="last.officeName"
               style="height:200px;overflow:auto;background:#fff"
@@ -37,9 +44,12 @@
       <el-col :span="12">
         <el-form-item label="机构类型" prop="officeType">
           <el-select v-model="form.officeType" style="width:300px">
-            <el-option label="省级公司" value="0" />
-            <el-option label="市级公司" value="1" />
-            <el-option label="部门" value="2" />
+            <el-option
+              v-for="item in dictData"
+              :key="item.dictValue"
+              :value="item.dictValue"
+              :label="item.dictLabel"
+            />
           </el-select>
         </el-form-item>
       </el-col>
@@ -94,7 +104,8 @@
   </VCard>
 </template>
 <script>
-import { ApiOfficeAdd, ApiGetOfficeTree } from "@/api/sys/office"
+import { ApiOfficeAdd, ApiOfficeUpdate, ApiGetOfficeTree, ApiGetOfficeDetail } from "@/api/sys/office"
+import { ApiDictFindList } from "@/api/sys/dict"
 export default {
   data() {
     return {
@@ -103,6 +114,7 @@ export default {
         officeName: ""
       },
       form: {
+        id: "",
         officeCode: "",
         parentId: "",
         officeName: "",
@@ -114,7 +126,8 @@ export default {
         zipCode: "",
         email: "",
         status: "",
-        remarks: ""
+        remarks: "",
+        sort: ""
       },
       title: "新增机构",
       rules: {
@@ -138,6 +151,7 @@ export default {
         ],
       },
       tree: [],
+      dictData: [],
       defaultProps: {
         children: 'children',
         label: 'officeName'
@@ -148,10 +162,11 @@ export default {
   mounted() {
     const { id } = this.$route.query
     if (id) {
-      this.title = "编辑用户"
-      this.getUserDetial(id)
+      this.title = "编辑机构"
+      this.getDetail(id)
     }
     this.getTree()
+    this.getDictList()
   },
   methods: {
     handleNodeClick(data) {
@@ -181,7 +196,7 @@ export default {
       })
     },
     update() {
-      ApiOfficeAdd(this.form).then(res => {
+      ApiOfficeUpdate(this.form).then(res => {
         this.loading = false
         if (res.success) {
           this.$message.success(res.msg)
@@ -198,12 +213,19 @@ export default {
       })
     },
     getDetail(id) {
-      ApiOfficeAdd({ id }).then(res => {
+      ApiGetOfficeDetail({ id }).then(res => {
         if (res.success) {
-          const { username, nickname, password, email, mobile, sex, avatar, phone, sign, userType, mgrType, status, remarks, id } = res.data
-          this.form = { username, nickname, password, email, mobile, sex, avatar, phone, sign, userType, mgrType, status, remarks, id }
+          const { officeCode, parentId, sort, officeName, fullName, officeType, leader, phone, address, zipCode, email, status, remarks } = res.data
+          this.form = { id, officeCode, parentId, sort, officeName, fullName, officeType, leader, phone, address, zipCode, email, status, remarks }
         } else {
           this.$message.error(res.msg)
+        }
+      })
+    },
+    getDictList() {
+      ApiDictFindList({ dictType: "sys_office_type" }).then(res => {
+        if (res.success) {
+          this.dictData = res.data
         }
       })
     }

@@ -5,7 +5,7 @@ module.exports = {
     dialect: 'mysql',
     host: '127.0.0.1',
     port: 3306,
-    database: 'admin',
+    database: 'blade',
     username: 'root',
     password: '123456',
     timezone: '+08:00',
@@ -20,6 +20,9 @@ module.exports = {
         }
         return next();
       },
+    },
+    query: {
+      raw: true,
     },
   },
 };

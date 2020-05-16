@@ -1,6 +1,8 @@
 'use strict';
-const dayjs = require('dayjs');
-
-exports.formatDate = (time, type = 'YYYY-MM-DD HH-mm-ss') => {
-  return dayjs(time).format(type);
+const crypto = require('crypto');
+exports.uuid = () => {
+  return this.md5(new Date().getTime());
+};
+exports.md5 = txt => {
+  return crypto.createHash('md5').update(txt).digest('hex');
 };

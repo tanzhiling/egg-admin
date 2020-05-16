@@ -22,12 +22,7 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="手机号" prop="mobile">
-          <el-input v-model="form.mobile" style="width:300px" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="电话" prop="phone">
+        <el-form-item label="手机号" prop="phone">
           <el-input v-model="form.phone" style="width:300px" />
         </el-form-item>
       </el-col>
@@ -40,51 +35,6 @@
           </el-radio-group>
         </el-form-item>
       </el-col>
-      <el-col :span="12">
-        <el-form-item label="用户类型" prop="userType">
-          <el-select v-model="form.userType" style="width:300px">
-            <el-option label="一级会员" value="1" />
-            <el-option label="普通用户" value="0" />
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="管理员类型" prop="mgrType">
-          <el-radio-group v-model="form.mgrType">
-            <el-radio label="2">二级管理员</el-radio>
-            <el-radio label="1">系统管理员</el-radio>
-            <el-radio label="0">非管理员</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="状态" prop="status">
-          <el-radio-group v-model="form.status">
-            <el-radio label="0">启用</el-radio>
-            <el-radio label="2">停用</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-col>
-      <el-col :span="24">
-        <el-form-item label="个性签名" prop="sign">
-          <el-input
-            v-model="form.sign"
-            style="width:500px"
-            :autosize="{ minRows: 3, maxRows: 6}"
-            type="textarea"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col :span="24">
-        <el-form-item label="备注" prop="remarks">
-          <el-input
-            v-model="form.remarks"
-            style="width:500px"
-            :autosize="{ minRows: 3, maxRows: 6}"
-            type="textarea"
-          />
-        </el-form-item>
-      </el-col>
       <el-form-item label=" ">
         <el-button :loading="loading" type="primary" icon="el-icon-check" @click="handleSubmit">保存</el-button>
         <el-button @click="$router.back()">取消</el-button>
@@ -94,6 +44,7 @@
 </template>
 <script>
 import { ApiUserAdd, ApiGetUserDetail, ApiUserUpdate } from "@/api/sys/user"
+import { ApiGetOfficeTree } from "@/api/sys/office"
 export default {
   data() {
     return {
@@ -102,16 +53,11 @@ export default {
         nickname: "",
         avatar: "",
         email: "",
-        mobile: "",
         phone: "",
         sex: "",
-        userType: "",
-        mgrType: "",
-        status: "",
-        remarks: "",
-        id: ""
       },
       title: "新增用户",
+      tree: [],
       rules: {
         username: [
           { required: true, message: '登录账号为必填项', trigger: 'blur' },
@@ -119,13 +65,7 @@ export default {
         nickname: [
           { required: true, message: '昵称为必填项', trigger: 'blur' },
         ],
-        userType: [
-          { required: true, message: '用户类型为必填项', trigger: 'change' },
-        ],
-        mgrType: [
-          { required: true, message: '管理员类型为必填项', trigger: 'change' },
-        ],
-      }
+      },
     }
   },
   mounted() {
@@ -134,21 +74,25 @@ export default {
       this.title = "编辑用户"
       this.getUserDetial(id)
     }
+    this.getTree()
   },
   methods: {
+    handleNodeClick(data) {
+      this.last = data
+    },
     handleSubmit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.loading = true
           if (this.form.id) {
-            this.userUpdate()
+            this.add()
           } else {
-            this.userUpdate()
+            this.update()
           }
         }
       });
     },
-    userAdd() {
+    add() {
       ApiUserAdd(this.form).then(res => {
         this.loading = false
         if (res.success) {
@@ -158,7 +102,7 @@ export default {
         }
       })
     },
-    userUpdate() {
+    update() {
       ApiUserUpdate(this.form).then(res => {
         this.loading = false
         if (res.success) {
@@ -171,13 +115,20 @@ export default {
     getUserDetial(id) {
       ApiGetUserDetail({ id }).then(res => {
         if (res.success) {
-          const { username, nickname, password, email, mobile, sex, avatar, phone, sign, userType, mgrType, status, remarks, id } = res.data
-          this.form = { username, nickname, password, email, mobile, sex, avatar, phone, sign, userType, mgrType, status, remarks, id }
+          const { username, nickname, password, email, mobile, sex, avatar, phone, sign, userType, remarks, id } = res.data
+          this.form = { username, nickname, password, email, mobile, sex, avatar, phone, sign, userType, remarks, id }
         } else {
           this.$message.error(res.msg)
         }
       })
-    }
+    },
+    getTree() {
+      ApiGetOfficeTree().then(res => {
+        if (res.success) {
+          this.tree = res.data
+        }
+      })
+    },
   }
 }
 </script>
