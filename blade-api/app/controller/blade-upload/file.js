@@ -11,16 +11,16 @@ class FileController extends Controller {
     const file = fs.readFileSync(files.filepath);
     try {
       fs.writeFileSync(target, file);
-      this.ctx.body = {
+      this.ctx.result({
         success: true,
         msg: '上传成功！',
-        data: 'upload/' + filename,
-      };
+        data: '/upload/' + filename,
+      });
     } catch (e) {
-      this.ctx.body = {
+      this.ctx.result({
         success: false,
         msg: JSON.stringify(e),
-      };
+      });
     }
   }
 }
