@@ -23,6 +23,10 @@ module.exports = appInfo => {
       authorization: 'Basic c3dvcmQ6c3dvcmRfc2VjcmV0',
       secret: 'egg-admin-jwt',
     },
+    multipart: {
+      mode: 'file',
+      fileSize: '50mb',
+    },
   };
   return {
     ...config,

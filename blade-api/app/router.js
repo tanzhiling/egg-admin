@@ -54,4 +54,6 @@ module.exports = app => {
   router.post('/blade-sys/menu/delete', controller.bladeSys.menu.delete);
   router.get('/blade-sys/menu/list', controller.bladeSys.menu.list);
   router.get('/blade-sys/menu/detail', controller.bladeSys.menu.detail);
+  // 文件处理
+  router.post('/blade-upload/file/upload', controller.bladeUpload.file.upload);
 };
