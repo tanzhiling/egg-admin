@@ -44,7 +44,7 @@
 </template>
 <script>
 import { ApiUserAdd, ApiGetUserDetail, ApiUserUpdate } from "@/api/sys/user"
-import { ApiGetOfficeTree } from "@/api/sys/office"
+// import { ApiGetOfficeTree } from "@/api/sys/office"
 export default {
   data() {
     return {
@@ -123,11 +123,11 @@ export default {
       })
     },
     getTree() {
-      ApiGetOfficeTree().then(res => {
-        if (res.success) {
-          this.tree = res.data
-        }
-      })
+      // ApiGetOfficeTree().then(res => {
+      //   if (res.success) {
+      //     this.tree = res.data
+      //   }
+      // })
     },
   }
 }

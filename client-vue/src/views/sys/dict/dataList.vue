@@ -9,22 +9,21 @@
       <el-table-column prop="sort" label="排序号" />
       <el-table-column prop="updateTime" label="更新时间" />
       <el-table-column prop="remarks" label="备注信息" />
-      <el-table-column prop="status" label="状态" width="100" />
+      <el-table-column prop="status" label="状态" width="100" align="center">
+        <template slot-scope="{row}">
+          <el-tag v-if="row.status==='1'" type="success" effect="dark">启用</el-tag>
+          <el-tag v-else type="danger" effect="dark">停用</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" width="200">
         <template slot-scope="{row}">
-          <el-button type="text" icon="el-icon-view" size="small" @click="handleView(row)">查看</el-button>
           <el-button
             type="text"
             icon="el-icon-edit"
             size="small"
             @click="handleVisible(true,'编辑',row.id)"
           >编辑</el-button>
-          <el-button
-            type="text"
-            icon="el-icon-delete"
-            size="small"
-            @click="dictDataDelete(row.id)"
-          >删除</el-button>
+          <el-button type="text" icon="el-icon-delete" size="small" @click="handleDelete(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -42,8 +41,8 @@
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
-            <el-radio label="0">启用</el-radio>
-            <el-radio label="2">停用</el-radio>
+            <el-radio label="1">启用</el-radio>
+            <el-radio label="0">停用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
@@ -66,7 +65,6 @@ export default {
         dictLabel: "",
         dictValue: "",
         sort: "",
-        isSys: "",
         status: "",
         remarks: "",
         id: ""
@@ -77,9 +75,6 @@ export default {
         ],
         dictValue: [
           { required: true, message: '字典键值为必填项', trigger: 'blur' }
-        ],
-        isSys: [
-          { required: true, message: '系统字典为必填项', trigger: 'change' }
         ],
         sort: [
           { required: true, message: '排序为必填项', trigger: 'blur' }
@@ -100,12 +95,12 @@ export default {
     const { dictName, dictType } = this.$route.query
     this.dictType = dictType
     this.cardTitle = dictName + '(' + dictType + ')'
-    this.getDictDataList()
+    this.getList()
   },
   methods: {
     handleVisible(visible, title, id) {
       if (id) {
-        this.getDictDataDetail(id)
+        this.getDetail(id)
       }
       if (title) {
         this.title = title
@@ -117,9 +112,9 @@ export default {
         if (valid) {
           this.loading = true
           if (this.title === "新增") {
-            this.dictDataAdd()
+            this.add()
           } else {
-            this.dictDataUpdate()
+            this.update()
           }
         }
       });
@@ -127,31 +122,33 @@ export default {
     handleClose() {
       this.$refs.form.resetFields()
     },
-    dictDataAdd() {
+    add() {
       let payload = Object.assign({}, this.form, { dictType: this.dictType })
       ApiDictDataAdd(payload).then(res => {
         this.loading = false
         if (res.success) {
           this.$message.success(res.msg)
           this.visible = false
+          this.getList()
         } else {
           this.$message.error(res.msg)
         }
       })
     },
-    dictDataUpdate() {
+    update() {
       let payload = Object.assign({}, this.form, { dictType: this.dictType })
       ApiDictDataUpdate(payload).then(res => {
         this.loading = false
         if (res.success) {
           this.$message.success(res.msg)
           this.visible = false
+          this.getList()
         } else {
           this.$message.error(res.msg)
         }
       })
     },
-    dictDataDelete(id) {
+    handleDelete(id) {
       this.$confirm('确定将选择数据删除?', '', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -166,7 +163,7 @@ export default {
         })
       })
     },
-    getDictDataDetail(id) {
+    getDetail(id) {
       ApiGetDictDataDetail({ id }).then(res => {
         if (res.success) {
           const { dictValue, dictLabel, isSys, remarks, id, sort, status } = res.data
@@ -174,7 +171,7 @@ export default {
         }
       })
     },
-    getDictDataList() {
+    getList() {
       let payload = { dictType: this.dictType }
       ApiGetDictDataList(payload).then(res => {
         if (res.success) {

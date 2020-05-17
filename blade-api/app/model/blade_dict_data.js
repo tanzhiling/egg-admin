@@ -31,7 +31,6 @@ module.exports = app => {
     status: {
       type: DataTypes.CHAR(1),
       allowNull: false,
-      defaultValue: '0',
       field: 'status',
     },
     createTime: {

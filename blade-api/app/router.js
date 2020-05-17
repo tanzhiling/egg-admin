@@ -42,4 +42,16 @@ module.exports = app => {
   router.post('/blade-sys/post/delete', controller.bladeSys.post.delete);
   router.get('/blade-sys/post/list', controller.bladeSys.post.list);
   router.get('/blade-sys/post/detail', controller.bladeSys.post.detail);
+  // 租户
+  router.post('/blade-sys/tenant/add', controller.bladeSys.tenant.add);
+  router.post('/blade-sys/tenant/update', controller.bladeSys.tenant.update);
+  router.post('/blade-sys/tenant/delete', controller.bladeSys.tenant.delete);
+  router.get('/blade-sys/tenant/list', controller.bladeSys.tenant.list);
+  router.get('/blade-sys/tenant/detail', controller.bladeSys.tenant.detail);
+  // 菜单
+  router.post('/blade-sys/menu/add', controller.bladeSys.menu.add);
+  router.post('/blade-sys/menu/update', controller.bladeSys.menu.update);
+  router.post('/blade-sys/menu/delete', controller.bladeSys.menu.delete);
+  router.get('/blade-sys/menu/list', controller.bladeSys.menu.list);
+  router.get('/blade-sys/menu/detail', controller.bladeSys.menu.detail);
 };

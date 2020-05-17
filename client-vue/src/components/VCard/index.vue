@@ -10,6 +10,7 @@
           <Icon
             v-if="icon==='back'"
             type="arrow-left"
+            size="20"
             class="margin-right-10 cursor"
             @click="handleBack"
           />
@@ -105,7 +106,7 @@ export default {
 
     },
     handleBack() {
-      this.$router.back()
+      this.$emit("on-back")
     },
   }
 }

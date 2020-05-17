@@ -65,7 +65,9 @@
   white-space: nowrap;
   display: block;
 }
-
+.cursor{
+  cursor: pointer;
+}
 /* fade */
 .fade-enter-active,
 .fade-leave-active {

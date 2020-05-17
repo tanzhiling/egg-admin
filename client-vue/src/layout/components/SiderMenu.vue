@@ -15,7 +15,6 @@
     >
       <el-submenu v-for="item in menu" :key="item.id" :index="item.id">
         <template slot="title">
-          <i class="el-icon-location"></i>
           <span slot="title">{{ item.title }}</span>
         </template>
         <el-menu-item
@@ -23,10 +22,7 @@
           :key="subItem.id"
           :route="{name:subItem.name}"
           :index="subItem.id"
-        >
-          <i class="el-icon-location"></i>
-          {{ subItem.title }}
-        </el-menu-item>
+        >{{ subItem.title }}</el-menu-item>
       </el-submenu>
     </el-menu>
   </div>

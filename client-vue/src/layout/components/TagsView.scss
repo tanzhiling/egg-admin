@@ -1,4 +1,31 @@
+@import "~@/styles/theme.scss";
+
 .layout-tags {
   height: 50px;
   line-height: 50px;
+  background-color: $bg-color-white;
+  .tabs{
+    .el-tabs__nav-scroll{
+      padding: 0 20px !important;
+    }
+  }
+  .contextmenu {
+    position: absolute;
+    margin: 0;
+    padding: 5px 0;
+    background:  $bg-color-white;
+    z-index: 1000;
+    list-style-type: none;
+    border-radius: 4px;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    li {
+      margin: 0;
+      padding: 5px 15px;
+      cursor: pointer;
+      &:hover {
+        background: $border-color-shallow;
+      }
+    }
+  }
 }

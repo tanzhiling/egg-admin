@@ -8,7 +8,13 @@
       <el-table-column type="index" width="50" align="center" />
       <el-table-column prop="dictName" label="字典名称" />
       <el-table-column prop="dictType" label="字典类型" />
-      <el-table-column prop="status" label="状态" width="100" />
+      <el-table-column prop="sort" label="排序" />
+      <el-table-column prop="status" label="状态" width="100" align="center">
+        <template slot-scope="{row}">
+          <el-tag v-if="row.status==='1'" type="success" effect="dark">启用</el-tag>
+          <el-tag v-else type="danger" effect="dark">停用</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="updateTime" label="更新时间" />
       <el-table-column prop="remarks" label="备注信息" />
       <el-table-column label="操作" align="center" width="200">
@@ -20,12 +26,7 @@
             size="small"
             @click="handleVisible(true,'编辑',row.id)"
           >编辑</el-button>
-          <el-button
-            type="text"
-            icon="el-icon-delete"
-            size="small"
-            @click="dictTypeDelete(row.id)"
-          >删除</el-button>
+          <el-button type="text" icon="el-icon-delete" size="small" @click="handleDelete(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -38,6 +39,15 @@
         </el-form-item>
         <el-form-item label="字典类型" prop="dictType">
           <el-input v-model="form.dictType" />
+        </el-form-item>
+        <el-form-item label="排序" prop="sort">
+          <el-input v-model="form.sort" />
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-radio-group v-model="form.status">
+            <el-radio label="1">启用</el-radio>
+            <el-radio label="0">停用</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input v-model="form.remarks" :autosize="{ minRows: 3, maxRows: 6}" type="textarea" />
@@ -84,6 +94,8 @@ export default {
         dictName: "",
         dictType: "",
         remarks: '',
+        status: "",
+        sort: "",
         id: ""
       },
       rules: {
@@ -93,8 +105,11 @@ export default {
         dictType: [
           { required: true, message: '字典类型为必填项', trigger: 'blur' }
         ],
-        isSys: [
-          { required: true, message: '系统字典为必填项', trigger: 'change' }
+        sort: [
+          { required: true, message: '排序为必填项', trigger: 'change' }
+        ],
+        status: [
+          { required: true, message: '状态为必填项', trigger: 'change' }
         ],
       },
       loading: false,
@@ -103,7 +118,7 @@ export default {
     }
   },
   mounted() {
-    this.getDictTypeList()
+    this.getList()
   },
   methods: {
     handleSubmit() {
@@ -111,9 +126,9 @@ export default {
         if (valid) {
           this.loading = true
           if (this.title === "新增") {
-            this.dictTypeAdd(this.form)
+            this.add(this.form)
           } else {
-            this.dictTypeUpdate(this.form)
+            this.update(this.form)
           }
         }
       });
@@ -123,7 +138,7 @@ export default {
     },
     handleVisible(visible, title, id) {
       if (id) {
-        this.getDictTypeDetail(id)
+        this.getDetail(id)
       }
       if (title) {
         this.title = title
@@ -139,31 +154,33 @@ export default {
       })
     },
     handleSearch(payload) {
-      this.getDictTypeList(payload)
+      this.getList(payload)
     },
-    dictTypeAdd(payload) {
+    add(payload) {
       ApiDictTypeAdd(payload).then(res => {
         this.loading = false
         if (res.success) {
           this.$message.success(res.msg)
           this.visible = false
+          this.getList()
         } else {
           this.$message.error(res.msg)
         }
       })
     },
-    dictTypeUpdate(payload) {
+    update(payload) {
       ApiDictTypeUpdate(payload).then(res => {
         this.loading = false
         if (res.success) {
           this.$message.success(res.msg)
           this.visible = false
+          this.getList()
         } else {
           this.$message.error(res.msg)
         }
       })
     },
-    dictTypeDelete(id) {
+    handleDelete(id) {
       this.$confirm('确定将选择数据删除?', '', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -178,15 +195,15 @@ export default {
         })
       })
     },
-    getDictTypeDetail(id) {
+    getDetail(id) {
       ApiGetDictTypeDetail({ id }).then(res => {
         if (res.success) {
-          const { dictName, dictType, remarks } = res.data
-          this.form = { dictName, dictType, remarks, id }
+          const { dictName, dictType, remarks, status, sort } = res.data
+          this.form = { dictName, dictType, remarks, id, status, sort }
         }
       })
     },
-    getDictTypeList(payload) {
+    getList(payload) {
       ApiGetDictTypeList(payload).then(res => {
         if (res.success) {
           this.data = res.data

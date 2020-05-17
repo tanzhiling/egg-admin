@@ -25,7 +25,15 @@ export default (Layout) => {
           title: "岗位管理",
         },
         name: "sysPost",
-        component: () => import("@/views/sys/post/index.vue"),
+        component: () => import("@/views/sys/post/post.vue"),
+      },
+      {
+        path: "tenant",
+        meta: {
+          title: "租户管理",
+        },
+        name: "sysTenant",
+        component: () => import("@/views/sys/tenant/tenant.vue"),
       },
       {
         path: "user",
@@ -36,20 +44,12 @@ export default (Layout) => {
         component: () => import("@/views/sys/user/index.vue"),
       },
       {
-        path: "user/add",
+        path: "menu",
         meta: {
-          title: "新增用户",
+          title: "菜单管理",
         },
-        name: "sysUserAdd",
-        component: () => import("@/views/sys/user/addEdit.vue"),
-      },
-      {
-        path: "user/edit",
-        meta: {
-          title: "编辑用户",
-        },
-        name: "sysUserEdit",
-        component: () => import("@/views/sys/user/addEdit.vue"),
+        name: "sysMenu",
+        component: () => import("@/views/sys/menu/menu.vue"),
       },
       {
         path: "dict",

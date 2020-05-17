@@ -18,6 +18,11 @@ export default [
         id: '3',
         name: 'sysPost',
       },
+      {
+        title: '租户管理',
+        id: '4',
+        name: 'sysTenant',
+      },
     ],
   },
   {
@@ -37,6 +42,7 @@ export default [
     children: [
       {
         title: '菜单管理',
+        name:"sysMenu",
         id: '14',
       },
       {

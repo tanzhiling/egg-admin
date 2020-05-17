@@ -75,5 +75,28 @@ module.exports = app => {
   }, {
     tableName: 'blade_menu',
   });
+  bladeMenu._add = async function({ id, parentId, code, name, alias, path, source, sort, category, action, isOpen, remark }) {
+    return bladeMenu.findOrCreate({
+      where: { code },
+      defaults: {
+        id, parentId, code, name, alias, path, source, sort, category, action, isOpen, remark,
+      },
+    });
+  };
+  bladeMenu._update = function({ id, parentId, code, name, alias, path, source, sort, category, action, isOpen, remark }) {
+    return bladeMenu.update({ parentId, code, name, alias, path, source, sort, category, action, isOpen, remark }, { where: { id } });
+  };
+  bladeMenu._delete = function({ id }) {
+    return bladeMenu.destroy({ where: { id } });
+  };
+  bladeMenu._findList = async function({ name }) {
+    const Op = app.Sequelize.Op;
+    return bladeMenu.findAll({
+      where: { [Op.and]: [ name ? { name: { [Op.like]: `%${name}%` } } : null ] },
+    });
+  };
+  bladeMenu._findOne = params => {
+    return bladeMenu.findOne({ where: params });
+  };
   return bladeMenu;
 };

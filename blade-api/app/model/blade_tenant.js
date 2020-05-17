@@ -83,7 +83,7 @@ module.exports = app => {
       defaultValue: DataTypes.NOW,
     },
     status: {
-      type: DataTypes.INTEGER(2),
+      type: DataTypes.CHAR(1),
       allowNull: true,
       field: 'status',
     },
@@ -96,5 +96,28 @@ module.exports = app => {
   }, {
     tableName: 'blade_tenant',
   });
+  bladeTenant._add = async function({ id, tenantId, tenantName, domain, backgroundUrl, linkman, contactNumber, address, accountNumber, expireTime, createUser, status }) {
+    return bladeTenant.findOrCreate({
+      where: { tenantId },
+      defaults: {
+        id, tenantId, tenantName, domain, backgroundUrl, linkman, contactNumber, address, accountNumber, expireTime, createUser, status,
+      },
+    });
+  };
+  bladeTenant._update = function({ id, tenantName, domain, backgroundUrl, linkman, contactNumber, address, accountNumber, expireTime, updateUser, status }) {
+    return bladeTenant.update({ tenantName, domain, backgroundUrl, linkman, contactNumber, address, accountNumber, expireTime, updateUser, status }, { where: { id } });
+  };
+  bladeTenant._delete = function({ id }) {
+    return bladeTenant.destroy({ where: { id } });
+  };
+  bladeTenant._findList = async function({ tenantName }) {
+    const Op = app.Sequelize.Op;
+    return bladeTenant.findAll({
+      where: { [Op.and]: [ tenantName ? { tenantName: { [Op.like]: `%${tenantName}%` } } : null ] },
+    });
+  };
+  bladeTenant._findOne = params => {
+    return bladeTenant.findOne({ where: params });
+  };
   return bladeTenant;
 };

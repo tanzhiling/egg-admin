@@ -67,7 +67,7 @@ module.exports = app => {
       defaultValue: DataTypes.NOW,
     },
     status: {
-      type: DataTypes.INTEGER(2),
+      type: DataTypes.CHAR(1),
       allowNull: true,
       field: 'status',
     },

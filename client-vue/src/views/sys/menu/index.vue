@@ -1,29 +1,19 @@
 <template>
-  <VCard icon="s-promotion" title="岗位管理">
+  <VCard icon="s-promotion" mode="table" title="菜单管理" @on-table-height-change="handleTableHeight">
     <template slot="extra">
       <el-button type="success" icon="el-icon-plus" @click="handleView('add')">新增</el-button>
     </template>
     <VForm slot="form" :data="form.data" :model="form.model" @on-ok="handleSearch" />
-    <el-table ref="table" :data="data" border>
-      <el-table-column prop="postCode" label="岗位编号" />
-      <el-table-column prop="postName" label="岗位名称" />
-      <el-table-column prop="category" label="岗位类型" />
+    <el-table ref="table" :height="height" :data="data.list" border>
+      <el-table-column prop="deptName" label="机构名称" />
+      <el-table-column prop="tenant.tenantName" label="所属租户" />
+      <el-table-column prop="fullName" label="机构全称" />
+      <el-table-column prop="deptCategory" label="机构类型" />
       <el-table-column prop="sort" label="排序" />
       <el-table-column prop="remark" label="备注" />
-      <el-table-column prop="status" label="状态" width="100" align="center">
-        <template slot-scope="{row}">
-          <el-tag v-if="row.status==='1'" type="success" effect="dark">启用</el-tag>
-          <el-tag v-else type="danger" effect="dark">停用</el-tag>
-        </template>
-      </el-table-column>
       <el-table-column label="操作" align="center" width="220">
         <template slot-scope="{row}">
-          <el-button
-            type="text"
-            icon="el-icon-view"
-            size="small"
-            @click="handleView('info',row.id)"
-          >查看</el-button>
+          <el-button type="text" icon="el-icon-view" size="small">查看</el-button>
           <el-button
             type="text"
             icon="el-icon-edit"
@@ -34,26 +24,33 @@
         </template>
       </el-table-column>
     </el-table>
+    <VPage class="margin-top-10" :total="data.total" :current="data.current" :size="data.size" />
   </VCard>
 </template>
 <script>
-import { ApiGetPostList, ApiPostDelete } from "@/api/sys/post"
+import { ApiGetDeptList, ApiDeptDelete } from "@/api/sys/dept"
 export default {
   data() {
     return {
+      height: 0,
       form: {
         model: {
-          postName: "",
+          deptName: "",
         },
         data: [
           {
             component: "Input",
-            label: "岗位名称",
-            field: "postName"
+            label: "机构名称",
+            field: "deptName"
           },
         ],
       },
-      data: []
+      data: {
+        list: [],
+        size: 10,
+        current: 1,
+        total: 0,
+      },
     }
   },
   mounted() {
@@ -61,7 +58,12 @@ export default {
   },
   methods: {
     handleView(view, id) {
-      this.$emit("on-view", view, id)
+      this.$emit("on-view", { id })
+    },
+    handleTableHeight(height) {
+      this.$nextTick(() => {
+        this.height = height
+      })
     },
     handleSearch(payload) {
       this.getList(payload)
@@ -72,7 +74,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        ApiPostDelete({ id }).then(res => {
+        ApiDeptDelete({ id }).then(res => {
           if (res.success) {
             this.$message.success(res.msg)
             this.getList()
@@ -83,7 +85,7 @@ export default {
       })
     },
     getList(payload) {
-      ApiGetPostList(payload).then(res => {
+      ApiGetDeptList(payload).then(res => {
         if (res.success) {
           this.data = res.data
         }

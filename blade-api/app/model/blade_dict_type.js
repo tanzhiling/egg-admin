@@ -26,18 +26,19 @@ module.exports = app => {
     status: {
       type: DataTypes.CHAR(1),
       allowNull: false,
-      defaultValue: '0',
       field: 'status',
     },
     createTime: {
       type: DataTypes.DATE,
       allowNull: false,
       field: 'create_time',
+      defaultValue: DataTypes.NOW,
     },
     updateTime: {
       type: DataTypes.DATE,
       allowNull: false,
       field: 'update_time',
+      defaultValue: DataTypes.NOW,
     },
     remarks: {
       type: DataTypes.STRING(500),
@@ -47,11 +48,11 @@ module.exports = app => {
   }, {
     tableName: 'blade_dict_type',
   });
-  bladeDictType._add = function({ dictType, dictName, id, remarks }) {
-    return bladeDictType.findOrCreate({ where: { dictType }, defaults: { dictName, id, remarks } });
+  bladeDictType._add = function({ dictType, dictName, id, remarks, sort, status }) {
+    return bladeDictType.findOrCreate({ where: { dictType }, defaults: { dictName, id, remarks, sort, status } });
   };
-  bladeDictType._update = function({ dictType, dictName, id, remarks }) {
-    return bladeDictType.update({ dictType, dictName, remarks }, { where: { id } });
+  bladeDictType._update = function({ dictType, dictName, id, remarks, sort, status }) {
+    return bladeDictType.update({ dictType, dictName, remarks, sort, status }, { where: { id } });
   };
   bladeDictType._delete = function({ id }) {
     return bladeDictType.destroy({ where: { id } });
@@ -67,6 +68,7 @@ module.exports = app => {
       },
       limit: size,
       offset: (current - 1) * size,
+      order: [[ 'sort', 'ASC' ]],
     });
     return { list, size, current, total };
   };
