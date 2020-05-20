@@ -8,6 +8,18 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
+          <el-form-item label="所属租户" prop="tenantId">
+            <el-select v-model="form.tenantId" style="width:300px">
+              <el-option
+                v-for="item in tenantDict"
+                :key="item.tenantId"
+                :value="item.tenantId"
+                :label="item.tenantName"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="上级机构" prop="parentId">
             <el-select v-model="form.parentId" style="width:300px">
               <el-option
@@ -29,11 +41,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="机构编码" prop="deptCode">
-            <el-input
-              v-model="form.deptCode"
-              :disabled="form.id?true:false"
-              style="width:300px"
-            />
+            <el-input v-model="form.deptCode" :disabled="form.id?true:false" style="width:300px" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -48,14 +56,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="机构类型" prop="deptCategory">
-            <el-select v-model="form.deptCategory" style="width:300px">
-              <el-option
-                v-for="item in dictData"
-                :key="item.dictValue"
-                :value="item.dictValue"
-                :label="item.dictLabel"
-              />
-            </el-select>
+            <Select v-model="form.deptCategory" dict-type="sys_office_type" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -78,9 +79,8 @@
 </template>
 <script>
 import { ApiDeptAdd, ApiDeptUpdate, ApiGetDeptTree, ApiGetDeptDetail } from "@/api/sys/dept"
-import dictMixin from "../mixin/dict"
+import { ApiGetTenantDict } from '@/api/sys/tenant'
 export default {
-  mixins: [dictMixin],
   props: {
     view: {
       type: String,
@@ -100,6 +100,7 @@ export default {
       form: {
         id: "",
         deptCode: "",
+        tenantId: "",
         deptName: "",
         parentId: "",
         fullName: "",
@@ -108,9 +109,13 @@ export default {
         remarks: "",
         sort: ""
       },
+      tenantDict: [],
       rules: {
         deptCode: [
           { required: true, message: '机构代码为必填项', trigger: 'blur' },
+        ],
+        tenantId: [
+          { required: true, message: '所属租户为必填项', trigger: 'blur' },
         ],
         deptName: [
           { required: true, message: '机构名称为必填项', trigger: 'blur' },
@@ -138,25 +143,27 @@ export default {
   },
   computed: {
     auth: function () {
-      let title = "查看", readonly = true, disabled = true
+      let title = "查看", readonly = true
       if (this.view === "add") {
         title = "新增"
         readonly = false
-        disabled = false
       } else if (this.view === "edit") {
         title = "编辑"
         readonly = false
       }
-      return { title, readonly, disabled }
+      return { title, readonly }
     },
   },
-  async mounted() {
+  mounted() {
+    this.getTenantDict()
+    this.getTree('0').then(res => {
+      if (res.success) {
+        this.tree = res.data
+      }
+    })
     if (this.id) {
       this.getDetail(this.id)
     }
-    this.getDict("sys_office_type")
-    const { data } = await this.getTree('0')
-    this.tree = data
   },
   methods: {
     async handleLoad(node, resolve) {
@@ -211,13 +218,20 @@ export default {
     getDetail(id) {
       ApiGetDeptDetail({ id }).then(res => {
         if (res.success) {
-          const { deptName, parentId, fullName, deptCategory, status, remarks, sort, parent } = res.data
-          this.form = { deptCode: id, deptName, parentId, fullName, deptCategory, status, remarks, sort, id }
+          const { deptName, parentId, tenantId, fullName, deptCategory, status, remarks, sort, parent } = res.data
+          this.form = { deptCode: id, tenantId, deptName, parentId, fullName, deptCategory, status, remarks, sort, id }
           if (parent) {
             this.parent = parent
           }
         } else {
           this.$message.error(res.msg)
+        }
+      })
+    },
+    getTenantDict() {
+      ApiGetTenantDict().then(res => {
+        if (res.success) {
+          this.tenantDict = res.data
         }
       })
     },

@@ -5,11 +5,13 @@ import VCard from './VCard'
 import VForm from './VForm'
 import VPage from './VPage'
 import TreeSelect from './TreeSelect'
+import Select from './Select'
 import { Upload, UploadImg } from './Upload'
 Vue.component('VCard', VCard)
 Vue.component('VForm', VForm)
 Vue.component('VPage', VPage)
 Vue.component('Icon', Icon)
+Vue.component('Select', Select)
 Vue.component('TreeSelect', TreeSelect)
 Vue.component('Upload', Upload)
 Vue.component('Descriptions', Descriptions)

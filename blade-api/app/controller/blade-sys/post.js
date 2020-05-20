@@ -30,6 +30,9 @@ class PostController extends Controller {
   async list() {
     this.ctx.result(await this.service.bladeSys.post.list(this.ctx.query));
   }
+  async dict() {
+    this.ctx.result(await this.service.bladeSys.post.dict(this.ctx.query));
+  }
   async detail() {
     const { id } = this.ctx.query;
     if (id) {

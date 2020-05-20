@@ -96,8 +96,12 @@ module.exports = app => {
   bladePost._findList = async function({ postName }) {
     const Op = app.Sequelize.Op;
     return bladePost.findAll({
-      where: { [Op.and]: [ postName ? { postName: { [Op.like]: `%${postName}%` } } : null ] },
+      where: { [Op.and]: [ postName ? { postName: { [Op.like]: `%${postName}%` } } : null ], status: '1' },
+      order: [[ 'sort', 'DESC' ]],
     });
+  };
+  bladePost._findDict = function() {
+    return bladePost.findAll({ attributes: [ 'postName', [ 'id', 'postId' ]], where: { status: '1' } });
   };
   bladePost._findOne = params => {
     return bladePost.findOne({ where: params });

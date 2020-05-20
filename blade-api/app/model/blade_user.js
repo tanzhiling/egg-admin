@@ -140,6 +140,10 @@ module.exports = app => {
     const Op = app.Sequelize.Op;
     const { rows: list, count: total } = await bladeUser.findAndCountAll({
       attributes: { exclude: [ 'password' ] },
+      include: [
+        { model: app.model.BladeDept, as: 'dept', attributes: [ 'deptName', [ 'id', 'deptId' ]] },
+        { model: app.model.BladeRole, as: 'role', attributes: [ 'roleName', [ 'id', 'roleId' ]] },
+      ],
       where: {
         [Op.and]: [
           username ? { username: { [Op.like]: `%${username}%` } } : null,
@@ -150,8 +154,17 @@ module.exports = app => {
     });
     return { list, size, current, total };
   };
-  bladeUser._findOne = params => {
-    return bladeUser.findOne({ attributes: { exclude: [ 'password' ] }, where: params, raw: true });
+  bladeUser._findOne = (params, raw = false) => {
+    return bladeUser.findOne({
+      attributes: { exclude: [ 'password' ] },
+      include: [{ model: app.model.BladeDept, as: 'dept', attributes: [ 'deptName', [ 'id', 'deptId' ]] }],
+      where: params,
+      raw,
+    });
+  };
+  bladeUser.associate = function() {
+    bladeUser.belongsTo(app.model.BladeDept, { foreignKey: 'deptId', targetKey: 'id', as: 'dept' });
+    bladeUser.belongsTo(app.model.BladeRole, { foreignKey: 'roleId', targetKey: 'id', as: 'role' });
   };
   return bladeUser;
 };

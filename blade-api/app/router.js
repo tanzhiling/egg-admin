@@ -36,18 +36,21 @@ module.exports = app => {
   router.post('/blade-sys/role/update', controller.bladeSys.role.update);
   router.post('/blade-sys/role/delete', controller.bladeSys.role.delete);
   router.get('/blade-sys/role/list', controller.bladeSys.role.list);
+  router.get('/blade-sys/role/dict', controller.bladeSys.role.dict);
   router.get('/blade-sys/role/detail', controller.bladeSys.role.detail);
   // 岗位
   router.post('/blade-sys/post/add', controller.bladeSys.post.add);
   router.post('/blade-sys/post/update', controller.bladeSys.post.update);
   router.post('/blade-sys/post/delete', controller.bladeSys.post.delete);
   router.get('/blade-sys/post/list', controller.bladeSys.post.list);
+  router.get('/blade-sys/post/dict', controller.bladeSys.post.dict);
   router.get('/blade-sys/post/detail', controller.bladeSys.post.detail);
   // 租户
   router.post('/blade-sys/tenant/add', controller.bladeSys.tenant.add);
   router.post('/blade-sys/tenant/update', controller.bladeSys.tenant.update);
   router.post('/blade-sys/tenant/delete', controller.bladeSys.tenant.delete);
   router.get('/blade-sys/tenant/list', controller.bladeSys.tenant.list);
+  router.get('/blade-sys/tenant/dict', controller.bladeSys.tenant.dict);
   router.get('/blade-sys/tenant/detail', controller.bladeSys.tenant.detail);
   // 菜单
   router.post('/blade-sys/menu/add', controller.bladeSys.menu.add);

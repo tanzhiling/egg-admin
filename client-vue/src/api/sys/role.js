@@ -26,6 +26,12 @@ export const ApiGetRoleList = (params) => {
     params,
   });
 };
+export const ApiGetRoleDict = (params) => {
+  return request("/blade-sys/role/dict", {
+    method: "get",
+    params,
+  });
+};
 export const ApiGetRoleDetail = (params) => {
   return request("/blade-sys/role/detail", {
     method: "get",

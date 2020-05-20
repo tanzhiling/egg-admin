@@ -11,7 +11,7 @@ module.exports = options => {
         if (bladeAuth) {
           const decode = await ctx.jwtVerify(bladeAuth);
           if (decode.id) {
-            const hasUser = await ctx.model.BladeUser._findOne({ id: decode.id });
+            const hasUser = await ctx.model.BladeUser._findOne({ id: decode.id }, true);
             if (hasUser) {
               await next();
             } else {

@@ -26,6 +26,12 @@ export const ApiGetTenantList = (params) => {
     params,
   });
 };
+export const ApiGetTenantDict = (params) => {
+  return request("/blade-sys/tenant/dict", {
+    method: "get",
+    params,
+  });
+};
 export const ApiGetTenantDetail = (params) => {
   return request("/blade-sys/tenant/detail", {
     method: "get",

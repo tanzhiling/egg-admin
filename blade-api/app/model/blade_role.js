@@ -35,6 +35,12 @@ module.exports = app => {
       allowNull: true,
       field: 'role_alias',
     },
+    status: {
+      type: DataTypes.CHAR(1),
+      allowNull: true,
+      field: 'status',
+      defaultValue: '0',
+    },
     isDeleted: {
       type: DataTypes.INTEGER(2),
       allowNull: true,
@@ -44,16 +50,14 @@ module.exports = app => {
   }, {
     tableName: 'blade_role',
   });
-  bladeRole._add = async function({ id, tenantId, parentId, roleName, sort, roleAlias }) {
+  bladeRole._add = async function({ id, tenantId, parentId, roleName, sort, roleAlias, status }) {
     return bladeRole.findOrCreate({
       where: { roleName },
-      defaults: {
-        id, tenantId, parentId, roleName, sort, roleAlias,
-      },
+      defaults: { id, tenantId, parentId, roleName, sort, roleAlias, status },
     });
   };
-  bladeRole._update = function({ id, tenantId, parentId, roleName, sort, roleAlias }) {
-    return bladeRole.update({ tenantId, parentId, roleName, sort, roleAlias }, { where: { id } });
+  bladeRole._update = function({ id, tenantId, parentId, roleName, sort, roleAlias, status }) {
+    return bladeRole.update({ tenantId, parentId, roleName, sort, roleAlias, status }, { where: { id } });
   };
   bladeRole._delete = function({ id }) {
     return bladeRole.destroy({ where: { id } });
@@ -62,7 +66,11 @@ module.exports = app => {
     const Op = app.Sequelize.Op;
     return bladeRole.findAll({
       where: { [Op.and]: [ roleName ? { roleName: { [Op.like]: `%${roleName}%` } } : null ] },
+      order: [[ 'sort', 'DESC' ]],
     });
+  };
+  bladeRole._findDict = function() {
+    return bladeRole.findAll({ attributes: [ 'roleName', [ 'id', 'roleId' ]], where: { status: '1' } });
   };
   bladeRole._findOne = params => {
     return bladeRole.findOne({ where: params });

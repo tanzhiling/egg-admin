@@ -12,4 +12,6 @@
 ./blade-api/*.un~
 ./blade-api/typings/
 ./blade-api/.nyc_output/
+./blade-api/app/public/
+
 ./client-vue/node_modules/

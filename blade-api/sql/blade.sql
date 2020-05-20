@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2020-05-20 07:36:30
+Date: 2020-05-20 17:09:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -112,7 +112,7 @@ CREATE TABLE `blade_dept` (
   `tenant_id` varchar(12) DEFAULT '000000' COMMENT '租户ID',
   `parent_id` varchar(64) DEFAULT '0' COMMENT '父主键',
   `parent_ids` varchar(2000) DEFAULT NULL COMMENT '祖级列表',
-  `dept_category` int(2) DEFAULT NULL COMMENT '部门类型',
+  `dept_category` char(2) DEFAULT NULL COMMENT '部门类型',
   `dept_name` varchar(45) DEFAULT NULL COMMENT '部门名',
   `full_name` varchar(45) DEFAULT NULL COMMENT '部门全称',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
@@ -124,7 +124,11 @@ CREATE TABLE `blade_dept` (
 -- ----------------------------
 -- Records of blade_dept
 -- ----------------------------
-INSERT INTO `blade_dept` VALUES ('SD', '000000', '', '0,', '1', '山东公司', '山东公司', '10', null, '0');
+INSERT INTO `blade_dept` VALUES ('SD', 'YHD', '0', '0,0,', '1', '山东公司', '山东公司', '10', null, '0');
+INSERT INTO `blade_dept` VALUES ('SDJN', 'YHD', 'SD', '0,0,SD,', '2', '济南公司	', '山东济南公司', '20', null, '0');
+INSERT INTO `blade_dept` VALUES ('SDJN01', 'YHD', 'SDJN', '0,0,SDJN,', '3', '企管部', '山东济南企管部', '40', null, '0');
+INSERT INTO `blade_dept` VALUES ('SDJN02', 'YHD', 'SDJN', '0,0,SDJN,', '3', '财务部', '山东济南财务部', '50', null, '0');
+INSERT INTO `blade_dept` VALUES ('SDQD', 'YHD', 'SD', '0,0,SD,', '2', '青岛公司', '山东青岛公司', '30', null, '0');
 
 -- ----------------------------
 -- Table structure for blade_dict_data
@@ -544,7 +548,7 @@ DROP TABLE IF EXISTS `blade_post`;
 CREATE TABLE `blade_post` (
   `id` varchar(64) NOT NULL COMMENT '主键',
   `tenant_id` varchar(12) DEFAULT '000000' COMMENT '租户ID',
-  `category` int(11) DEFAULT NULL COMMENT '岗位类型',
+  `category` char(11) DEFAULT NULL COMMENT '岗位类型',
   `post_code` varchar(12) DEFAULT NULL COMMENT '岗位编号',
   `post_name` varchar(64) DEFAULT NULL COMMENT '岗位名称',
   `sort` int(2) DEFAULT NULL COMMENT '岗位排序',
@@ -562,6 +566,14 @@ CREATE TABLE `blade_post` (
 -- ----------------------------
 -- Records of blade_post
 -- ----------------------------
+INSERT INTO `blade_post` VALUES ('12b58a865b7457488b59f87e2fff6c67', '000000', '1', 'cfo', '首席财务官', '90', '', null, null, '2020-05-20 14:29:00', null, '2020-05-20 14:29:00', '1', null);
+INSERT INTO `blade_post` VALUES ('4a91f0aaa260049a010959ff60efc41b', '000000', '1', 'coo', '首席运营官', '80', '', null, null, '2020-05-20 14:28:35', null, '2020-05-20 14:28:35', '1', null);
+INSERT INTO `blade_post` VALUES ('9c63517249e8c472ec72449f84b62b31', '000000', '3', 'staff', '普通员工', '30', '', null, null, '2020-05-20 14:34:40', null, '2020-05-20 14:34:40', '1', null);
+INSERT INTO `blade_post` VALUES ('a6b0473152154a28383a537f122cf6ce', '000000', '2', 'hrn', '人力经理', '40', '', null, null, '2020-05-20 14:34:27', null, '2020-05-20 14:34:27', '1', null);
+INSERT INTO `blade_post` VALUES ('c3c593bb429b09623c2afce18c9e6cd5', '000000', '2', 'pm', '技术经理', '50', '', null, null, '2020-05-20 14:34:11', null, '2020-05-20 14:34:11', '1', null);
+INSERT INTO `blade_post` VALUES ('db2dcb2410d423c05840c6f737d230a9', '000000', '1', 'ceo', '首席执行官', '100', '', null, null, '2020-05-20 14:28:18', null, '2020-05-20 14:28:18', '1', null);
+INSERT INTO `blade_post` VALUES ('e77bd543b986bb3b0120f24af9551775', '000000', '1', 'cio', '首席信息官', '60', '', null, null, '2020-05-20 14:33:52', null, '2020-05-20 14:33:52', '1', null);
+INSERT INTO `blade_post` VALUES ('f45cb799f89039d87d0aa9e522b38a4f', '000000', '1', 'cto', '首席技术官', '70', '', null, null, '2020-05-20 14:29:15', null, '2020-05-20 14:29:15', '1', null);
 
 -- ----------------------------
 -- Table structure for blade_process_leave
@@ -601,6 +613,7 @@ CREATE TABLE `blade_role` (
   `role_name` varchar(255) DEFAULT NULL COMMENT '角色名',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
   `role_alias` varchar(255) DEFAULT NULL COMMENT '角色别名',
+  `status` char(2) DEFAULT NULL,
   `is_deleted` int(2) DEFAULT '0' COMMENT '是否已删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
@@ -608,11 +621,11 @@ CREATE TABLE `blade_role` (
 -- ----------------------------
 -- Records of blade_role
 -- ----------------------------
-INSERT INTO `blade_role` VALUES ('1123598816738675201', '000000', '0', '超级管理员', '1', 'administrator', '0');
-INSERT INTO `blade_role` VALUES ('1123598816738675202', '000000', '0', '用户', '2', 'user', '0');
-INSERT INTO `blade_role` VALUES ('1123598816738675203', '000000', '1123598816738675202', '人事', '1', 'hr', '0');
-INSERT INTO `blade_role` VALUES ('1123598816738675204', '000000', '1123598816738675202', '经理', '2', 'manager', '0');
-INSERT INTO `blade_role` VALUES ('1123598816738675205', '000000', '1123598816738675202', '老板', '3', 'boss', '0');
+INSERT INTO `blade_role` VALUES ('1123598816738675201', 'YYZX', '0', '超级管理员', '100', 'administrator', '1', '0');
+INSERT INTO `blade_role` VALUES ('1123598816738675202', 'YHD', '0', '用户', '80', 'user', '1', '0');
+INSERT INTO `blade_role` VALUES ('1123598816738675203', 'YHD', '1123598816738675202', '人事', '80', 'hr', '1', '0');
+INSERT INTO `blade_role` VALUES ('1123598816738675204', 'YHD', '1123598816738675202', '经理', '80', 'manager', '1', '0');
+INSERT INTO `blade_role` VALUES ('1123598816738675205', 'YHD', '1123598816738675202', '老板', '80', 'boss', '1', '0');
 
 -- ----------------------------
 -- Table structure for blade_role_menu
@@ -999,8 +1012,8 @@ CREATE TABLE `blade_tenant` (
 -- ----------------------------
 -- Records of blade_tenant
 -- ----------------------------
-INSERT INTO `blade_tenant` VALUES ('2d7c0f696d1865fc03e425bb3ed00f0e', 'YHD', '1号店', '', '', '李四', '', '', '3000000', '2020-05-30 00:00:00', null, null, '2020-05-17 09:34:29', null, '2020-05-17 09:34:29', '1', '0');
-INSERT INTO `blade_tenant` VALUES ('78f5142f69314691a6720667600ab1c2', 'EHD', '2号店', '', '', '王五', '', '', '4000000', '2020-05-17 09:35:43', null, null, '2020-05-17 09:35:46', null, '2020-05-17 09:35:46', '1', '0');
+INSERT INTO `blade_tenant` VALUES ('2d7c0f696d1865fc03e425bb3ed00f0e', 'YHD', '租户1号店', '', '', '李四', '', '', '3000000', '2020-05-30 00:00:00', null, null, '2020-05-17 09:34:29', null, '2020-05-17 09:34:29', '1', '0');
+INSERT INTO `blade_tenant` VALUES ('78f5142f69314691a6720667600ab1c2', 'EHD', '租户2号店', '', '', '王五', '', '', '4000000', '2020-05-17 09:35:43', null, null, '2020-05-17 09:35:46', null, '2020-05-17 09:35:46', '0', '0');
 INSERT INTO `blade_tenant` VALUES ('f21e2af4744994afb05157554c7e58d9', 'YYZX', '运营中心', 'http://www.baidu.com', '', '张三', '88888888', '上海市黄浦区第一大道', '20000000', '2020-06-06 00:00:00', null, null, '2020-05-17 09:31:44', null, '2020-05-17 09:31:44', '1', '0');
 
 -- ----------------------------
@@ -1068,7 +1081,7 @@ CREATE TABLE `blade_user` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_user` bigint(64) DEFAULT NULL COMMENT '修改人',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `status` int(2) DEFAULT NULL COMMENT '状态',
+  `status` char(1) DEFAULT NULL COMMENT '状态',
   `is_deleted` int(2) DEFAULT '0' COMMENT '是否已删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
@@ -1076,10 +1089,11 @@ CREATE TABLE `blade_user` (
 -- ----------------------------
 -- Records of blade_user
 -- ----------------------------
-INSERT INTO `blade_user` VALUES ('1123598821738675201', '000000', null, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '管理员', '管理员', 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png', 'admin@bladex.vip', '123333333333', '2018-08-08 00:00:00', '1', '1123598816738675201', '1123598813738675201', '1123598817738675201', '1123598821738675201', '1123598813738675201', '2018-08-08 00:00:00', '1123598821738675201', '2018-08-08 00:00:00', '1', '0');
-INSERT INTO `blade_user` VALUES ('1123598821738675202', '000000', null, 'hr', '5e79b90f7bba52d54115f086e48f539016a27ec6', '人事', '人事', '', 'hr@bladex.vip', '123333333333', '2018-08-08 00:00:00', '1', '1123598816738675203', '1123598813738675202', '1123598817738675207', '1123598821738675201', '1123598813738675201', '2019-04-27 17:03:10', '1123598821738675201', '2019-04-27 17:03:10', '1', '0');
-INSERT INTO `blade_user` VALUES ('1123598821738675203', '000000', null, 'manager', 'dfbaa3b61caa3a319f463cc165085aa8c822d2ce', '经理', '经理', '', 'manager@bladex.vip', '123333333333', '2018-08-08 00:00:00', '1', '1123598816738675204', '1123598813738675202', '1123598817738675206', '1123598821738675201', '1123598813738675201', '2019-04-27 17:03:38', '1123598821738675201', '2019-04-27 17:03:38', '1', '0');
-INSERT INTO `blade_user` VALUES ('1123598821738675204', '000000', null, 'boss', 'abe57d23e18f7ad8ea99c86e430c90a05119a9d3', '老板', '老板', '', 'boss@bladex.vip', '123333333333', '2018-08-08 00:00:00', '1', '1123598816738675205', '1123598813738675202', '1123598817738675201', '1123598821738675201', '1123598813738675201', '2019-04-27 17:03:55', '1123598821738675201', '2019-04-27 17:03:55', '1', '0');
+INSERT INTO `blade_user` VALUES ('1123598821738675201', '000000', null, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '管理员', '管理员', '/upload/avatar/1589941896547.jpg', 'admin@bladex.vip', '123333333333', '2018-08-08 00:00:00', '1', '1123598816738675201', 'SD', 'db2dcb2410d423c05840c6f737d230a9', '1123598821738675201', '1123598813738675201', '2018-08-08 00:00:00', '1123598821738675201', '2018-08-08 00:00:00', '1', '0');
+INSERT INTO `blade_user` VALUES ('1123598821738675202', '000000', null, 'hr', '5e79b90f7bba52d54115f086e48f539016a27ec6', '人事', '人事', '', 'hr@bladex.vip', '123333333333', '2018-08-08 00:00:00', '2', '1123598816738675203', 'SDJN', 'a6b0473152154a28383a537f122cf6ce', '1123598821738675201', '1123598813738675201', '2019-04-27 17:03:10', '1123598821738675201', '2019-04-27 17:03:10', '1', '0');
+INSERT INTO `blade_user` VALUES ('1123598821738675203', '000000', null, 'manager', 'dfbaa3b61caa3a319f463cc165085aa8c822d2ce', '经理', '经理', '', 'manager@bladex.vip', '123333333333', '2018-08-08 00:00:00', '1', '1123598816738675204', 'SDJN01', 'c3c593bb429b09623c2afce18c9e6cd5', '1123598821738675201', '1123598813738675201', '2019-04-27 17:03:38', '1123598821738675201', '2019-04-27 17:03:38', '1', '0');
+INSERT INTO `blade_user` VALUES ('1123598821738675204', '000000', null, 'boss', 'abe57d23e18f7ad8ea99c86e430c90a05119a9d3', '老板', '老板', '', 'boss@bladex.vip', '123333333333', '2018-08-08 00:00:00', '1', '1123598816738675205', 'SD', '12b58a865b7457488b59f87e2fff6c67', '1123598821738675201', '1123598813738675201', '2019-04-27 17:03:55', '1123598821738675201', '2019-04-27 17:03:55', '1', '0');
+INSERT INTO `blade_user` VALUES ('53f04c6898462888b4d96eff870d3842', '000000', null, 'zhangsan', 'e10adc3949ba59abbe56e057f20f883e', '托马斯', '张三', '/upload/avatar/1589940775336.jpeg', '18228@qq.com', '17721033713', '2020-05-11 00:00:00', '1', '', '', '', 'admin', null, '2020-05-20 10:12:57', null, '2020-05-20 10:12:57', '1', '0');
 
 -- ----------------------------
 -- Table structure for blade_user_dept

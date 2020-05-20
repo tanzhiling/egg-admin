@@ -30,6 +30,9 @@ class RoleController extends Controller {
   async list() {
     this.ctx.result(await this.service.bladeSys.role.list(this.ctx.query));
   }
+  async dict() {
+    this.ctx.result(await this.service.bladeSys.role.dict(this.ctx.query));
+  }
   async detail() {
     const { id } = this.ctx.query;
     if (id) {

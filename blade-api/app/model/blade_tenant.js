@@ -116,6 +116,9 @@ module.exports = app => {
       where: { [Op.and]: [ tenantName ? { tenantName: { [Op.like]: `%${tenantName}%` } } : null ] },
     });
   };
+  bladeTenant._findDict = function() {
+    return bladeTenant.findAll({ attributes: [ 'tenantId', 'tenantName' ], where: { status: '1' } });
+  };
   bladeTenant._findOne = params => {
     return bladeTenant.findOne({ where: params });
   };

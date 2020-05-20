@@ -5,12 +5,34 @@
         <el-row type="flex" style="flex-wrap:wrap;">
           <el-col :span="12">
             <el-form-item label="所属部门" prop="deptId">
-              <el-input v-model="form.deptId" :disabled="form.id?true:false" style="width:300px" />
+              <el-select v-model="form.deptId" style="width:300px">
+                <el-option
+                  class="select-tree"
+                  :value="dept.deptId"
+                  :label="dept.deptName"
+                  style="height:200px;overflow:auto;background:#fff"
+                >
+                  <el-tree
+                    :data="tree"
+                    lazy
+                    :load="handleLoad"
+                    :props="defaultProps"
+                    @node-click="handleNodeClick"
+                  />
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="所属角色" prop="roleId">
-              <el-input v-model="form.roleId" style="width:300px" />
+              <el-select v-model="form.roleId" style="width:300px">
+                <el-option
+                  v-for="item in roleDict"
+                  :key="item.roleId"
+                  :value="item.roleId"
+                  :label="item.roleName"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -30,7 +52,14 @@
         <el-row type="flex" style="flex-wrap:wrap;">
           <el-col :span="12">
             <el-form-item label="所在岗位" prop="postId">
-              <el-input v-model="form.postId" style="width:300px" />
+              <el-select v-model="form.postId" style="width:300px">
+                <el-option
+                  v-for="item in postDict"
+                  :key="item.postId"
+                  :value="item.postId"
+                  :label="item.postName"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -90,7 +119,10 @@
   </VCard>
 </template>
 <script>
-import { ApiUserAdd, ApiGetUserDetail, ApiUserUpdate, ApiGetDeptTree } from "@/api/sys/user"
+import { ApiUserAdd, ApiGetUserDetail, ApiUserUpdate } from "@/api/sys/user"
+import { ApiGetDeptTree } from "@/api/sys/dept"
+import { ApiGetRoleDict } from "@/api/sys/role"
+import { ApiGetPostDict } from "@/api/sys/post"
 export default {
   props: {
     view: {
@@ -104,6 +136,10 @@ export default {
   },
   data() {
     return {
+      dept: {
+        deptId: "",
+        deptName: ""
+      },
       form: {
         id: "",
         username: '',
@@ -119,7 +155,6 @@ export default {
         postId: "",
         status: ""
       },
-      tree: [],
       rules: {
         username: [
           { required: true, message: '登录账号为必填项', trigger: 'blur' },
@@ -128,29 +163,54 @@ export default {
           { required: true, message: '昵称为必填项', trigger: 'blur' },
         ],
       },
+      tree: [],
+      defaultProps: {
+        children: 'children',
+        label: 'deptName'
+      },
       loading: false,
+      roleDict: [],
+      postDict: []
     }
   },
   computed: {
     auth: function () {
-      let title = "查看", readonly = true, disabled = true
+      let title = "查看", readonly = true
       if (this.view === "add") {
         title = "新增"
         readonly = false
-        disabled = false
       } else if (this.view === "edit") {
         title = "编辑"
         readonly = false
       }
-      return { title, readonly, disabled }
+      return { title, readonly }
     },
   },
   mounted() {
+    this.getTree('0').then(res => {
+      if (res.success) {
+        this.tree = res.data
+      }
+    })
+    this.getRoleDict()
+    this.getPostDict()
     if (this.id) {
       this.getDetail(this.id)
     }
   },
   methods: {
+    async handleLoad(node, resolve) {
+      if (node.level === 0) {
+        return resolve(this.tree)
+      } else {
+        const { data } = await this.getTree(node.data.id)
+        return resolve(data)
+      }
+    },
+    handleNodeClick(data) {
+      this.dept = { deptId: data.id, deptName: data.deptName }
+      this.form.deptId = data.id
+    },
     handleCancel() {
       this.$emit("on-view", 'index')
     },
@@ -194,21 +254,32 @@ export default {
     getDetail(id) {
       ApiGetUserDetail({ id }).then(res => {
         if (res.success) {
-          const { username, nickname, realName, avatar, email, phone, birthday, sex, roleId, deptId, postId, status } = res.data
+          const { username, nickname, realName, avatar, email, phone, birthday, sex, roleId, deptId, postId, status, dept } = res.data
           this.form = { id, username, nickname, realName, avatar, email, phone, birthday, sex, roleId, deptId, postId, status }
+          if (dept) {
+            this.dept = dept
+          }
         } else {
           this.$message.error(res.msg)
         }
       })
     },
-    getTree(id) {
-      ApiGetDeptTree({ id }).then(res => {
+    getRoleDict() {
+      ApiGetRoleDict().then(res => {
         if (res.success) {
-          console.log(res.data)
-        } else {
-          this.$message.error(res.msg)
+          this.roleDict = res.data
         }
       })
+    },
+    getPostDict() {
+      ApiGetPostDict().then(res => {
+        if (res.success) {
+          this.postDict = res.data
+        }
+      })
+    },
+    async getTree(id) {
+      return await ApiGetDeptTree({ id })
     }
   }
 }

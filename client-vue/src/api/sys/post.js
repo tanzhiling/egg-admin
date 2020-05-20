@@ -26,6 +26,12 @@ export const ApiGetPostList = (params) => {
     params,
   });
 };
+export const ApiGetPostDict = (params) => {
+  return request("/blade-sys/post/dict", {
+    method: "get",
+    params,
+  });
+};
 export const ApiGetPostDetail = (params) => {
   return request("/blade-sys/post/detail", {
     method: "get",

@@ -27,6 +27,10 @@ class PostService extends Service {
     const data = await this.ctx.model.BladePost._findList(params);
     return { msg: '查询成功！', success: true, data };
   }
+  async dict(params) {
+    const data = await this.ctx.model.BladePost._findDict(params);
+    return { msg: '查询成功！', success: true, data };
+  }
   async detail({ id }) {
     const data = await this.ctx.model.BladePost._findOne({ id });
     return { msg: '查询成功！', success: true, data };

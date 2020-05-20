@@ -7,8 +7,8 @@
     <el-table ref="table" :height="height" :data="data.list" border>
       <el-table-column prop="username" label="登录账号" />
       <el-table-column prop="nickname" label="用户昵称" />
-      <el-table-column prop="phone" label="手机号" />
-      <el-table-column prop="email" label="电子邮箱" />
+      <el-table-column prop="role.roleName" label="所属角色" />
+      <el-table-column prop="dept.deptName" label="所属部门" />
       <el-table-column prop="updateTime" label="更新时间" width="140" />
       <el-table-column prop="status" label="状态" width="100" align="center">
         <template slot-scope="{row}">

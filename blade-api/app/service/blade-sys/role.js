@@ -27,6 +27,10 @@ class RoleService extends Service {
     const data = await this.ctx.model.BladeRole._findList(params);
     return { msg: '查询成功！', success: true, data };
   }
+  async dict(params) {
+    const data = await this.ctx.model.BladeRole._findDict(params);
+    return { msg: '查询成功！', success: true, data };
+  }
   async detail({ id }) {
     const data = await this.ctx.model.BladeRole._findOne({ id });
     return { msg: '查询成功！', success: true, data };

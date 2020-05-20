@@ -17,7 +17,7 @@ export default (Layout) => {
           title: "角色管理",
         },
         name: "sysRole",
-        component: () => import("@/views/sys/role/index.vue"),
+        component: () => import("@/views/sys/role/role.vue"),
       },
       {
         path: "post",

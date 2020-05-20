@@ -35,18 +35,6 @@
           <el-input v-model="form.sort" style="width:300px" />
         </el-form-item>
       </el-col>
-      <el-col :span="12">
-        <el-form-item label="机构类型" prop="deptCategory">
-          <el-select v-model="form.deptCategory" style="width:300px">
-            <el-option
-              v-for="item in dictData"
-              :key="item.dictValue"
-              :value="item.dictValue"
-              :label="item.dictLabel"
-            />
-          </el-select>
-        </el-form-item>
-      </el-col>
       <el-col :span="24">
         <el-form-item label="备注" prop="remarks">
           <el-input
@@ -66,9 +54,7 @@
 </template>
 <script>
 import { ApiDeptAdd, ApiDeptUpdate } from "@/api/sys/dept"
-import dictMixin from "../mixin/dict"
 export default {
-  mixins: [dictMixin],
   props: {
     view: {
       type: String,
@@ -121,20 +107,16 @@ export default {
   },
   computed: {
     auth: function () {
-      let title = "查看", readonly = true, disabled = true
+      let title = "查看", readonly = true
       if (this.view === "add") {
         title = "新增"
         readonly = false
-        disabled = false
       } else if (this.view === "edit") {
         title = "编辑"
         readonly = false
       }
-      return { title, readonly, disabled }
+      return { title, readonly }
     },
-  },
-  mounted() {
-    this.getDict("sys_office_type")
   },
   methods: {
     handleNodeClick(data) {
