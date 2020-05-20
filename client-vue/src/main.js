@@ -5,6 +5,7 @@ import store from "@/store";
 import "normalize.css/normalize.css";
 import Element, { Message } from "element-ui";
 import * as filter from "@/utils/filter"
+import { IMAGE_DOMAIN } from '@/utils/config'
 import "./permission.js";
 import "@/styles/common.scss";
 import "@/components";
@@ -24,6 +25,7 @@ $message.warning = (message, onClose) =>
 $message.error = (message, onClose) =>
   $message({ message, type: "error", onClose });
 Vue.prototype.$message = $message;
+Vue.prototype.$IMAGE_DOMAIN = IMAGE_DOMAIN;
 Vue.config.productionTip = false;
 new Vue({
   router,

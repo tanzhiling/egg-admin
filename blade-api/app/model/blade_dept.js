@@ -64,19 +64,24 @@ module.exports = app => {
     let data,
       parentIds;
     if (parentId) {
-      data = await bladeDept._findOne({ id: parentId });
+      data = await bladeDept.findOne({ id: parentId });
       parentIds = data.parentIds.concat(parentId, ',');
     }
-    console.log(deptCode);
     return bladeDept.findOrCreate({
       where: { id: deptCode },
       defaults: {
-        id: deptCode, tenantId, parentId, parentIds, deptCategory, deptName, fullName, sort, remark,
+        id: deptCode, tenantId, parentId: parentId || '0', parentIds, deptCategory, deptName, fullName, sort, remark,
       },
     });
   };
-  bladeDept._update = function({ id, tenantId, deptCategory, deptName, fullName, sort, remark }) {
-    return bladeDept.update({ tenantId, deptCategory, deptName, fullName, sort, remark }, { where: { id } });
+  bladeDept._update = async function({ id, parentId, tenantId, deptCategory, deptName, fullName, sort, remark }) {
+    let data,
+      parentIds;
+    if (parentId) {
+      data = await bladeDept.findOne({ id: parentId });
+      parentIds = data.parentIds.concat(parentId, ',');
+    }
+    return bladeDept.update({ tenantId, parentId, parentIds, deptCategory, deptName, fullName, sort, remark }, { where: { id } });
   };
   bladeDept._delete = function({ id }) {
     return bladeDept.destroy({ where: { id } });
@@ -89,17 +94,21 @@ module.exports = app => {
           deptName ? { deptName: { [Op.like]: `%${deptName}%` } } : null,
         ],
       },
-      include: [{ model: app.model.BladeTenant, as: 'tenant', attributes: [ 'tenantName' ] }],
+      include: { model: app.model.BladeTenant, as: 'tenant', attributes: [ 'tenantName' ] },
       limit: size,
       offset: (current - 1) * size,
     });
     return { list, size, current, total };
   };
   bladeDept._findOne = params => {
-    return bladeDept.findOne({ where: params });
+    return bladeDept.findOne({ where: params, include: { model: bladeDept, as: 'parent', attributes: [ 'deptName', 'id' ] } });
+  };
+  bladeDept._findTree = function({ id }) {
+    return bladeDept.findAll({ where: { parentId: id } });
   };
   bladeDept.associate = function() {
     bladeDept.hasOne(app.model.BladeTenant, { foreignKey: 'tenantId', sourceKey: 'tenantId', as: 'tenant' });
+    bladeDept.belongsTo(bladeDept, { foreignKey: 'parentId', targetKey: 'id', as: 'parent' });
   };
   return bladeDept;
 };

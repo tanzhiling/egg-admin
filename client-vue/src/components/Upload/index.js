@@ -1,2 +1,3 @@
-import Upload from "./index.vue"
-export default Upload
+import Upload from './index.vue'
+import UploadImg from './img.vue'
+export { Upload, UploadImg }

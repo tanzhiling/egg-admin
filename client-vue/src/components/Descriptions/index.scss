@@ -1,0 +1,41 @@
+@import '~@/styles/theme.scss';
+.descriptions {
+  background-color: $bg-color-white;
+  clear: both;
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    &-title {
+      color: $text-color-black;
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+  }
+  &-view {
+    width: 100%;
+  }
+
+  &-item {
+    display: inline-flex;
+    align-items: center;
+    padding-bottom: 12px;
+
+    &-label {
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: normal;
+      white-space: nowrap;
+    }
+
+    &-content {
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    &-label::after {
+      content: ':';
+      position: relative;
+      top: -0.5px;
+      margin: 0 8px 0 2px;
+    }
+  }
+}

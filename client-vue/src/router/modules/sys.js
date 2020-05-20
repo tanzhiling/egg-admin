@@ -41,7 +41,7 @@ export default (Layout) => {
           title: "用户管理",
         },
         name: "sysUser",
-        component: () => import("@/views/sys/user/index.vue"),
+        component: () => import("@/views/sys/user/user.vue"),
       },
       {
         path: "menu",

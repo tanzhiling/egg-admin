@@ -1,6 +1,6 @@
 <template>
   <el-upload
-    action="/blade-upload/file/upload"
+    :action="action"
     :headers="headers"
     :on-preview="handlePreview"
     :on-remove="handleRemove"
@@ -8,12 +8,26 @@
     :on-exceed="handleExceed"
     :file-list="fileList"
   >
-    <el-button size="small" type="primary">点击上传</el-button>
+    <template v-if="mode==='img'">
+      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </template>
+    <el-button v-else size="small" type="primary">文件上传</el-button>
   </el-upload>
 </template>
 <script>
 import { getCookie } from "@/utils/cookie";
 export default {
+  props: {
+    action: {
+      type: String,
+      default: "/blade-upload/file/upload"
+    },
+    mode:{
+      type:String,
+      default:"img"
+    }
+  },
   data() {
     return {
       fileList: [],

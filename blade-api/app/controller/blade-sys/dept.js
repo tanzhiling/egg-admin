@@ -30,6 +30,9 @@ class DeptController extends Controller {
   async list() {
     this.ctx.result(await this.service.bladeSys.dept.list(this.ctx.query));
   }
+  async tree() {
+    this.ctx.result(await this.service.bladeSys.dept.tree(this.ctx.query));
+  }
   async detail() {
     const { id } = this.ctx.query;
     if (id) {

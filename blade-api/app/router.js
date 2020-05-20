@@ -29,6 +29,7 @@ module.exports = app => {
   router.post('/blade-sys/dept/update', controller.bladeSys.dept.update);
   router.post('/blade-sys/dept/delete', controller.bladeSys.dept.delete);
   router.get('/blade-sys/dept/list', controller.bladeSys.dept.list);
+  router.get('/blade-sys/dept/tree', controller.bladeSys.dept.tree);
   router.get('/blade-sys/dept/detail', controller.bladeSys.dept.detail);
   // 角色
   router.post('/blade-sys/role/add', controller.bladeSys.role.add);
@@ -55,5 +56,5 @@ module.exports = app => {
   router.get('/blade-sys/menu/list', controller.bladeSys.menu.list);
   router.get('/blade-sys/menu/detail', controller.bladeSys.menu.detail);
   // 文件处理
-  router.post('/blade-upload/file/upload', controller.bladeUpload.file.upload);
+  router.post('/blade-base/upload/avatar', controller.bladeBase.upload.avatar);
 };

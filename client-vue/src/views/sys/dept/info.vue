@@ -1,71 +1,83 @@
 <template>
   <VCard icon="back" :title="auth.title" @on-back="handleCancel">
     <el-form ref="form" :rules="rules" :model="form" inline label-width="100px">
-      <el-col :span="12">
-        <el-form-item label="机构名称" prop="deptName">
-          <el-input v-model="form.deptName" style="width:300px" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="上级机构" prop="parentId">
-          <el-select v-model="form.parentId" style="width:300px">
-            <el-option
-              class="select-tree"
-              :value="last.deptCode"
-              :label="last.deptName"
-              style="height:200px;overflow:auto;background:#fff"
-            >
-              <el-tree :data="tree" :props="defaultProps" @node-click="handleNodeClick" />
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="机构编码" prop="deptCode">
-          <el-input v-model="form.deptCode" style="width:300px" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="机构全称" prop="fullName">
-          <el-input v-model="form.fullName" style="width:300px" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="排序号" prop="sort">
-          <el-input v-model="form.sort" style="width:300px" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="机构类型" prop="deptCategory">
-          <el-select v-model="form.deptCategory" style="width:300px">
-            <el-option
-              v-for="item in dictData"
-              :key="item.dictValue"
-              :value="item.dictValue"
-              :label="item.dictLabel"
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="机构名称" prop="deptName">
+            <el-input v-model="form.deptName" style="width:300px" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="上级机构" prop="parentId">
+            <el-select v-model="form.parentId" style="width:300px">
+              <el-option
+                class="select-tree"
+                :value="parent.id"
+                :label="parent.deptName"
+                style="height:200px;overflow:auto;background:#fff"
+              >
+                <el-tree
+                  :data="tree"
+                  lazy
+                  :load="handleLoad"
+                  :props="defaultProps"
+                  @node-click="handleNodeClick"
+                />
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="机构编码" prop="deptCode">
+            <el-input
+              v-model="form.deptCode"
+              :disabled="form.id?true:false"
+              style="width:300px"
             />
-          </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="机构全称" prop="fullName">
+            <el-input v-model="form.fullName" style="width:300px" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="排序号" prop="sort">
+            <el-input v-model="form.sort" style="width:300px" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="机构类型" prop="deptCategory">
+            <el-select v-model="form.deptCategory" style="width:300px">
+              <el-option
+                v-for="item in dictData"
+                :key="item.dictValue"
+                :value="item.dictValue"
+                :label="item.dictLabel"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="备注" prop="remarks">
+            <el-input
+              v-model="form.remarks"
+              style="width:500px"
+              :autosize="{ minRows: 3, maxRows: 6}"
+              type="textarea"
+            />
+          </el-form-item>
+        </el-col>
+        <el-form-item v-if="!auth.readonly" label=" ">
+          <el-button :loading="loading" type="primary" icon="el-icon-check" @click="handleSubmit">保存</el-button>
+          <el-button @click="handleCancel">取消</el-button>
         </el-form-item>
-      </el-col>
-      <el-col :span="24">
-        <el-form-item label="备注" prop="remarks">
-          <el-input
-            v-model="form.remarks"
-            style="width:500px"
-            :autosize="{ minRows: 3, maxRows: 6}"
-            type="textarea"
-          />
-        </el-form-item>
-      </el-col>
-      <el-form-item v-if="auth.readonly" label=" ">
-        <el-button :loading="loading" type="primary" icon="el-icon-check" @click="handleSubmit">保存</el-button>
-        <el-button @click="handleCancel">取消</el-button>
-      </el-form-item>
+      </el-row>
     </el-form>
   </VCard>
 </template>
 <script>
-import { ApiDeptAdd, ApiDeptUpdate } from "@/api/sys/dept"
+import { ApiDeptAdd, ApiDeptUpdate, ApiGetDeptTree, ApiGetDeptDetail } from "@/api/sys/dept"
 import dictMixin from "../mixin/dict"
 export default {
   mixins: [dictMixin],
@@ -73,15 +85,20 @@ export default {
     view: {
       type: String,
       default: ""
+    },
+    id: {
+      type: String,
+      default: ""
     }
   },
   data() {
     return {
-      last: {
-        deptCode: "",
+      parent: {
+        id: "",
         deptName: ""
       },
       form: {
+        id: "",
         deptCode: "",
         deptName: "",
         parentId: "",
@@ -133,13 +150,26 @@ export default {
       return { title, readonly, disabled }
     },
   },
-  mounted() {
+  async mounted() {
+    if (this.id) {
+      this.getDetail(this.id)
+    }
     this.getDict("sys_office_type")
+    const { data } = await this.getTree('0')
+    this.tree = data
   },
   methods: {
+    async handleLoad(node, resolve) {
+      if (node.level === 0) {
+        return resolve(this.tree)
+      } else {
+        const { data } = await this.getTree(node.data.id)
+        return resolve(data)
+      }
+    },
     handleNodeClick(data) {
-      this.last = data
-      this.form.parentId = data.officeCode
+      this.parent = data
+      this.form.parentId = data.id
     },
     handleSubmit() {
       this.$refs.form.validate((valid) => {
@@ -178,6 +208,22 @@ export default {
         }
       })
     },
+    getDetail(id) {
+      ApiGetDeptDetail({ id }).then(res => {
+        if (res.success) {
+          const { deptName, parentId, fullName, deptCategory, status, remarks, sort, parent } = res.data
+          this.form = { deptCode: id, deptName, parentId, fullName, deptCategory, status, remarks, sort, id }
+          if (parent) {
+            this.parent = parent
+          }
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    async getTree(id) {
+      return await ApiGetDeptTree({ id })
+    }
   }
 }
 </script>

@@ -8,12 +8,19 @@
       <el-table-column prop="deptName" label="机构名称" />
       <el-table-column prop="tenant.tenantName" label="所属租户" />
       <el-table-column prop="fullName" label="机构全称" />
-      <el-table-column prop="deptCategory" label="机构类型" />
+      <el-table-column prop="deptCategory" label="机构类型">
+        <template slot-scope="{row}">{{ row.deptCategory|deptTypeFilter }}</template>
+      </el-table-column>
       <el-table-column prop="sort" label="排序" />
       <el-table-column prop="remark" label="备注" />
       <el-table-column label="操作" align="center" width="220">
         <template slot-scope="{row}">
-          <el-button type="text" icon="el-icon-view" size="small">查看</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-view"
+            size="small"
+            @click="handleView('info',row.id)"
+          >查看</el-button>
           <el-button
             type="text"
             icon="el-icon-edit"
@@ -58,7 +65,7 @@ export default {
   },
   methods: {
     handleView(view, id) {
-      this.$emit("on-view", { id })
+      this.$emit("on-view", view, id)
     },
     handleTableHeight(height) {
       this.$nextTick(() => {

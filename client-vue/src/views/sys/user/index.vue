@@ -1,7 +1,7 @@
 <template>
   <VCard icon="s-promotion" mode="table" title="用户管理" @on-table-height-change="handleTableHeight">
     <template slot="extra">
-      <el-button type="success" icon="el-icon-plus" @click="handleRouter('sysUserAdd')">新增</el-button>
+      <el-button type="success" icon="el-icon-plus" @click="handleView('add')">新增</el-button>
     </template>
     <VForm slot="form" :data="form.data" :model="form.model" @on-ok="handleSearch" />
     <el-table ref="table" :height="height" :data="data.list" border>
@@ -18,12 +18,17 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="220">
         <template slot-scope="{row}">
-          <el-button type="text" icon="el-icon-view" size="small">查看</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-view"
+            size="small"
+            @click="handleView('info',row.id)"
+          >查看</el-button>
           <el-button
             type="text"
             icon="el-icon-edit"
             size="small"
-            @click="handleRouter('sysUserEdit',row.id)"
+            @click="handleView('edit',row.id)"
           >编辑</el-button>
           <el-button type="text" icon="el-icon-delete" size="small" @click="handleDelete(row.id)">删除</el-button>
         </template>
@@ -72,11 +77,11 @@ export default {
     }
   },
   mounted() {
-    this.getUserList()
+    this.getList()
   },
   methods: {
-    handleRouter(name, id) {
-      this.$router.push({ name, query: { id } })
+    handleView(view, id) {
+      this.$emit("on-view", view, id)
     },
     handleTableHeight(height) {
       this.$nextTick(() => {
@@ -84,7 +89,7 @@ export default {
       })
     },
     handleSearch(payload) {
-      this.getUserList(payload)
+      this.getList(payload)
     },
     handleDelete(id) {
       this.$confirm('确定将选择数据删除?', '', {
@@ -101,7 +106,7 @@ export default {
         })
       })
     },
-    getUserList(payload) {
+    getList(payload) {
       ApiGetUserList(payload).then(res => {
         if (res.success) {
           this.data = res.data

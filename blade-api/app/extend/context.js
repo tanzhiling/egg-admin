@@ -22,7 +22,8 @@ module.exports = {
   result({ success, ...pramas }) {
     if (success) {
       this.body = { success, code: 200, ...pramas };
+    } else {
+      this.body = { success, code: 400, ...pramas };
     }
-    this.body = { success, code: 400, ...pramas };
   },
 };

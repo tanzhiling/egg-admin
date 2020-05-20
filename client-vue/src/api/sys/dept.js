@@ -26,6 +26,12 @@ export const ApiGetDeptList = (params) => {
     params,
   });
 };
+export const ApiGetDeptTree = (params) => {
+  return request("/blade-sys/dept/tree", {
+    method: "get",
+    params,
+  });
+};
 export const ApiGetDeptDetail = (params) => {
   return request("/blade-sys/dept/detail", {
     method: "get",

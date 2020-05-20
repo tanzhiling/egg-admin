@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       view: "index",
-      id: ''
+      id: "",
     }
   },
   methods: {

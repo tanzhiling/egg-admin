@@ -26,6 +26,10 @@ class DeptService extends Service {
     const data = await this.ctx.model.BladeDept._findList(params);
     return { msg: '查询成功！', success: true, data };
   }
+  async tree(params) {
+    const data = await this.ctx.model.BladeDept._findTree(params);
+    return { msg: '查询成功！', success: true, data };
+  }
   async detail({ id }) {
     const data = await this.ctx.model.BladeDept._findOne({ id });
     return { msg: '查询成功！', success: true, data };

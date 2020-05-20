@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 // 上传
-export const ApiLogin = (data) => {
-  return request('/blade-upload/file/upload', {
+export const Apiupload = (data) => {
+  return request('/blade-base/upload/avatar', {
     method: 'post',
     data,
     requestType: 'file',
