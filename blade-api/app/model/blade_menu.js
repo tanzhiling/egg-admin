@@ -66,6 +66,12 @@ module.exports = app => {
       allowNull: true,
       field: 'remark',
     },
+    hasChildren: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return !!(this.getDataValue('children') && this.getDataValue('children').length > 0);
+      },
+    },
     isDeleted: {
       type: DataTypes.INTEGER(2),
       allowNull: true,
@@ -89,14 +95,22 @@ module.exports = app => {
   bladeMenu._delete = function({ id }) {
     return bladeMenu.destroy({ where: { id } });
   };
-  bladeMenu._findList = async function({ name }) {
+  bladeMenu._findList = async function({ name, parentId }) {
     const Op = app.Sequelize.Op;
     return bladeMenu.findAll({
-      where: { [Op.and]: [ name ? { name: { [Op.like]: `%${name}%` } } : null ] },
+      attributes: { exclude: [ 'children' ] },
+      include: {
+        model: bladeMenu,
+        as: 'children',
+      },
+      where: { [Op.and]: [ name ? { name: { [Op.like]: `%${name}%` } } : null ], parentId },
     });
   };
   bladeMenu._findOne = params => {
     return bladeMenu.findOne({ where: params });
+  };
+  bladeMenu.associate = function() {
+    bladeMenu.hasMany(bladeMenu, { foreignKey: 'parentId', sourceKey: 'id', as: 'children' });
   };
   return bladeMenu;
 };

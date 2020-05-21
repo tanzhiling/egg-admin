@@ -4,11 +4,24 @@
       <el-button type="success" icon="el-icon-plus" @click="handleView('add')">新增</el-button>
     </template>
     <VForm slot="form" :data="form.data" :model="form.model" @on-ok="handleSearch" />
-    <el-table ref="table" :height="height" :data="data.list" border>
-      <el-table-column prop="deptName" label="机构名称" />
-      <el-table-column prop="tenant.tenantName" label="所属租户" />
-      <el-table-column prop="fullName" label="机构全称" />
-      <el-table-column prop="deptCategory" label="机构类型" />
+    <el-table
+      ref="table"
+      :data="data"
+      row-key="id"
+      border
+      lazy
+      :load="handleLoad"
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+      <el-table-column prop="name" label="菜单名称" />
+      <el-table-column prop="path" label="路由地址" />
+      <el-table-column prop="source" label="图标">
+        <template slot-scope="{row}">
+          <i :class="row.source"></i>
+        </template>
+      </el-table-column>
+      <el-table-column prop="code" label="编码" />
+      <el-table-column prop="alias" label="菜单别名" />
       <el-table-column prop="sort" label="排序" />
       <el-table-column prop="remark" label="备注" />
       <el-table-column label="操作" align="center" width="220">
@@ -24,11 +37,10 @@
         </template>
       </el-table-column>
     </el-table>
-    <VPage class="margin-top-10" :total="data.total" :current="data.current" :size="data.size" />
   </VCard>
 </template>
 <script>
-import { ApiGetDeptList, ApiDeptDelete } from "@/api/sys/dept"
+import { ApiGetMenuList, ApiMenuDelete } from "@/api/sys/menu"
 export default {
   data() {
     return {
@@ -45,18 +57,20 @@ export default {
           },
         ],
       },
-      data: {
-        list: [],
-        size: 10,
-        current: 1,
-        total: 0,
-      },
+      data: []
     }
   },
   mounted() {
-    this.getList()
+    this.getList({ parentId: '0' })
   },
   methods: {
+    handleLoad(tree, treeNode, resolve) {
+      ApiGetMenuList({ parentId: tree.id }).then(res => {
+        if (res.success) {
+          resolve(res.data)
+        }
+      })
+    },
     handleView(view, id) {
       this.$emit("on-view", { id })
     },
@@ -74,7 +88,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        ApiDeptDelete({ id }).then(res => {
+        ApiMenuDelete({ id }).then(res => {
           if (res.success) {
             this.$message.success(res.msg)
             this.getList()
@@ -85,7 +99,7 @@ export default {
       })
     },
     getList(payload) {
-      ApiGetDeptList(payload).then(res => {
+      ApiGetMenuList(payload).then(res => {
         if (res.success) {
           this.data = res.data
         }
