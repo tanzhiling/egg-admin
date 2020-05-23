@@ -54,4 +54,4 @@
 │   ├── plugin.js         // 插件配置
 │   └── plugin.local.js   
 ```
-<img src="./assets/bg.png"/>
+<img src="https://github.com/tanzhiling/egg-admin/blob/master/assets/bg.png"/>
