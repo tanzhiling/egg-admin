@@ -26,6 +26,12 @@ export const ApiGetMenuList = (params) => {
     params,
   });
 };
+export const ApiGetMenuTree = (params) => {
+  return request("/blade-sys/menu/tree", {
+    method: "get",
+    params,
+  });
+};
 export const ApiGetMenuDetail = (params) => {
   return request("/blade-sys/menu/detail", {
     method: "get",

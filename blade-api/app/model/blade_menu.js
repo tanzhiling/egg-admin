@@ -44,17 +44,6 @@ module.exports = app => {
       allowNull: true,
       field: 'sort',
     },
-    category: {
-      type: DataTypes.INTEGER(2),
-      allowNull: true,
-      field: 'category',
-    },
-    action: {
-      type: DataTypes.INTEGER(2),
-      allowNull: true,
-      defaultValue: '0',
-      field: 'action',
-    },
     isOpen: {
       type: DataTypes.INTEGER(2),
       allowNull: true,
@@ -69,7 +58,7 @@ module.exports = app => {
     hasChildren: {
       type: DataTypes.VIRTUAL,
       get() {
-        return !!(this.getDataValue('children') && this.getDataValue('children').length > 0);
+        return !!(this.getDataValue('count') > 0);
       },
     },
     isDeleted: {
@@ -81,7 +70,7 @@ module.exports = app => {
   }, {
     tableName: 'blade_menu',
   });
-  bladeMenu._add = async function({ id, parentId, code, name, alias, path, source, sort, category, action, isOpen, remark }) {
+  bladeMenu._add = async function({ id, parentId = '0', code, name, alias, path, source, sort, category, action, isOpen, remark }) {
     return bladeMenu.findOrCreate({
       where: { code },
       defaults: {
@@ -89,7 +78,7 @@ module.exports = app => {
       },
     });
   };
-  bladeMenu._update = function({ id, parentId, code, name, alias, path, source, sort, category, action, isOpen, remark }) {
+  bladeMenu._update = function({ id, parentId = '0', code, name, alias, path, source, sort, category, action, isOpen, remark }) {
     return bladeMenu.update({ parentId, code, name, alias, path, source, sort, category, action, isOpen, remark }, { where: { id } });
   };
   bladeMenu._delete = function({ id }) {
@@ -98,19 +87,28 @@ module.exports = app => {
   bladeMenu._findList = async function({ name, parentId }) {
     const Op = app.Sequelize.Op;
     return bladeMenu.findAll({
-      attributes: { exclude: [ 'children' ] },
+      attributes: {
+        include: [[ app.Sequelize.fn('COUNT', app.Sequelize.col('children.id')), 'count' ]],
+      },
       include: {
         model: bladeMenu,
         as: 'children',
+        attributes: [],
       },
-      where: { [Op.and]: [ name ? { name: { [Op.like]: `%${name}%` } } : null ], parentId },
+      where: { [Op.and]: [ name ? { name: { [Op.like]: `%${name}%` } } : null, parentId ? { parentId } : null ] },
+      group: [ 'bladeMenu.id' ],
+      order: [[ 'sort', 'DESC' ]],
     });
   };
+  bladeMenu._findTree = function({ id }) {
+    return bladeMenu.findAll({ attributes: [ 'id', 'name' ], where: { parentId: id }, order: [[ 'sort', 'DESC' ]] });
+  };
   bladeMenu._findOne = params => {
-    return bladeMenu.findOne({ where: params });
+    return bladeMenu.findOne({ where: params, include: { model: bladeMenu, as: 'parent', attributes: [ 'name', 'id' ] } });
   };
   bladeMenu.associate = function() {
     bladeMenu.hasMany(bladeMenu, { foreignKey: 'parentId', sourceKey: 'id', as: 'children' });
+    bladeMenu.belongsTo(bladeMenu, { foreignKey: 'parentId', targetKey: 'id', as: 'parent' });
   };
   return bladeMenu;
 };

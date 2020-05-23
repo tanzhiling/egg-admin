@@ -1,7 +1,7 @@
 <template>
   <transition name="fade-transform" mode="out-in">
     <Index v-if="view==='index'" @on-view="handleView" />
-    <Info v-else :view="view" @on-view="handleView" />
+    <Info v-else :id="id" :view="view" @on-view="handleView" />
   </transition>
 </template>
 <script>
@@ -15,13 +15,13 @@ export default {
   data() {
     return {
       view: "index",
-      params: {}
+      id: ""
     }
   },
   methods: {
-    handleView(view, params) {
+    handleView(view, id) {
       this.view = view
-      this.params = params
+      this.id = id
     }
   }
 }

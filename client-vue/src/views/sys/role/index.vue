@@ -15,7 +15,7 @@
           <el-tag v-else type="danger" effect="dark">停用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="220">
+      <el-table-column label="操作" align="center" width="280">
         <template slot-scope="{row}">
           <el-button
             type="text"
@@ -30,6 +30,7 @@
             @click="handleView('edit',row.id)"
           >编辑</el-button>
           <el-button type="text" icon="el-icon-delete" size="small" @click="handleDelete(row.id)">删除</el-button>
+          <el-button type="text" icon="el-icon-collection-tag" size="small">功能菜单</el-button>
         </template>
       </el-table-column>
     </el-table>

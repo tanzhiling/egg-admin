@@ -46,21 +46,9 @@ export default [
         id: '14',
       },
       {
-        title: '模块管理',
-        id: '10',
-      },
-      {
-        title: '参数设置',
-        id: '11',
-      },
-      {
         title: '字典管理',
         id: '12',
         name:"sysDict"
-      },
-      {
-        title: '行政区域',
-        id: '13',
       },
     ],
   },

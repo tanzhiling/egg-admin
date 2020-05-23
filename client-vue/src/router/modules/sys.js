@@ -57,7 +57,7 @@ export default (Layout) => {
           title: "字典管理",
         },
         name: "sysDict",
-        component: () => import("@/views/sys/dict/index.vue"),
+        component: () => import("@/views/sys/dict/dict.vue"),
       },
       {
         path: "dict/dataList",

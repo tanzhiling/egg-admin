@@ -57,6 +57,7 @@ module.exports = app => {
   router.post('/blade-sys/menu/update', controller.bladeSys.menu.update);
   router.post('/blade-sys/menu/delete', controller.bladeSys.menu.delete);
   router.get('/blade-sys/menu/list', controller.bladeSys.menu.list);
+  router.get('/blade-sys/menu/tree', controller.bladeSys.menu.tree);
   router.get('/blade-sys/menu/detail', controller.bladeSys.menu.detail);
   // 文件处理
   router.post('/blade-base/upload/avatar', controller.bladeBase.upload.avatar);

@@ -24,9 +24,14 @@
       <el-table-column prop="alias" label="菜单别名" />
       <el-table-column prop="sort" label="排序" />
       <el-table-column prop="remark" label="备注" />
-      <el-table-column label="操作" align="center" width="220">
+      <el-table-column label="操作" align="center" width="260">
         <template slot-scope="{row}">
-          <el-button type="text" icon="el-icon-view" size="small">查看</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-view"
+            size="small"
+            @click="handleView('info',row.id)"
+          >查看</el-button>
           <el-button
             type="text"
             icon="el-icon-edit"
@@ -34,6 +39,12 @@
             @click="handleView('edit',row.id)"
           >编辑</el-button>
           <el-button type="text" icon="el-icon-delete" size="small" @click="handleDelete(row.id)">删除</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-delete"
+            size="small"
+            @click="handleView('add',row.id)"
+          >新增子项</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -47,13 +58,13 @@ export default {
       height: 0,
       form: {
         model: {
-          deptName: "",
+          name: "",
         },
         data: [
           {
             component: "Input",
-            label: "机构名称",
-            field: "deptName"
+            label: "菜单名称",
+            field: "name"
           },
         ],
       },
@@ -72,7 +83,7 @@ export default {
       })
     },
     handleView(view, id) {
-      this.$emit("on-view", { id })
+      this.$emit("on-view", view, id)
     },
     handleTableHeight(height) {
       this.$nextTick(() => {
@@ -91,7 +102,7 @@ export default {
         ApiMenuDelete({ id }).then(res => {
           if (res.success) {
             this.$message.success(res.msg)
-            this.getList()
+            this.getList({ parentId: '0' })
           } else {
             this.$message.error(res.msg)
           }

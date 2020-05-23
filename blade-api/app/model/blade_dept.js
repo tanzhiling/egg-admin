@@ -20,12 +20,6 @@ module.exports = app => {
       field: 'parent_id',
       defaultValue: '0',
     },
-    parentIds: {
-      type: DataTypes.STRING(2000),
-      allowNull: true,
-      field: 'parent_ids',
-      defaultValue: '0,',
-    },
     deptCategory: {
       type: DataTypes.INTEGER(2),
       allowNull: true,
@@ -60,28 +54,16 @@ module.exports = app => {
   }, {
     tableName: 'blade_dept',
   });
-  bladeDept._add = async function({ deptCode, tenantId, parentId, deptCategory, deptName, fullName, sort, remark }) {
-    let data,
-      parentIds;
-    if (parentId) {
-      data = await bladeDept.findOne({ id: parentId });
-      parentIds = data.parentIds.concat(parentId, ',');
-    }
+  bladeDept._add = async function({ deptCode, tenantId, parentId = '0', deptCategory, deptName, fullName, sort, remark }) {
     return bladeDept.findOrCreate({
       where: { id: deptCode },
       defaults: {
-        id: deptCode, tenantId, parentId: parentId || '0', parentIds, deptCategory, deptName, fullName, sort, remark,
+        id: deptCode, tenantId, parentId, deptCategory, deptName, fullName, sort, remark,
       },
     });
   };
   bladeDept._update = async function({ id, parentId, tenantId, deptCategory, deptName, fullName, sort, remark }) {
-    let data,
-      parentIds;
-    if (parentId) {
-      data = await bladeDept.findOne({ id: parentId });
-      parentIds = data.parentIds.concat(parentId, ',');
-    }
-    return bladeDept.update({ tenantId, parentId, parentIds, deptCategory, deptName, fullName, sort, remark }, { where: { id } });
+    return bladeDept.update({ tenantId, parentId, deptCategory, deptName, fullName, sort, remark }, { where: { id } });
   };
   bladeDept._delete = function({ id }) {
     return bladeDept.destroy({ where: { id } });
