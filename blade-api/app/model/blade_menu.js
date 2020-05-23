@@ -70,7 +70,7 @@ module.exports = app => {
   }, {
     tableName: 'blade_menu',
   });
-  bladeMenu._add = async function({ id, parentId = '0', code, name, alias, path, source, sort, category, action, isOpen, remark }) {
+  bladeMenu._add = function({ id, parentId = '0', code, name, alias, path, source, sort, category, action, isOpen, remark }) {
     return bladeMenu.findOrCreate({
       where: { code },
       defaults: {
@@ -84,7 +84,7 @@ module.exports = app => {
   bladeMenu._delete = function({ id }) {
     return bladeMenu.destroy({ where: { id } });
   };
-  bladeMenu._findList = async function({ name, parentId }) {
+  bladeMenu._findList = function({ name, parentId }) {
     const Op = app.Sequelize.Op;
     return bladeMenu.findAll({
       attributes: {
@@ -100,8 +100,8 @@ module.exports = app => {
       order: [[ 'sort', 'DESC' ]],
     });
   };
-  bladeMenu._findTree = function({ id }) {
-    return bladeMenu.findAll({ attributes: [ 'id', 'name' ], where: { parentId: id }, order: [[ 'sort', 'DESC' ]] });
+  bladeMenu._findTree = function() {
+    return bladeMenu.findAll({ attributes: [ 'id', 'name', 'parentId' ], order: [[ 'sort', 'DESC' ]], raw: true });
   };
   bladeMenu._findOne = params => {
     return bladeMenu.findOne({ where: params, include: { model: bladeMenu, as: 'parent', attributes: [ 'name', 'id' ] } });

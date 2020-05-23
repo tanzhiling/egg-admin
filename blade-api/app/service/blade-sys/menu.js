@@ -28,7 +28,8 @@ class MenuService extends Service {
     return { msg: '查询成功！', success: true, data };
   }
   async tree(params) {
-    const data = await this.ctx.model.BladeMenu._findTree(params);
+    const result = await this.ctx.model.BladeMenu._findTree(params);
+    const data = this.ctx.helper.renderTree(result, '0');
     return { msg: '查询成功！', success: true, data };
   }
   async detail({ id }) {

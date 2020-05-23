@@ -83,7 +83,7 @@ module.exports = app => {
   bladeDictData._delete = function({ id }) {
     return bladeDictData.destroy({ where: { id } });
   };
-  bladeDictData._findList = async function({ dictType }, attributes) {
+  bladeDictData._findList = function({ dictType }, attributes) {
     if (attributes) {
       return bladeDictData.findAll({ attributes: [ 'dictLabel', 'dictValue' ], where: { dictType }, order: [[ 'sort', 'ASC' ]] });
     }

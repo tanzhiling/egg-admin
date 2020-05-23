@@ -96,7 +96,7 @@ module.exports = app => {
   }, {
     tableName: 'blade_tenant',
   });
-  bladeTenant._add = async function({ id, tenantId, tenantName, domain, backgroundUrl, linkman, contactNumber, address, accountNumber, expireTime, createUser, status }) {
+  bladeTenant._add = function({ id, tenantId, tenantName, domain, backgroundUrl, linkman, contactNumber, address, accountNumber, expireTime, createUser, status }) {
     return bladeTenant.findOrCreate({
       where: { tenantId },
       defaults: {
@@ -110,7 +110,7 @@ module.exports = app => {
   bladeTenant._delete = function({ id }) {
     return bladeTenant.destroy({ where: { id } });
   };
-  bladeTenant._findList = async function({ tenantName }) {
+  bladeTenant._findList = function({ tenantName }) {
     const Op = app.Sequelize.Op;
     return bladeTenant.findAll({
       where: { [Op.and]: [ tenantName ? { tenantName: { [Op.like]: `%${tenantName}%` } } : null ] },

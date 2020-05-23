@@ -21,5 +21,11 @@ module.exports = app => {
   }, {
     tableName: 'blade_role_menu',
   });
+  bladeRoleMenu._add = function({ id, menuId, roleId }) {
+    return bladeRoleMenu.create({ id, menuId, roleId });
+  };
+  bladeRoleMenu._delete = function({ id }) {
+    return bladeRoleMenu.destroy({ where: { id } });
+  };
   return bladeRoleMenu;
 };

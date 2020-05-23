@@ -79,7 +79,7 @@ module.exports = app => {
   }, {
     tableName: 'blade_post',
   });
-  bladePost._add = async function({ id, tenantId, category, postCode, postName, sort, remark, createUser, createDept, status }) {
+  bladePost._add = function({ id, tenantId, category, postCode, postName, sort, remark, createUser, createDept, status }) {
     return bladePost.findOrCreate({
       where: { postCode },
       defaults: {
@@ -93,7 +93,7 @@ module.exports = app => {
   bladePost._delete = function({ id }) {
     return bladePost.destroy({ where: { id } });
   };
-  bladePost._findList = async function({ postName }) {
+  bladePost._findList = function({ postName }) {
     const Op = app.Sequelize.Op;
     return bladePost.findAll({
       where: { [Op.and]: [ postName ? { postName: { [Op.like]: `%${postName}%` } } : null ], status: '1' },

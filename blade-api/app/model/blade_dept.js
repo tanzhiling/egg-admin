@@ -54,7 +54,7 @@ module.exports = app => {
   }, {
     tableName: 'blade_dept',
   });
-  bladeDept._add = async function({ deptCode, tenantId, parentId = '0', deptCategory, deptName, fullName, sort, remark }) {
+  bladeDept._add = function({ deptCode, tenantId, parentId = '0', deptCategory, deptName, fullName, sort, remark }) {
     return bladeDept.findOrCreate({
       where: { id: deptCode },
       defaults: {
@@ -62,7 +62,7 @@ module.exports = app => {
       },
     });
   };
-  bladeDept._update = async function({ id, parentId, tenantId, deptCategory, deptName, fullName, sort, remark }) {
+  bladeDept._update = function({ id, parentId, tenantId, deptCategory, deptName, fullName, sort, remark }) {
     return bladeDept.update({ tenantId, parentId, deptCategory, deptName, fullName, sort, remark }, { where: { id } });
   };
   bladeDept._delete = function({ id }) {

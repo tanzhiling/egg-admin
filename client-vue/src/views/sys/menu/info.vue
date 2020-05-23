@@ -19,25 +19,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="上级菜单" prop="parentId">
-            <el-select
-              v-model="form.parentId"
-              style="width:300px"
-              clearable
-              :disabled="view==='add'&&form.parentId"
-            >
+            <el-select v-model="form.parentId" style="width:300px" clearable>
               <el-option
                 class="select-tree"
                 :value="parent.id"
                 :label="parent.name"
                 style="height:200px;overflow:auto;background:#fff"
               >
-                <el-tree
-                  :data="tree"
-                  lazy
-                  :load="handleLoad"
-                  :props="defaultProps"
-                  @node-click="handleNodeClick"
-                />
+                <el-tree :data="tree" :props="defaultProps" @node-click="handleNodeClick" />
               </el-option>
             </el-select>
           </el-form-item>
@@ -131,24 +120,12 @@ export default {
     },
   },
   mounted() {
-    this.getTree('0').then(res => {
-      if (res.success) {
-        this.tree = res.data
-      }
-    })
     if (this.id) {
       this.getDetail(this.id)
     }
+    this.getTree()
   },
   methods: {
-    async handleLoad(node, resolve) {
-      if (node.level === 0) {
-        return resolve(this.tree)
-      } else {
-        const { data } = await this.getTree(node.data.id)
-        return resolve(data)
-      }
-    },
     handleNodeClick(data) {
       this.parent = data
       this.form.parentId = data.id
@@ -206,8 +183,12 @@ export default {
         }
       })
     },
-    async getTree(id) {
-      return await ApiGetMenuTree({ id })
+    getTree() {
+      ApiGetMenuTree().then(res => {
+        if (res.success) {
+          this.tree = res.data
+        }
+      })
     }
   }
 }

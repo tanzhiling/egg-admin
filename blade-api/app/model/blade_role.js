@@ -50,7 +50,7 @@ module.exports = app => {
   }, {
     tableName: 'blade_role',
   });
-  bladeRole._add = async function({ id, tenantId, parentId, roleName, sort, roleAlias, status }) {
+  bladeRole._add = function({ id, tenantId, parentId, roleName, sort, roleAlias, status }) {
     return bladeRole.findOrCreate({
       where: { roleName },
       defaults: { id, tenantId, parentId, roleName, sort, roleAlias, status },
@@ -62,7 +62,7 @@ module.exports = app => {
   bladeRole._delete = function({ id }) {
     return bladeRole.destroy({ where: { id } });
   };
-  bladeRole._findList = async function({ roleName }) {
+  bladeRole._findList = function({ roleName }) {
     const Op = app.Sequelize.Op;
     return bladeRole.findAll({
       where: { [Op.and]: [ roleName ? { roleName: { [Op.like]: `%${roleName}%` } } : null ] },
