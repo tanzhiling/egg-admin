@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2020-05-20 17:09:16
+Date: 2020-05-23 13:14:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -111,7 +111,6 @@ CREATE TABLE `blade_dept` (
   `id` varchar(64) NOT NULL COMMENT '主键',
   `tenant_id` varchar(12) DEFAULT '000000' COMMENT '租户ID',
   `parent_id` varchar(64) DEFAULT '0' COMMENT '父主键',
-  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '祖级列表',
   `dept_category` char(2) DEFAULT NULL COMMENT '部门类型',
   `dept_name` varchar(45) DEFAULT NULL COMMENT '部门名',
   `full_name` varchar(45) DEFAULT NULL COMMENT '部门全称',
@@ -124,11 +123,11 @@ CREATE TABLE `blade_dept` (
 -- ----------------------------
 -- Records of blade_dept
 -- ----------------------------
-INSERT INTO `blade_dept` VALUES ('SD', 'YHD', '0', '0,0,', '1', '山东公司', '山东公司', '10', null, '0');
-INSERT INTO `blade_dept` VALUES ('SDJN', 'YHD', 'SD', '0,0,SD,', '2', '济南公司	', '山东济南公司', '20', null, '0');
-INSERT INTO `blade_dept` VALUES ('SDJN01', 'YHD', 'SDJN', '0,0,SDJN,', '3', '企管部', '山东济南企管部', '40', null, '0');
-INSERT INTO `blade_dept` VALUES ('SDJN02', 'YHD', 'SDJN', '0,0,SDJN,', '3', '财务部', '山东济南财务部', '50', null, '0');
-INSERT INTO `blade_dept` VALUES ('SDQD', 'YHD', 'SD', '0,0,SD,', '2', '青岛公司', '山东青岛公司', '30', null, '0');
+INSERT INTO `blade_dept` VALUES ('SD', 'YHD', '0', '1', '山东公司', '山东公司', '10', null, '0');
+INSERT INTO `blade_dept` VALUES ('SDJN', 'YHD', 'SD', '2', '济南公司	', '山东济南公司', '20', null, '0');
+INSERT INTO `blade_dept` VALUES ('SDJN01', 'YHD', 'SDJN', '3', '企管部', '山东济南企管部', '40', null, '0');
+INSERT INTO `blade_dept` VALUES ('SDJN02', 'YHD', 'SDJN', '3', '财务部', '山东济南财务部', '50', null, '0');
+INSERT INTO `blade_dept` VALUES ('SDQD', 'YHD', 'SD', '2', '青岛公司', '山东青岛公司', '30', null, '0');
 
 -- ----------------------------
 -- Table structure for blade_dict_data
@@ -289,15 +288,13 @@ CREATE TABLE `blade_log_usual` (
 DROP TABLE IF EXISTS `blade_menu`;
 CREATE TABLE `blade_menu` (
   `id` varchar(64) NOT NULL COMMENT '主键',
-  `parent_id` varchar(64) DEFAULT '0' COMMENT '父级菜单',
+  `parent_id` varchar(64) NOT NULL DEFAULT '0' COMMENT '父级菜单',
   `code` varchar(255) DEFAULT NULL COMMENT '菜单编号',
   `name` varchar(255) DEFAULT NULL COMMENT '菜单名称',
   `alias` varchar(255) DEFAULT NULL COMMENT '菜单别名',
   `path` varchar(255) DEFAULT NULL COMMENT '请求地址',
   `source` varchar(255) DEFAULT NULL COMMENT '菜单资源',
   `sort` int(2) DEFAULT NULL COMMENT '排序',
-  `category` int(2) DEFAULT NULL COMMENT '菜单类型',
-  `action` int(2) DEFAULT '0' COMMENT '操作按钮类型',
   `is_open` int(2) DEFAULT '1' COMMENT '是否打开新页面',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `is_deleted` int(2) DEFAULT '0' COMMENT '是否已删除',
@@ -307,150 +304,34 @@ CREATE TABLE `blade_menu` (
 -- ----------------------------
 -- Records of blade_menu
 -- ----------------------------
-INSERT INTO `blade_menu` VALUES ('1123598815738675201', '0', 'desk', '工作台', 'menu', '/desk', 'iconfont iconicon_airplay', '1', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675202', '1123598815738675201', 'notice', '通知公告', 'menu', '/desk/notice', 'iconfont iconicon_sms', '1', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675203', '0', 'system', '系统管理', 'menu', '/system', 'iconfont iconicon_setting', '99', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675204', '1123598815738675203', 'user', '用户管理', 'menu', '/system/user', 'iconfont iconicon_principal', '1', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675205', '1123598815738675203', 'dept', '机构管理', 'menu', '/system/dept', 'iconfont iconicon_group', '2', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675206', '1123598815738675203', 'dict', '系统字典', 'menu', '/system/dict', 'iconfont iconicon_addresslist', '4', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675207', '1123598815738675203', 'menu', '菜单管理', 'menu', '/system/menu', 'iconfont iconicon_subordinate', '6', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675208', '1123598815738675203', 'topmenu', '顶部菜单', 'menu', '/system/topmenu', 'iconfont icon-canshu', '7', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675209', '1123598815738675203', 'param', '参数管理', 'menu', '/system/param', 'iconfont iconicon_community_line', '8', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675210', '0', 'monitor', '系统监控', 'menu', '/monitor', 'iconfont icon-yanzhengma', '3', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675211', '1123598815738675210', 'doc', '接口文档', 'menu', 'http://localhost/doc.html', 'iconfont iconicon_study', '1', '1', '0', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675212', '1123598815738675210', 'admin', '服务治理', 'menu', 'http://localhost:7002', 'iconfont icon-canshu', '2', '1', '0', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675213', '1123598815738675210', 'log', '日志管理', 'menu', '/monitor/log', 'iconfont iconicon_doc', '8', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675214', '1123598815738675213', 'log_usual', '通用日志', 'menu', '/monitor/log/usual', null, '1', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675215', '1123598815738675213', 'log_api', '接口日志', 'menu', '/monitor/log/api', null, '2', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675216', '1123598815738675213', 'log_error', '错误日志', 'menu', '/monitor/log/error', null, '3', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675217', '0', 'tool', '研发工具', 'menu', '/tool', 'iconfont icon-wxbgongju', '4', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675218', '1123598815738675217', 'code', '代码生成', 'menu', '/tool/code', 'iconfont iconicon_savememo', '1', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675219', '1123598815738675202', 'notice_add', '新增', 'add', '/desk/notice/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675220', '1123598815738675202', 'notice_edit', '修改', 'edit', '/desk/notice/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675221', '1123598815738675202', 'notice_delete', '删除', 'delete', '/api/blade-desk/notice/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675222', '1123598815738675202', 'notice_view', '查看', 'view', '/desk/notice/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675223', '1123598815738675204', 'user_add', '新增', 'add', '/system/user/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675224', '1123598815738675204', 'user_edit', '修改', 'edit', '/system/user/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675225', '1123598815738675204', 'user_delete', '删除', 'delete', '/api/blade-user/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675226', '1123598815738675204', 'user_role', '角色配置', 'role', null, 'user-add', '4', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675227', '1123598815738675204', 'user_reset', '密码重置', 'reset-password', '/api/blade-user/reset-password', 'retweet', '5', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675228', '1123598815738675204', 'user_view', '查看', 'view', '/system/user/view', 'file-text', '6', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675229', '1123598815738675205', 'dept_add', '新增', 'add', '/system/dept/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675230', '1123598815738675205', 'dept_edit', '修改', 'edit', '/system/dept/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675231', '1123598815738675205', 'dept_delete', '删除', 'delete', '/api/blade-system/dept/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675232', '1123598815738675205', 'dept_view', '查看', 'view', '/system/dept/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675233', '1123598815738675206', 'dict_add', '新增', 'add', '/system/dict/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675234', '1123598815738675206', 'dict_edit', '修改', 'edit', '/system/dict/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675235', '1123598815738675206', 'dict_delete', '删除', 'delete', '/api/blade-system/dict/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675236', '1123598815738675206', 'dict_view', '查看', 'view', '/system/dict/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675237', '1123598815738675207', 'menu_add', '新增', 'add', '/system/menu/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675238', '1123598815738675207', 'menu_edit', '修改', 'edit', '/system/menu/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675239', '1123598815738675207', 'menu_delete', '删除', 'delete', '/api/blade-system/menu/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675240', '1123598815738675207', 'menu_view', '查看', 'view', '/system/menu/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675241', '1123598815738675308', 'role_add', '新增', 'add', '/authority/role/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675242', '1123598815738675308', 'role_edit', '修改', 'edit', '/authority/role/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675243', '1123598815738675308', 'role_delete', '删除', 'delete', '/api/blade-system/role/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675244', '1123598815738675308', 'role_view', '查看', 'view', '/authority/role/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675245', '1123598815738675209', 'param_add', '新增', 'add', '/system/param/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675246', '1123598815738675209', 'param_edit', '修改', 'edit', '/system/param/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675247', '1123598815738675209', 'param_delete', '删除', 'delete', '/api/blade-system/param/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675248', '1123598815738675209', 'param_view', '查看', 'view', '/system/param/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675249', '1123598815738675214', 'log_usual_view', '查看', 'view', '/monitor/log/usual/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675250', '1123598815738675215', 'log_api_view', '查看', 'view', '/monitor/log/api/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675251', '1123598815738675216', 'log_error_view', '查看', 'view', '/monitor/log/error/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675252', '1123598815738675218', 'code_add', '新增', 'add', '/tool/code/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675253', '1123598815738675218', 'code_edit', '修改', 'edit', '/tool/code/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675254', '1123598815738675218', 'code_delete', '删除', 'delete', '/api/blade-system/code/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675255', '1123598815738675218', 'code_view', '查看', 'view', '/tool/code/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675256', '1123598815738675203', 'tenant', '租户管理', 'menu', '/system/tenant', 'iconfont icon-quanxian', '9', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675257', '1123598815738675256', 'tenant_add', '新增', 'add', '/system/tenant/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675258', '1123598815738675256', 'tenant_edit', '修改', 'edit', '/system/tenant/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675259', '1123598815738675256', 'tenant_delete', '删除', 'delete', '/api/blade-system/tenant/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675260', '1123598815738675256', 'tenant_view', '查看', 'view', '/system/tenant/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675261', '1123598815738675203', 'client', '应用管理', 'menu', '/system/client', 'iconfont iconicon_mobilephone', '10', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675262', '1123598815738675261', 'client_add', '新增', 'add', '/system/client/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675263', '1123598815738675261', 'client_edit', '修改', 'edit', '/system/client/edit', 'form', '2', '2', '2', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675264', '1123598815738675261', 'client_delete', '删除', 'delete', '/api/blade-system/client/remove', 'delete', '3', '2', '3', '3', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675265', '1123598815738675261', 'client_view', '查看', 'view', '/system/client/view', 'file-text', '4', '2', '2', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675266', '0', 'flow', '流程管理', 'menu', '/flow', 'iconfont iconicon_send', '5', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675267', '1123598815738675266', 'flow_model', '模型管理', 'menu', '/flow/model', 'iconfont iconicon_discovery', '1', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675268', '1123598815738675267', 'flow_model_create', '创建', 'create', '', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675269', '1123598815738675267', 'flow_model_update', '编辑', 'update', '', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675270', '1123598815738675267', 'flow_model_deploy', '部署', 'deploy', '', 'cloud-upload', '3', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675271', '1123598815738675267', 'flow_model_download', '下载', 'download', '', 'download', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675272', '1123598815738675267', 'flow_model_delete', '删除', 'delete', '/api/blade-flow/model/remove', 'delete', '5', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675273', '1123598815738675266', 'flow_deploy', '流程部署', 'menu', '/flow/deploy', 'iconfont iconicon_cspace', '2', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675274', '1123598815738675266', 'flow_manager', '流程管理', 'menu', '/flow/manager', 'iconfont iconicon_cloud_history', '3', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675275', '1123598815738675274', 'flow_manager_state', '变更状态', 'state', '', 'plus', '1', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675276', '1123598815738675274', 'flow_manager_image', '流程图', 'image', '', 'image', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675277', '1123598815738675274', 'flow_manager_remove', '删除', 'remove', '', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675278', '1123598815738675266', 'flow_follow', '流程跟踪', 'menu', '/flow/follow', 'iconfont iconicon_GPS', '4', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675279', '1123598815738675278', 'flow_follow_delete', '删除', 'remove', '', 'remove', '1', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675280', '0', 'work', '我的事务', 'menu', '/work', 'iconfont iconicon_notice', '2', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675281', '1123598815738675280', 'work_start', '发起事务', 'menu', '/work/start', 'iconfont iconicon_compile', '1', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675282', '1123598815738675281', 'work_start_flow', '发起', 'flow', '', 'flow', '1', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675283', '1123598815738675281', 'work_start_image', '流程图', 'image', '', 'image', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675284', '1123598815738675280', 'work_claim', '待签事务', 'menu', '/work/claim', 'iconfont iconicon_ding', '2', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675285', '1123598815738675284', 'work_claim_sign', '签收', 'sign', '', 'sign', '1', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675286', '1123598815738675284', 'work_claim_detail', '详情', 'detail', '', 'detail', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675287', '1123598815738675284', 'work_claim_follow', '跟踪', 'follow', '', 'follow', '3', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675288', '1123598815738675280', 'work_todo', '待办事务', 'menu', '/work/todo', 'iconfont iconicon_savememo', '2', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675289', '1123598815738675288', 'work_todo_handle', '办理', 'handle', '', 'handle', '1', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675290', '1123598815738675288', 'work_todo_detail', '详情', 'detail', '', 'detail', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675291', '1123598815738675288', 'work_todo_follow', '跟踪', 'follow', '', 'follow', '3', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675292', '1123598815738675280', 'work_send', '已发事务', 'menu', '/work/send', 'iconfont iconicon_doc', '3', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675293', '1123598815738675292', 'work_send_detail', '详情', 'detail', '', 'detail', '1', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675294', '1123598815738675292', 'work_send_follow', '跟踪', 'follow', '', 'follow', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675295', '1123598815738675280', 'work_done', '办结事务', 'menu', '/work/done', 'iconfont iconicon_dispose', '4', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675296', '1123598815738675295', 'work_done_detail', '详情', 'detail', '', 'detail', '1', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675297', '1123598815738675295', 'work_done_follow', '跟踪', 'follow', '', 'follow', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675298', '0', 'resource', '资源管理', 'menu', '/resource', 'iconfont iconicon_coinpurse_line', '6', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675299', '1123598815738675298', 'oss', '对象存储', 'menu', '/resource/oss', 'iconfont iconicon_subordinate', '1', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675301', '1123598815738675299', 'oss_add', '新增', 'add', '/resource/oss/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675302', '1123598815738675299', 'oss_edit', '修改', 'edit', '/resource/oss/edit', 'form', '2', '2', '2', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675303', '1123598815738675299', 'oss_delete', '删除', 'delete', '/api/blade-resource/oss/remove', 'delete', '3', '2', '3', '3', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675304', '1123598815738675299', 'oss_view', '查看', 'view', '/resource/oss/view', 'file-text', '4', '2', '2', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675305', '1123598815738675299', 'oss_enable', '启用', 'enable', '/api/blade-resource/oss/enable', 'key', '5', '2', '2', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675307', '0', 'authority', '权限管理', 'menu', '/authority', 'iconfont icon-bofangqi-suoping', '98', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675308', '1123598815738675307', 'role', '角色管理', 'menu', '/authority/role', 'iconfont iconicon_boss', '1', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675309', '1123598815738675307', 'data_scope', '数据权限', 'menu', '/authority/datascope', 'iconfont icon-shujuzhanshi2', '2', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675310', '1123598815738675309', 'data_scope_setting', '权限配置', 'setting', null, 'setting', '1', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675311', '1123598815738675307', 'api_scope', '接口权限', 'menu', '/authority/apiscope', 'iconfont icon-iconset0216', '3', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675312', '1123598815738675311', 'api_scope_setting', '权限配置', 'setting', null, 'setting', '1', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675313', '1123598815738675208', 'topmenu_add', '新增', 'add', '/system/topmenu/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675314', '1123598815738675208', 'topmenu_edit', '修改', 'edit', '/system/topmenu/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675315', '1123598815738675208', 'topmenu_delete', '删除', 'delete', '/api/blade-system/topmenu/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675316', '1123598815738675208', 'topmenu_view', '查看', 'view', '/system/topmenu/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1123598815738675317', '1123598815738675208', 'topmenu_setting', '菜单配置', 'setting', null, 'setting', '5', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1161272593873321991', '1123598815738675217', 'datasource', '数据源管理', 'menu', '/tool/datasource', 'iconfont icon-caidanguanli', '2', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1161272593873321992', '1161272593873321991', 'datasource_add', '新增', 'add', '/tool/datasource/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1161272593873321993', '1161272593873321991', 'datasource_edit', '修改', 'edit', '/tool/datasource/edit', 'form', '2', '2', '2', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1161272593873321994', '1161272593873321991', 'datasource_delete', '删除', 'delete', '/api/blade-develop/datasource/remove', 'delete', '3', '2', '3', '3', null, '0');
-INSERT INTO `blade_menu` VALUES ('1161272593873321995', '1161272593873321991', 'datasource_view', '查看', 'view', '/tool/datasource/view', 'file-text', '4', '2', '2', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733121140551682', '1123598815738675217', 'form', '表单设计', 'form', 'https://form.avuejs.com/', 'iconfont iconicon_compile', '3', '1', '0', '2', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733349637844993', '1123598815738675217', 'crud', '表格设计', 'crud', 'https://crud.avuejs.com/', 'iconfont iconicon_work', '4', '1', '0', '2', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733369658963251', '1123598815738675210', 'elk', 'ELK监控', 'menu', 'http://localhost:5601/', 'iconfont iconicon_cspace', '3', '1', '0', '2', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733369658963252', '1123598815738675210', 'zipkin', 'Zipkin监控', 'menu', 'http://localhost:9411/', 'iconfont iconicon_task', '4', '1', '0', '2', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733369658963253', '1123598815738675210', 'turbine', 'Turbine监控', 'menu', 'http://localhost:7003/hystrix', 'iconfont iconicon_subordinate', '5', '1', '0', '2', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733369658963254', '1123598815738675210', 'sentinel', 'Sentinel管理', 'menu', 'http://localhost:8858', 'iconfont iconicon_safety', '6', '1', '0', '2', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733369658963255', '1123598815738675210', 'es', 'Elasticsearch管理', 'menu', 'http://localhost:9100/', 'iconfont iconfont iconicon_search', '7', '1', '0', '2', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733379658963251', '1123598815738675203', 'dictbiz', '业务字典', 'menu', '/system/dictbiz', 'iconfont iconicon_study', '5', '1', '0', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733379658963252', '1164733379658963251', 'dictbiz_add', '新增', 'add', '/system/dictbiz/add', 'plus', '1', '2', '1', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733379658963253', '1164733379658963251', 'dictbiz_edit', '修改', 'edit', '/system/dictbiz/edit', 'form', '2', '2', '2', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733379658963254', '1164733379658963251', 'dictbiz_delete', '删除', 'delete', '/api/blade-system/dict-biz/remove', 'delete', '3', '2', '3', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733379658963255', '1164733379658963251', 'dictbiz_view', '查看', 'view', '/system/dictbiz/view', 'file-text', '4', '2', '2', '1', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733389658962251', '1123598815738675298', 'sms', '短信配置', 'menu', '/resource/sms', 'iconfont iconicon_message', '2', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389658962252', '1164733389658962251', 'sms_add', '新增', 'add', '/resource/sms/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389658962253', '1164733389658962251', 'sms_edit', '修改', 'edit', '/resource/sms/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389658962254', '1164733389658962251', 'sms_delete', '删除', 'delete', '/api/blade-resource/sms/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389658962255', '1164733389658962251', 'sms_view', '查看', 'view', '/resource/sms/view', 'file-text', '4', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389658962256', '1164733389658962251', 'sms_enable', '启用', 'enable', '/api/blade-resource/sms/enable', 'key', '5', '2', '2', '2', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389658963251', '1123598815738675298', 'xxljob', '任务调度', 'menu', 'http://localhost:7009/xxl-job-admin', 'iconfont iconicon_cspace', '3', '1', '0', '2', '', '0');
-INSERT INTO `blade_menu` VALUES ('1164733389668962251', '1123598815738675203', 'post', '岗位管理', 'menu', '/system/post', 'iconfont iconicon_message', '3', '1', '0', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389668962252', '1164733389668962251', 'post_add', '新增', 'add', '/system/post/add', 'plus', '1', '2', '1', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389668962253', '1164733389668962251', 'post_edit', '修改', 'edit', '/system/post/edit', 'form', '2', '2', '2', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389668962254', '1164733389668962251', 'post_delete', '删除', 'delete', '/api/blade-system/post/remove', 'delete', '3', '2', '3', '1', null, '0');
-INSERT INTO `blade_menu` VALUES ('1164733389668962255', '1164733389668962251', 'post_view', '查看', 'view', '/system/post/view', 'file-text', '4', '2', '2', '1', null, '0');
+INSERT INTO `blade_menu` VALUES ('1123598815738675203', '0', 'system', '系统管理', 'menu', '', '', '100', '1', '', '0');
+INSERT INTO `blade_menu` VALUES ('1815d6926e2fa85df906cb2a6290bb2e', 'd6bf21c7c1e01b4603fe1a8808b90049', 'sysDept', '机构管理', null, '/sys/dept/dept', '', '90', '1', null, '0');
+INSERT INTO `blade_menu` VALUES ('7724d6c8e81685dfe2a09013df8c2190', '1123598815738675203', 'setup', '系统设置', null, '/layout', '', '70', '1', null, '0');
+INSERT INTO `blade_menu` VALUES ('8bc402f6db605c7634dca7c0b233df91', '7724d6c8e81685dfe2a09013df8c2190', 'sysDict', '字典管理', null, '/sys/dict/dict', '', '80', '1', null, '0');
+INSERT INTO `blade_menu` VALUES ('a43cad6fac9d68ad955ef24d41df10fd', 'd6bf21c7c1e01b4603fe1a8808b90049', 'sysTenant', '租户管理', null, '/sys/tenant/tenant', '', '60', '1', null, '0');
+INSERT INTO `blade_menu` VALUES ('a5ddf031977ec5ba10752a094c2b65f0', '1123598815738675203', 'role', '权限管理', null, '/layout', '', '80', '1', null, '0');
+INSERT INTO `blade_menu` VALUES ('aff03e4391851b786eda3e97b75b0b24', 'a5ddf031977ec5ba10752a094c2b65f0', 'sysRole', '角色管理', null, '/sys/role/role', '', '90', '1', null, '0');
+INSERT INTO `blade_menu` VALUES ('d646a53a1094b95ff9fc40f53777985f', '7724d6c8e81685dfe2a09013df8c2190', 'sysMenu', '菜单管理', null, '/sys/menu/menu', '', '90', '1', null, '0');
+INSERT INTO `blade_menu` VALUES ('d6bf21c7c1e01b4603fe1a8808b90049', '1123598815738675203', 'organize', '组织管理', '', '/layout', '', '90', '1', '', '0');
+INSERT INTO `blade_menu` VALUES ('dfa1ac420b00ad64ed6fbb640477c9cf', 'd6bf21c7c1e01b4603fe1a8808b90049', 'sysPost', '岗位管理', null, '/sys/post/post', '', '70', '1', null, '0');
+INSERT INTO `blade_menu` VALUES ('e55fadbd8bfc0911e60201ce01426930', 'd6bf21c7c1e01b4603fe1a8808b90049', 'sysUser', '用户管理', null, '/sys/user/user', '', '80', '1', null, '0');
+
+-- ----------------------------
+-- Table structure for blade_menu_btn
+-- ----------------------------
+DROP TABLE IF EXISTS `blade_menu_btn`;
+CREATE TABLE `blade_menu_btn` (
+  `id` varchar(64) NOT NULL,
+  `menu_id` varchar(64) NOT NULL COMMENT '菜单id',
+  `btn_name` varchar(255) NOT NULL COMMENT '按钮名称',
+  `btn_code` varchar(255) NOT NULL COMMENT '按钮编码',
+  `status` char(2) NOT NULL COMMENT '状态 1启用 0停用',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of blade_menu_btn
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for blade_notice
@@ -1015,46 +896,6 @@ CREATE TABLE `blade_tenant` (
 INSERT INTO `blade_tenant` VALUES ('2d7c0f696d1865fc03e425bb3ed00f0e', 'YHD', '租户1号店', '', '', '李四', '', '', '3000000', '2020-05-30 00:00:00', null, null, '2020-05-17 09:34:29', null, '2020-05-17 09:34:29', '1', '0');
 INSERT INTO `blade_tenant` VALUES ('78f5142f69314691a6720667600ab1c2', 'EHD', '租户2号店', '', '', '王五', '', '', '4000000', '2020-05-17 09:35:43', null, null, '2020-05-17 09:35:46', null, '2020-05-17 09:35:46', '0', '0');
 INSERT INTO `blade_tenant` VALUES ('f21e2af4744994afb05157554c7e58d9', 'YYZX', '运营中心', 'http://www.baidu.com', '', '张三', '88888888', '上海市黄浦区第一大道', '20000000', '2020-06-06 00:00:00', null, null, '2020-05-17 09:31:44', null, '2020-05-17 09:31:44', '1', '0');
-
--- ----------------------------
--- Table structure for blade_top_menu
--- ----------------------------
-DROP TABLE IF EXISTS `blade_top_menu`;
-CREATE TABLE `blade_top_menu` (
-  `id` varchar(64) NOT NULL COMMENT '主键',
-  `tenant_id` varchar(12) DEFAULT NULL COMMENT '租户id',
-  `code` varchar(255) DEFAULT NULL COMMENT '顶部菜单编号',
-  `name` varchar(255) DEFAULT NULL COMMENT '顶部菜单名',
-  `source` varchar(255) DEFAULT NULL COMMENT '顶部菜单资源',
-  `sort` int(2) DEFAULT NULL COMMENT '顶部菜单排序',
-  `create_user` varchar(64) DEFAULT NULL COMMENT '创建人',
-  `create_dept` varchar(64) DEFAULT NULL COMMENT '创建部门',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_user` varchar(64) DEFAULT NULL COMMENT '修改人',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `status` char(1) DEFAULT NULL COMMENT '状态',
-  `is_deleted` int(2) DEFAULT NULL COMMENT '是否已删除',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='顶部菜单表';
-
--- ----------------------------
--- Records of blade_top_menu
--- ----------------------------
-
--- ----------------------------
--- Table structure for blade_top_menu_setting
--- ----------------------------
-DROP TABLE IF EXISTS `blade_top_menu_setting`;
-CREATE TABLE `blade_top_menu_setting` (
-  `id` varchar(64) NOT NULL COMMENT '主键',
-  `top_menu_id` varchar(64) DEFAULT NULL COMMENT '顶部菜单主键',
-  `menu_id` varchar(64) DEFAULT NULL COMMENT '菜单主键',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='顶部菜单配置表';
-
--- ----------------------------
--- Records of blade_top_menu_setting
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for blade_user
