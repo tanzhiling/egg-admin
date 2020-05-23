@@ -55,4 +55,4 @@
 │   └── plugin.local.js   
 ```
 
-![Image](https://github.com/Tanzhiling/egg-admin/blob/master/assets/bg.jpg)
+![Image](http://github.com/Tanzhiling/egg-admin/blob/master/assets/bg.jpg)
