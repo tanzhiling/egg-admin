@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2020-05-23 13:14:14
+Date: 2020-05-24 12:39:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -332,6 +332,9 @@ CREATE TABLE `blade_menu_btn` (
 -- ----------------------------
 -- Records of blade_menu_btn
 -- ----------------------------
+INSERT INTO `blade_menu_btn` VALUES ('5cb67c6dac2af168b8eab6f93c77ce4c', '1815d6926e2fa85df906cb2a6290bb2e', '编辑', 'edit', '1');
+INSERT INTO `blade_menu_btn` VALUES ('a99a2d2e3c948e4135ad2f5c215f6413', '1815d6926e2fa85df906cb2a6290bb2e', '删除', 'delete', '1');
+INSERT INTO `blade_menu_btn` VALUES ('c8d1483f7b44a473fc713a29c7e89684', '1815d6926e2fa85df906cb2a6290bb2e', '新增', 'view', '1');
 
 -- ----------------------------
 -- Table structure for blade_notice
