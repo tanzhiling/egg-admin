@@ -38,3 +38,30 @@ export const ApiGetMenuDetail = (params) => {
     params,
   });
 };
+export const ApiMenuAddBtn = (data) => {
+  return request("/blade-sys/menu/addBtn", {
+    method: "post",
+    data,
+    requestType: "form",
+  });
+};
+export const ApiMenuUpdateBtn= (data) => {
+  return request("/blade-sys/menu/updateBtn", {
+    method: "post",
+    data,
+    requestType: "form",
+  });
+};
+export const ApiMenuDeleteBtn = (data) => {
+  return request("/blade-sys/menu/deleteBtn", {
+    method: "post",
+    data,
+    requestType: "form",
+  });
+};
+export const ApiGetMenuListBtn = (params) => {
+  return request("/blade-sys/menu/listBtn", {
+    method: "get",
+    params,
+  });
+};

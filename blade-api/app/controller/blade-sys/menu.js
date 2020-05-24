@@ -41,5 +41,34 @@ class MenuController extends Controller {
       this.ctx.result({ success: false, msg: 'id不能为空' });
     }
   }
+  async addBtn() {
+    const { menuId } = this.ctx.request.body;
+    if (!menuId) {
+      this.ctx.result({ success: false, msg: 'menuId不能为空！' });
+    } else {
+      this.ctx.result(
+        await this.service.bladeSys.menu.addBtn(this.ctx.request.body)
+      );
+    }
+  }
+  async updateBtn() {
+    const { id } = this.ctx.request.body;
+    if (id) {
+      this.ctx.result(await this.service.bladeSys.menu.updateBtn(this.ctx.request.body));
+    } else {
+      this.ctx.result({ success: false, msg: 'id不能为空' });
+    }
+  }
+  async deleteBtn() {
+    const { id } = this.ctx.request.body;
+    if (id) {
+      this.ctx.result(await this.service.bladeSys.menu.deleteBtn(this.ctx.request.body));
+    } else {
+      this.ctx.result({ success: false, msg: 'id不能为空' });
+    }
+  }
+  async listBtn() {
+    this.ctx.result(await this.service.bladeSys.menu.listBtn(this.ctx.query));
+  }
 }
 module.exports = MenuController;

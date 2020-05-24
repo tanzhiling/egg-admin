@@ -36,5 +36,31 @@ class MenuService extends Service {
     const data = await this.ctx.model.BladeMenu._findOne({ id });
     return { msg: '查询成功！', success: true, data };
   }
+  async addBtn(params) {
+    params.id = this.ctx.helper.uuid();
+    const [ result, status ] = await this.ctx.model.BladeMenuBtn._add(params);
+    if (status) {
+      return { msg: '新增成功！', success: status };
+    }
+    return { msg: result.id + '已经存在', success: false };
+  }
+  async updateBtn(params) {
+    const data = await this.ctx.model.BladeMenuBtn._update(params);
+    if (data) {
+      return { msg: '更新成功！', success: true };
+    }
+    return { msg: '更新失败', success: false };
+  }
+  async deleteBtn(params) {
+    const status = await this.ctx.model.BladeMenuBtn._delete(params);
+    if (status) {
+      return { msg: '删除成功！', success: true };
+    }
+    return { msg: '找不到这条数据', success: false };
+  }
+  async listBtn(params) {
+    const data = await this.ctx.model.BladeMenuBtn._findList(params);
+    return { msg: '查询成功！', success: true, data };
+  }
 }
 module.exports = MenuService;

@@ -59,6 +59,10 @@ module.exports = app => {
   router.get('/blade-sys/menu/list', controller.bladeSys.menu.list);
   router.get('/blade-sys/menu/tree', controller.bladeSys.menu.tree);
   router.get('/blade-sys/menu/detail', controller.bladeSys.menu.detail);
+  router.post('/blade-sys/menu/addBtn', controller.bladeSys.menu.addBtn);
+  router.post('/blade-sys/menu/updateBtn', controller.bladeSys.menu.updateBtn);
+  router.post('/blade-sys/menu/deleteBtn', controller.bladeSys.menu.deleteBtn);
+  router.get('/blade-sys/menu/listBtn', controller.bladeSys.menu.listBtn);
   // 文件处理
   router.post('/blade-base/upload/avatar', controller.bladeBase.upload.avatar);
 };

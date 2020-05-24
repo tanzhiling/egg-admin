@@ -24,7 +24,7 @@
       <el-table-column prop="alias" label="菜单别名" />
       <el-table-column prop="sort" label="排序" />
       <el-table-column prop="remark" label="备注" />
-      <el-table-column label="操作" align="center" width="260">
+      <el-table-column label="操作" align="center" width="300">
         <template slot-scope="{row}">
           <el-button
             type="text"
@@ -35,10 +35,16 @@
           <el-button type="text" icon="el-icon-delete" size="small" @click="handleDelete(row.id)">删除</el-button>
           <el-button
             type="text"
-            icon="el-icon-delete"
+            icon="el-icon-plus"
             size="small"
             @click="handleVisible(true,'新增',row.id)"
           >新增子项</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-setting"
+            size="small"
+            @click="handleView('button',row.id)"
+          >权限按钮</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -48,17 +54,17 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="菜单名称" prop="name">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="编码" prop="code">
-              <el-input v-model="form.code" />
+              <el-input v-model="form.code" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="路由地址" prop="path">
-              <el-input v-model="form.path" />
+              <el-input v-model="form.path" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -77,12 +83,12 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="菜单图标" prop="source">
-              <el-input v-model="form.source" />
+              <el-input v-model="form.source" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="排序" prop="sort">
-              <el-input v-model="form.sort" />
+              <el-input v-model="form.sort" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -149,6 +155,7 @@ export default {
       title: "",
       tree: [],
       visible: false,
+      loading: false,
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -159,6 +166,9 @@ export default {
     this.getList({ parentId: '0' })
   },
   methods: {
+    handleView(view, id) {
+      this.$emit("on-view", view, id)
+    },
     handleLoad(tree, treeNode, resolve) {
       ApiGetMenuList({ parentId: tree.id }).then(res => {
         if (res.success) {
